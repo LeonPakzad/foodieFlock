@@ -6,7 +6,8 @@ const cookieParser = require('cookie-parser');
 import { auth } from '../controllers/auth';
 
 const {
-    userIndex
+    userIndex,
+    userProfile
 } = require('../controllers/userController');
 
 dotenv.config();
@@ -23,13 +24,8 @@ router.get('/', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) 
     } );
 });
 
-router.get('user-index', auth.verifyToken, userIndex);
-
-router.get('/users', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {
-    res.render("users", {
-        title: "users",
-    } );    
-});    
+router.get('/user-index', auth.verifyToken, userIndex);
+router.get('/user-profile/:id', auth.verifyToken, userProfile);
 
 router.get('/auth', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {
     res.render("auth", {

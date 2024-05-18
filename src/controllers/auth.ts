@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-import {createUser, getUser} from '../controllers/userController'
+import {createUser, getUser, getUserByMail} from '../controllers/userController'
 
 export module auth {
 
@@ -26,7 +26,7 @@ export module auth {
         const { email, password } = req.body;
         try
         {
-            const user = await getUser({email});
+            const user = await getUserByMail({email});
             if(user == null) throw("Invalid username or password");
             if(user.email == email && await bcrypt.hash(user.password, user.salt) == password) throw("Invalid username or password")
 

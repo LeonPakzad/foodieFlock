@@ -1,1 +1,12 @@
-hello world
+<%- include('../templates/header'); -%>
+
+<div class="content">
+    <b>
+        name: 
+    </b>
+    <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %></div>
+    <b>
+        mail: 
+    </b>
+    <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
+</div>
