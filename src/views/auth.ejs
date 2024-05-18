@@ -1,0 +1,42 @@
+<%- include('templates/header'); -%>
+
+<div class="content">
+    
+        <form id="registerForm" style="display:none;" class="form-content">
+            <div class="row-center">
+                <input class="input" id="username" name="username" placeholder="username" required/>
+                <input class="input" id="email" name="email" placeholder="email" required/>
+            </div>
+            <div class="row-center">
+                <input class="input" id="password" name="password" type="password" placeholder="password" required/>
+                <input class="input" id="password-retype" name="password-retype" type="password" placeholder="retype password" required/>
+            </div>
+            <br>
+            <div class="row-center">
+                <button class="button" type="submit">register</button>
+            </div>
+            <div class="error-message" id="register-error-message" style="display: none;">register failed</div>
+            <div class="row-end">
+                <button type="button" class="button-borderless" onclick="toggleAuth()">already registered?</button>
+            </div>
+        </form>
+        <div class="success-message" id="register-success-message" style="display:none">registered successfully</div>
+
+        <form id="loginForm" class="form-content">
+            <div class="row-center">
+                <input class="input" id="username" name="username" placeholder="username" required/>
+                <input class="input" id="password" name="password" type="password" placeholder="password" required/>
+            </div>
+            <div class="row-center">
+                <button class="button" type="submit">Login</button>
+            </div>
+            <div class="error-message" id="login-error-message" style="display: none;">login failed</div>
+            <div class="row-end">
+                <button type="button" class="button-borderless" onclick="toggleAuth()">new? register here!</button>
+            </div>
+        </form>
+        <div class="success-message" id="login-success-message" style="display:none">login successful</div>
+
+</div>
+
+<script src="../../public/scripts/login.js"></script>

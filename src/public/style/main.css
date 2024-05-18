@@ -1,0 +1,230 @@
+:root {
+    --primary-color: #EBC49F;
+    --secondary-color: #F1EF99;
+    --color-success:#B0C5A4;
+    --color-error: #D37676;
+    --color-dark: #3F2E3E;
+    --color-darker: #331D2C;
+}
+
+html {
+    scrollbar-color: var(--primary-color) var(--secondary-color);
+    background: var(--color-dark);
+}
+
+body {
+    height: 100%;
+    background-image: url("../../public/style/assets/background.jpg")
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h1 {
+    color: var(--secondary-color);
+}
+
+.link {
+    text-decoration: none;
+    color: var(--secondary-color);
+}
+
+.header-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-row *{
+    margin: 10px;
+}
+
+.content {
+    color: var(--primary-color);
+    background: var(--color-darker);
+    box-sizing:border-box;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(to bottom, var(--primary-color) 0%, var(--secondary-color) 80%);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.button {
+    color: var(--primary-color);
+    background: none;
+    padding: 10px;
+    background: var(--color-darker);
+    border: solid 2px var(--secondary-color);
+    border-radius: 5%;
+}
+
+.button-borderless {
+    color: var(--primary-color);
+    background: none;
+    padding: 10px;
+    background: var(--color-darker);
+    border: none;
+}
+
+.button:hover,
+.button-borderless:hover, 
+.button-warning:hover, 
+.toggle-row-button:hover,
+summary:hover,
+.link:hover 
+{
+    cursor:pointer;
+}
+
+.toggle-row-button-container {
+    position: absolute;
+    right: 70px;
+    background: white;
+    max-width: 200px;
+    max-height:200px;
+    overflow-y: scroll;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.button.toggle-row-menu-button.button-activated {
+    background: var(--primary-color) !important;
+}
+
+.button-warning {
+    background: none;
+    padding: 10px;
+    border: solid 2px var(--color-error);
+    border-radius: 5%;
+}
+
+.toggle-row-button {
+    background: var(--primary-color);
+    border: none;
+    border: solid 2px var(--secondary-color);
+    border-radius: 5%;
+    margin: 2px;
+}
+
+.toggle-row-button + .button-activated {
+    background: none;
+    color: black;
+}
+
+.link-button{
+    margin-right: 5px;
+    padding: 0;
+}
+
+.link-button img{
+    width:  40px;
+    height: auto;
+}
+
+.input {
+    margin: 5px;
+    color: var(--primary-color);
+    background: none;
+    padding: 10px;
+    border: solid 2px var(--primary-color);
+}
+
+.input option {
+    background-color: var(--secondary-color);
+}
+
+.input.empty-error {
+    border: solid 2px var(--color-error);
+}
+
+div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.container, .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row-center {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.row-end {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 5px;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.navigation-bar a {
+    background: var(--secondary-color);
+    padding: 10px;
+    margin: 5px;
+    display: block;
+}
+
+.selected {
+    background: var(--primary-color) !important;
+}
+
+.body-row {
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+}
+
+[data-tooltip]:hover::after {
+    display: block;
+    position: absolute;
+    content: attr(data-tooltip);
+    border: 1px solid black;
+    background: white;
+    padding: .25em;
+    color: black !important;
+}
+
+.success-message {
+    padding: 10px;
+    background: white;
+    border: solid var(--color-success);
+}
+
+.error-message {
+    padding: 10px;
+    background: white;
+    border: solid var(--color-error);
+}
+
+.head-row {
+    display: flex;
+    align-items: center;
+    background: var(--secondary-color);
+}
+
+.body-row {
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+}
+
+.body-row:nth-child(odd) {
+    background: var(--primary-color);
+}

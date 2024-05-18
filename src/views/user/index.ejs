@@ -1,0 +1,24 @@
+<%- include('../templates/header'); -%>
+
+<div class="content">
+    <div class="head-row">
+    </div>
+
+    <% users.forEach(function(user) { %>
+        <div class="body-row">
+
+            <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= place.name == undefined || null? '-' : user.name %></div>
+            <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= place.email == undefined || null? '-' : user.email %></div>
+
+            <div class="col-size-2">
+                <a class="link-button" href="/place/<%=encodeURIComponent(JSON.stringify({id: place.id, amenity: place.amenity}))%>">
+                    <img title="show place" alt="show place" src="../../public/style/assets/icon-show.png">
+                </a>
+                <a class="link-button" href="place-delete/<%=encodeURIComponent(JSON.stringify({id: place.id, amenity: place.amenity}))%>">
+                    <img title="delete place" alt="delete place" src="../../public/style/assets/icon-delete.png">
+                </a>
+            </div>
+        </div>  
+    <% }); %>
+
+</div>
