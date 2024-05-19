@@ -14,16 +14,25 @@ export const getUser = async (_req: { id: number; } ) =>
     return user;
 }
 
-export const getUserByMail = async (_req: { email: string; } ) => 
+export const getUserByName = async (_req: { name: string; } ) => 
     {
-        const user = await prisma.user.findFirst({
+        const user = await prisma.user.findUnique({
             where: {
-                email: _req.email,
+                email: _req.name,
             },
         });
-    
         return user;
     }
+
+export const getUserByMail = async (_req: { email: string; } ) => 
+{
+    const user = await prisma.user.findUnique({
+        where: {
+            email: _req.email,
+        },
+    });
+    return user;
+}
 
 export const getUsers = async () => 
 {
@@ -101,6 +110,7 @@ module.exports =  {
     userIndex,
     getUser,
     getUserByMail,
+    getUserByName,
     getUsers,
     createUser,
     deleteUser,

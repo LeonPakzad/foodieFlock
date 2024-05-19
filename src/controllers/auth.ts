@@ -27,8 +27,12 @@ export module auth {
         try
         {
             const user = await getUserByMail({email});
+            console.log(user);
             if(user == null) throw("Invalid username or password");
-            if(user.email == email && await bcrypt.hash(user.password, user.salt) == password) throw("Invalid username or password")
+
+            console.log(user.password)
+
+            if(user.email != email || await bcrypt.hash(password, user.salt) != user.password) throw("Invalid username or password")
 
             // Create JWT token
             jwt.sign({ userId: email }, process.env.TOKEN_SECRET, { expiresIn: '1h' }, (error:string, token:string) => {

@@ -26,7 +26,7 @@ if(loginForm != null)
             event.preventDefault();
     
             const formData = new FormData(this);
-            const username = formData.get('username');
+            const email = formData.get('email');
             const password = formData.get('password');
     
             try 
@@ -36,7 +36,7 @@ if(loginForm != null)
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ email, password })
                 });
     
                 const data = await response.json();
