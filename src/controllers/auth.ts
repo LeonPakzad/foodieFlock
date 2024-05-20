@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 import {createUser, getUser, getUserByMail} from '../controllers/userController'
 
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
+
 export module auth {
 
     // access config var
@@ -27,10 +30,7 @@ export module auth {
         try
         {
             const user = await getUserByMail({email});
-            console.log(user);
             if(user == null) throw("Invalid username or password");
-
-            console.log(user.password)
 
             if(user.email != email || await bcrypt.hash(password, user.salt) != user.password) throw("Invalid username or password")
 
@@ -49,6 +49,21 @@ export module auth {
         {
             return res.status(401).json({ message: error });
         }
+    }
+
+    export async function logout(req: { headers: { [x: string]: any; }; }, res: { sendStatus: (arg0: number) => any; setHeader: (arg0: string, arg1: string) => void; status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; status?: string; }): void; new(): any; }; }; end: () => void; }) {
+        try 
+        {
+            res.setHeader('Clear-Site-Data', '"cookies"');
+            res.status(200).json({ message: 'You are logged out!' });
+        } catch (error) 
+        {
+            res.status(500).json({
+                status: 'error',
+                message: 'Internal Server Error',
+            });
+        } 
+        res.end();
     }
 
     export async function register(req: {body: { password: string; passwordRetype: string; username: string; email: string; }; }, res: { status?: any; render?: (arg0: string, arg1: { title: string; user: { email: string; } | null; }) => void; }){

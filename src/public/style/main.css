@@ -229,3 +229,15 @@ div {
 .body-row:nth-child(odd) {
     background: var(--primary-color);
 }
+
+.col-size-1 {
+    flex: 1;
+    align-items: center;
+    padding:5px;
+}
+
+.col-size-2 {
+    flex: 2;
+    align-items: center;
+    padding:5px;
+}
