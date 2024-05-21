@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-import {createUser, getUser, getUserByMail} from '../controllers/userController'
-
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { user } from '../controllers/userController'
 
 export module auth {
 
@@ -29,10 +26,10 @@ export module auth {
         const { email, password } = req.body;
         try
         {
-            const user = await getUserByMail({email});
-            if(user == null) throw("Invalid username or password");
+            const _user = await user.getUserByMail({email});
+            if(_user == null) throw("Invalid username or password");
 
-            if(user.email != email || await bcrypt.hash(password, user.salt) != user.password) throw("Invalid username or password")
+            if(_user.email != email || await bcrypt.hash(password, _user.salt) != _user.password) throw("Invalid username or password")
 
             // Create JWT token
             jwt.sign({ userId: email }, process.env.TOKEN_SECRET, { expiresIn: '1h' }, (error:string, token:string) => {
@@ -71,14 +68,14 @@ export module auth {
         {
             const salt = await bcrypt.genSalt(10)
             const password = await bcrypt.hash(req.body.password, salt)
-            const user = ({
+            const _user = ({
                 name: req.body.username,
                 email: req.body.email,
                 password: password,
                 salt: salt
             })
-            await createUser(user);
-            return res.status(201).json(user);
+            await user.createUser(_user);
+            return res.status(201).json(_user);
         }
         else
         {
