@@ -7,25 +7,13 @@
 <header class="header-row">
     <a href='/'>
         <h1> 
-            ElementKit - <%= title %>
+            Foodieflock
         </h1>
     </a>
 
     <div class="navigation-bar row">
-        <a <% if (title == 'Dashboard') { %> class="selected" <% } %> href='/'>
-            dashboard
-        </a>
-        <a <% if (title == 'user') { %> class="selected" <% } %> href='/user-index'>
-            users
-        </a>
         <a <% if (title == 'Auth') { %> class="selected" <% } %> href='/auth'>
             login
         </a>
-
-        <a <% if (title == 'Auth') { %> class="selected" <% } %> href='/profile'>
-            profile
-        </a>
-
-        <a href='/logout'>logout</a>
     </div> 
 </header>

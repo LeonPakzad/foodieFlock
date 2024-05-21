@@ -43,9 +43,7 @@ if(loginForm != null)
     
                 if (response.ok) 
                 {
-                    loginForm.style.display = 'none';
-                    loginErrorMessage.style.display = 'none';
-                    loginSuccessMessage.style.display = "initial";
+                    window.location.replace('/profile');
                 } 
                 else 
                 {

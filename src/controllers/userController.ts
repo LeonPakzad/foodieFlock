@@ -91,6 +91,7 @@ export module user {
             {
                 title: "user index",
                 users: users,
+                thisUser: _req.user.userId ?? null,
             }
         )
     }
@@ -102,6 +103,7 @@ export module user {
             res.render("user/profile", {
                 title: "profile",
                 user: user,
+                thisUser: _req.user.userId ?? null,
             } );
         }
     }

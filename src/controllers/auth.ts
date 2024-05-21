@@ -22,7 +22,7 @@ export module auth {
         }
     }
 
-    export async function login(req: { body: { email: string; password: string; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; }): any; new(): any; }; }; cookie: (arg0: string, arg1: any, arg2: { httpOnly: boolean, sameSite: string }) => void; json: (arg0: { message: string; }) => void; }) {
+    export async function login(req: { body: { email: string; password: string; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; }): any; new(): any; }; }; cookie: (arg0: string, arg1: any, arg2: { httpOnly: boolean, sameSite: string }) => void; json: (arg0: { message: string; }) => void; redirect: (arg0: string) => void}) {
         const { email, password } = req.body;
         try
         {
@@ -41,6 +41,7 @@ export module auth {
                 res.cookie('token', token, { httpOnly: true, sameSite: 'Strict'});
                 res.json({ message: 'Login successful' });
             });
+
         }
         catch(error:any)
         {
@@ -48,11 +49,12 @@ export module auth {
         }
     }
 
-    export async function logout(req: { headers: { [x: string]: any; }; }, res: { sendStatus: (arg0: number) => any; setHeader: (arg0: string, arg1: string) => void; status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; status?: string; }): void; new(): any; }; }; end: () => void; }) {
+    export async function logout(req: { headers: { [x: string]: any; }; }, res: { redirect: (arg0: string) => void; sendStatus: (arg0: number) => any; setHeader: (arg0: string, arg1: string) => void; status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; status?: string; }): void; new(): any; }; }; end: () => void; }) {
         try 
         {
             res.setHeader('Clear-Site-Data', '"cookies"');
-            res.status(200).json({ message: 'You are logged out!' });
+            res.redirect('/');
+
         } catch (error) 
         {
             res.status(500).json({

@@ -18,6 +18,7 @@ router.post('/logout', auth.logout);
 router.get('/', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {
     res.render("dashboard", {
         title: "Dashboard",
+        thisUser: undefined,
     } );
 });
 
