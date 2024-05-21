@@ -216,7 +216,7 @@ div {
 
 .error-message {
     padding: 10px;
-    background: white;
+    color: var(--color-error);
     border: solid var(--color-error);
 }
 

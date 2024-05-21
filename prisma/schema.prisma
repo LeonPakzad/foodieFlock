@@ -22,4 +22,49 @@ model User {
 
   created         DateTime  @default(now())
   updated         DateTime  @default(now())
+  
+  flocks          UsersInFlocks[]
+}
+
+model Flock {
+  id              Int @id @default(autoincrement())
+  users           UsersInFlocks[]
+}
+
+model UsersInFlocks {
+  user            User @relation(fields: [userId], references: [id])
+  userId          Int 
+  flock           Flock @relation(fields: [flockId], references: [id])
+  flockId         Int
+  assignedAt      DateTime @default(now())
+
+  @@id([userId, flockId])
+}
+
+model Restaurant {
+  id              Int @id @default(autoincrement())
+  name            String?
+  node            Int @unique
+
+  lat             Float?
+  long            Float?
+  city            String?
+  housenumber     Int?
+  postcode        Int?
+  street          String?
+
+  cuisine         String?
+  takeaway        String?
+
+  operator        String?
+  website         String?
+  phone           String?
+  opening_hours   String?
+  brand           String?
+
+  diet_kosher     Boolean?  @default(false)
+  diet_halal      Boolean?  @default(false)
+  diet_diabetes   Boolean?  @default(false)
+  diet_vegan      Boolean?  @default(false)
+  diet_vegetarian Boolean?  @default(false) 
 }

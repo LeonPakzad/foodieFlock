@@ -26,6 +26,7 @@ router.post('/user-delete:id', auth.verifyToken, user.deleteUser);
 
 router.get('/user-index', auth.verifyToken, user.userIndex);
 router.get('/profile', auth.verifyToken, user.userProfile);
+router.get('/profile/:id', auth.verifyToken, user.userProfileByMail);
 
 router.get('/logout', auth.logout);
 

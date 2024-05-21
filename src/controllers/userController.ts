@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 export module user {
 
     // MARK: getter
-    export const getUser = async (_req: { id: number; } ) => 
+    export const getUserById = async (_req: { id: number; } ) => 
     {
         const user = await prisma.user.findFirst({
             where: {
@@ -108,4 +108,17 @@ export module user {
         }
     }
 
+    export const userProfileByMail = async (_req:  any, res: { render: (arg0: string, arg1: {}) => void; }) => {
+        
+        var user = await getUserById(JSON.parse(decodeURIComponent(_req.params.id)));
+        
+        if(user != null)
+        {   
+            res.render("user/profile", {
+                title: "profile",
+                user: user,
+                thisUser: _req.user.userId ?? null,
+            } );
+        }
+    }
 }

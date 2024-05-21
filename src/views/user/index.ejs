@@ -1,4 +1,4 @@
-<%- include('../templates/sidebar'); -%>
+<%- include('../templates/sidenav'); -%>
 
 <div class="content">
 
@@ -15,7 +15,7 @@
             <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
 
             <div class="col-size-2">
-                <a class="link-button" href="/user-profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
                     <img title="show user" alt="show user" src="../../public/assets/icon-show.png">
                 </a>
                 <a class="link-button" href="user-delete/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
