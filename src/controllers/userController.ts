@@ -89,7 +89,7 @@ export module user {
         var users = await getUsers();
         res.render("user/index",
             {
-                title: "user index",
+                title: "users",
                 users: users,
                 thisUser: _req.user.userId ?? null,
             }

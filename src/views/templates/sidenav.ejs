@@ -1,25 +1,29 @@
 <head>
     <meta charset='utf-8'>
-    <title>ElementKit</title>
+    <title>FoodieFlock</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="../public/style/main.css">
 </head>
 
 
 <div class="header-row">
-    <span style="font-size:30px;cursor:pointer; color: #818181;" onclick="openNav()">&#x2630;</span>
+    <span class="open-nav-button" onclick="openNav()">&#x2630;</span>
 </div>
     
 <div id="sidenav" class="sidenav column">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="javascript:void(0)" class="close-nav-button" onclick="closeNav()">&times;</a>
 
     <div class="navigation-side-bar">
-        <a <% if (title == 'user') { %> class="selected" <% } %> href='/user-index'>
+        <a <% if (title == 'users') { %> class="selected" <% } %> href='/user-index'>
             users
         </a>
         <a <% if (title == 'profile') { %> class="selected" <% } %> href='/profile'>
             profile
         </a>
+        <a <% if (title == 'flocks') { %> class="selected" <% } %> href='/flocks'>
+            flocks
+        </a>
+
         <a href='/logout'>logout</a>
     </div> 
 </div>

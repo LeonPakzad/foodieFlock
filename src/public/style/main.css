@@ -210,8 +210,8 @@ div {
 
 .success-message {
     padding: 10px;
-    background: white;
-    border: solid var(--color-success);
+    /* border: solid var(--color-success); */
+    color: var(--color-success);
 }
 
 .error-message {
@@ -267,30 +267,42 @@ div {
     padding-top: 60px;
     display: flex;
     flex-direction: column;
-  }
+}
   
-  .sidenav a {
+.sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
     color: var(--secondary-color);
     display: block;
     transition: 0.3s;
-  }
+}
   
-  .sidenav a:hover {
+.sidenav a:hover {
     color: #f1f1f1;
-  }
-  
-  .sidenav .closebtn {
+}
+
+.open-nav-button {
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+.sidenav .close-nav-button {
     position: absolute;
     top: 0;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
-  }
+}
   
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
+@media screen and (max-height: 450px) {
+    
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}
