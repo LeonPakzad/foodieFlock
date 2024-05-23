@@ -32,7 +32,7 @@ export module auth {
             if(_user.email != email || await bcrypt.hash(password, _user.salt) != _user.password) throw("Invalid username or password")
 
             // Create JWT token
-            jwt.sign({ userId: email }, process.env.TOKEN_SECRET, { expiresIn: '1h' }, (error:string, token:string) => {
+            jwt.sign({ userId: _user.id }, process.env.TOKEN_SECRET, { expiresIn: '1h' }, (error:string, token:string) => {
                 if (error) {
                     return res.status(500).json({ message: 'Failed to generate token' });
                 }

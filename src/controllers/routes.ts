@@ -42,7 +42,7 @@ router.get('/flock-index', auth.verifyToken, flock.indexFlocks);
 router.get('/flock/show/:id', auth.verifyToken, flock.showFlock);
 
 router.get('/flock-create', auth.verifyToken, flock.createFlock);
-router.post('/flock-create:name', auth.verifyToken, flock.createFlock);
+router.post('/flock-create/:name', auth.verifyToken, flock.createFlock);
 
 router.post('/flock-delete:id', auth.verifyToken, flock.deleteFlock);  
 

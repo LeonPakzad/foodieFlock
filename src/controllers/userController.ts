@@ -97,7 +97,7 @@ export module user {
     }
 
     export const userProfile = async (_req: {user: { userId: any; }; }, res: { render: (arg0: string, arg1: {}) => void; }) => {
-        var user = await getUserByMail({email: _req.user.userId});
+        var user = await getUserById({id: _req.user.userId});
         if(user != null)
         {   
             res.render("user/profile", {
