@@ -1,6 +1,16 @@
 <%- include('../templates/sidenav'); -%>
 
 <div class="content">
+
+    <div class="create-flock">
+        add a new flock
+        <form action="flock-create">
+            <input type="text" class="input" placeholder="flock-name"> </input>
+
+            <button class="button">add</button>
+        </form>
+    </div>
+
     <% flocks.forEach(function(flock) { %>
         <div class="body-row">
 

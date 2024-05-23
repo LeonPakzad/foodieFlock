@@ -28,7 +28,12 @@ model User {
 
 model Flock {
   id              Int @id @default(autoincrement())
+  name            String
   users           UsersInFlocks[]
+
+  created         DateTime  @default(now())
+  updated         DateTime  @default(now())
+
 }
 
 model UsersInFlocks {

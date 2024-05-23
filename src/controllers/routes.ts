@@ -37,12 +37,12 @@ router.post('/user-delete:id', auth.verifyToken, user.deleteUser);
 router.get('/profile', auth.verifyToken, user.userProfile);
 router.get('/profile/:id', auth.verifyToken, user.userProfileByMail);
 
-router.get('/flock', auth.verifyToken, flock.indexFlocks);
+router.get('/flock-index', auth.verifyToken, flock.indexFlocks);
 
 router.get('/flock/show/:id', auth.verifyToken, flock.showFlock);
 
 router.get('/flock-create', auth.verifyToken, flock.createFlock);
-router.post('/flock-create', auth.verifyToken, flock.createFlock);
+router.post('/flock-create:name', auth.verifyToken, flock.createFlock);
 
 router.post('/flock-delete:id', auth.verifyToken, flock.deleteFlock);  
 
