@@ -17,11 +17,16 @@
             <div class="col-size-2" data-tooltip= "<%=flock.name%>"><%= flock.name == undefined || null? '-' : flock.name %></div>
 
             <div class="col-size-2">
-                <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                    <img title="show user" alt="show user" src="../../public/assets/icon-show.png">
+                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                    <img title="show flock" alt="show flock" src="../../public/assets/icon-show-white.png">
                 </a>
-                <a class="link-button" href="user-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                    <img title="delete user" alt="delete user" src="../../public/assets/icon-delete.png">
+                
+                <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                    <img title="leave flock" alt="leave flock" src="../../public/assets/icon-leave-white.png">
+                </a>
+                
+                <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                    <img title="delete flock" alt="delete flock" src="../../public/assets/icon-delete-white.png">
                 </a>
             </div>
         </div>  

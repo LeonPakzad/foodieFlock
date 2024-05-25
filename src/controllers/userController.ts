@@ -2,6 +2,9 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
+import { flock } from './flockController';
+
+
 export module user {
 
     // MARK: getter
@@ -70,7 +73,7 @@ export module user {
         return user;
     }
 
-    export const deleteUser = async (_req: {id: number}) => 
+    export const deleteUser = async (_req: {id:number}) => 
     {
         try 
         {
@@ -82,6 +85,24 @@ export module user {
         {
             console.log(error)
         }
+    }
+
+    export const handleDeleteUser = async (_req: any, res: {redirect: (arg0:string,) => void}) =>
+    {
+        var deletedUserId = JSON.parse(decodeURIComponent(_req.params.id)); 
+
+        console.log(_req.user.userId);
+        console.log(deletedUserId);
+        // check if the current user is to be deleted -- admins cant delete themself to ensure there is at least one admin persists
+        if(_req.user.userId != deletedUserId.id)
+        {
+            // log out user from flocks
+            await flock.leaveFlocks(deletedUserId.id);
+            // delete user
+            await deleteUser(deletedUserId)
+        } 
+
+        res.redirect('/user-index');
     }
 
     // MARK: render

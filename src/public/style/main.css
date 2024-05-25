@@ -210,7 +210,6 @@ div {
 
 .success-message {
     padding: 10px;
-    /* border: solid var(--color-success); */
     color: var(--color-success);
 }
 

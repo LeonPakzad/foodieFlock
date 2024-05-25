@@ -12,7 +12,6 @@ export module flock {
                 id: _req.id
             },
         });
-
         return flock;
     }
 
@@ -33,8 +32,9 @@ export module flock {
 
     export const showFlock = async(_req: any, res: { render: (arg0: string, arg1: {})=> void;}) => 
     {
-        var flock = await getFlockById(_req.user.userId);
+        var flockId = JSON.parse(decodeURIComponent(_req.params.id))
 
+        var flock = await getFlockById(flockId);
         res.render("flock/view", {
             title: "flock",
             flock: flock,
@@ -79,9 +79,28 @@ export module flock {
         
     }
 
-    // only delete the user in flock entry
-    export const leaveFlock = async () =>
+    // only delete the user in the flock entry
+    export const leaveFlock = async (userId: number, flockId: number) =>
     {
+        await prisma.usersInFlocks.deleteMany({
+            where: {
+                AND: [
+                    {userId: userId},
+                    {flockId: flockId},
+                ]
+            },
+        })
+
+    }
+
+    // delete all flock entries with the given user
+    export const leaveFlocks = async (userId: number) =>
+    {
+        await prisma.usersInFlocks.deleteMany({
+            where:{
+                userId: userId
+            }
+        })
 
     }
 }
