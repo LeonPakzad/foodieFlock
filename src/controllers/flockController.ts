@@ -51,7 +51,7 @@ export module flock {
         })
     }
 
-    export const createFlock = async (_req: {user:{userId:any;}, query: any}) => 
+    export const createFlock = async (_req: {user:{userId:any;}, query: any}, res: {redirect: (arg0:string,) => void}) => 
     {
         var userId:number = Number(_req.user.userId); 
         const assignCategories = await prisma.flock.create({
@@ -70,27 +70,70 @@ export module flock {
             },
         })
 
-        return assignCategories;
+        res.redirect("/flock-index");
     }
 
     // delete all user in flocks entrys and the correlating flock
-    export const deleteFlock = async () =>
+    export const deleteFlock = async (_req: {params: any}, res: {redirect: (arg0:string,) => void}) =>
     {
-        
+        var flockId: {id:number} = JSON.parse(decodeURIComponent(_req.params.id))
+
+        deleteFlockById(flockId.id);
+
+        res.redirect("/flock-index");
     }
 
-    // only delete the user in the flock entry
-    export const leaveFlock = async (userId: number, flockId: number) =>
+    export const deleteFlockById = async(flockId: number) =>
     {
+        try
+        {
+
+            await prisma.usersInFlocks.deleteMany({
+                where: {
+                    flockId: flockId,
+                },
+            })
+            
+            await prisma.flock.delete({
+                where: {
+                    id: flockId,
+                }
+            })
+        }
+        catch(error)
+        {
+
+        }
+    }
+
+    export const leaveFlock = async (_req: {user:{userId:any;}, params: any}, res: {redirect: (arg0:string,) => void}) =>
+    {
+        var userId:number = Number(_req.user.userId); 
+        var flockId: {id:number} = JSON.parse(decodeURIComponent(_req.params.id))
+
+        // leave flock
         await prisma.usersInFlocks.deleteMany({
             where: {
                 AND: [
                     {userId: userId},
-                    {flockId: flockId},
+                    {flockId: flockId.id},
                 ]
             },
         })
 
+        // check if others are still in the flock, if no delete flock
+        var usersInFlock = await prisma.usersInFlocks.count({
+            where: {
+                flockId: flockId.id
+            }
+        });
+
+        if(usersInFlock == null)
+        {
+            deleteFlockById(flockId.id);
+        }
+
+        res.redirect("/flock-index");
     }
 
     // delete all flock entries with the given user
@@ -101,6 +144,5 @@ export module flock {
                 userId: userId
             }
         })
-
     }
 }

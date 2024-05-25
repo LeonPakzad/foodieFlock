@@ -5,12 +5,14 @@ import { user } from '../controllers/userController'
 export module auth {
 
     // access config var
-    export function verifyToken(req: { cookies: { token: string; }; user: any; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; }): any; new(): any; }; }; }, next: () => void) 
+    export function verifyToken(req: { cookies: { token: string; }; user: any; }, res: {  redirect: (arg0: string) => void;status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message: string; }): any; new(): any; }; }; }, next: () => void) 
     {
-        const token = req.cookies.token;
-        if(token)
+        try
         {
-            jwt.verify(token, process.env.TOKEN_SECRET, (error: string, decoded: string) => {
+            const token = req.cookies.token;
+            if(token)
+                {
+                    jwt.verify(token, process.env.TOKEN_SECRET, (error: string, decoded: string) => {
                 if (error) return res.status(403).json({ message: 'Failed to authenticate token' });
                 req.user = decoded;
                 next();
@@ -19,6 +21,12 @@ export module auth {
         else
         {
             return res.status(401).json({ message: 'Token not provided' });
+        }
+        }
+        catch (error)
+        {
+            console.log(error);
+            res.redirect('/');
         }
     }
 
