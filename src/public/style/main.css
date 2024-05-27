@@ -33,6 +33,7 @@ h1 {
 .link {
     text-decoration: none;
     color: var(--secondary-color);
+    background-color: none;
 }
 
 .header-row {
@@ -75,7 +76,7 @@ h1 {
 
 .button {
     color: var(--primary-color);
-    background: none;
+    background: none !important;
     padding: 10px;
     background: var(--color-darker);
     border: solid 2px var(--secondary-color);
@@ -138,6 +139,26 @@ summary:hover,
 .link-button{
     margin-right: 5px;
     padding: 0;
+    background:none;
+    border: none;
+}
+
+.link-button:hover {
+    cursor: pointer;
+}
+
+.invite-link-copyed {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background-color: var(--color-light);
+    color: var(--color-dark);
+}
+
+.link-button-text {
+    align-self: center;
+    background-color: var(--color-gray);
+    padding: 5px;
 }
 
 .link-button img{
@@ -172,17 +193,18 @@ div {
 }
 
 .row-center {
+    margin: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .row-end {
+    margin: 10px;
     flex-wrap: wrap;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin: 5px;
 }
 
 .form-content {

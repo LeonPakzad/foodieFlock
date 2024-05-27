@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { user } from './userController';
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient()
 
@@ -57,7 +58,7 @@ export module flock {
     {
         const flocks = await prisma.flock.findMany({
             where: {
-                users: {
+                usersinflocks: {
                     some: {
                         userId: userId,
                     },
@@ -99,7 +100,7 @@ export module flock {
         const assignCategories = await prisma.flock.create({
             data: {
                 name: _req.query.name,
-                users: {
+                usersinflocks: {
                     create: [{
                         assignedAt: new Date(),
                         user: {
@@ -109,10 +110,51 @@ export module flock {
                         },
                     },],
                 },
+                salt: await bcrypt.genSalt(10)
             },
         })
 
         res.redirect("/flock-index");
+    }
+
+    export const addUserToFlock = async (userId: number, flockSalt: string) =>
+    {
+        var flock = await prisma.flock.findFirst({
+            where: 
+            {
+                salt: flockSalt
+            }
+        })
+
+        if(flock != null)
+        {
+            await prisma.usersinflocks.create({
+                data: {
+                    userId: userId,
+                    flockId: flock.id
+                }
+            })
+        }
+        else
+        {
+            console.log("flock not found")
+        }
+    }
+
+    export const addUserToFlockLink = async (_req: {user:{userId:any;}, params: any}, res: {redirect: (arg0:string,) => void}) =>
+    {
+        var flockSalt = _req.params;
+        var userId = JSON.parse(decodeURIComponent(_req.user.userId))
+
+        if(userId == null)
+        {
+            res.redirect("/auth");    
+        }
+        else
+        {
+            addUserToFlock(userId, flockSalt);
+            res.redirect("/flock-index");
+        }
     }
 
     // delete all user in flocks entrys and the correlating flock
@@ -129,7 +171,7 @@ export module flock {
     {
         try
         {
-            await prisma.usersInFlocks.deleteMany({
+            await prisma.usersinflocks.deleteMany({
                 where: {
                     flockId: flockId,
                 },
@@ -153,7 +195,7 @@ export module flock {
         var flockId: {id:number} = JSON.parse(decodeURIComponent(_req.params.id))
 
         // leave flock
-        await prisma.usersInFlocks.deleteMany({
+        await prisma.usersinflocks.deleteMany({
             where: {
                 AND: [
                     {userId: userId},
@@ -163,7 +205,7 @@ export module flock {
         })
 
         // check if others are still in the flock, if no delete flock
-        var usersInFlock = await prisma.usersInFlocks.count({
+        var usersInFlock = await prisma.usersinflocks.count({
             where: {
                 flockId: flockId.id
             }
@@ -180,7 +222,7 @@ export module flock {
     // delete all flock entries with the given user
     export const leaveFlocks = async (userId: number) =>
     {
-        await prisma.usersInFlocks.deleteMany({
+        await prisma.usersinflocks.deleteMany({
             where:{
                 userId: userId
             }

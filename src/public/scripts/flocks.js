@@ -40,3 +40,13 @@ if(addFlockForm != null)
         }
     });
 }
+
+function copyInviteLink() 
+{
+    var copyText = document.getElementById("invite-link");
+    var textCopyed = document.getElementById("invite-link-copyed");
+    textCopyed.style.display = "block";
+
+    navigator.clipboard.writeText(copyText.innerHTML);
+
+} 

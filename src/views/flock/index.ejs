@@ -2,20 +2,23 @@
 
 <div class="content">
 
-    <div class="create-flock">
-        add a new flock
-        <form action="flock-create">
-            <input name="name" type="text" class="input" placeholder="flock-name"> </input>
-
-            <button class="button">add</button>
-        </form>
+    <div class="row-center">
+        <div>
+            add a new flock
+            <form action="flock-create">
+                <input name="name" type="text" class="input" placeholder="flock-name"> </input>
+                
+                <button class="button">add</button>
+            </form>
+        </div>
     </div>
 
     <% flocks.forEach(function(flock) { %>
+        
         <div class="body-row">
-
+            
             <div class="col-size-2" data-tooltip= "<%=flock.name%>"><%= flock.name == undefined || null? '-' : flock.name %></div>
-
+            
             <div class="col-size-2">
                 <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
                     <img title="show flock" alt="show flock" src="../../public/assets/icon-show-white.png">
@@ -30,6 +33,5 @@
                 </a>
             </div>
         </div>  
-    <% }); %>
-
+    <% }); %>        
 </div>

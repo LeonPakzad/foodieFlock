@@ -12,6 +12,7 @@ model flock {
   created       DateTime        @default(now())
   name          String
   updated       DateTime        @default(now())
+  salt          String
   usersinflocks usersinflocks[]
 }
 

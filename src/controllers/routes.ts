@@ -47,6 +47,9 @@ router.post('/flock-create/:name', auth.verifyToken, flock.createFlock);
 router.get('/flock-delete/:id', auth.verifyToken, flock.deleteFlock);  
 router.get('/flock-leave/:id', auth.verifyToken, flock.leaveFlock);  
 
+router.get('/flock-follow-invite', auth.verifyToken, flock.addUserToFlockLink);
+
+
 // get 404 error page for all urls that were not specified
 router.get('*', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {
     res.render("error", {

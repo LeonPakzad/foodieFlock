@@ -45,7 +45,7 @@ export module user {
 
     export const getUsersByFlockId = async(flockId: number) =>
     {
-        const usersInFlocks = await prisma.usersInFlocks.findMany({
+        const usersInFlocks = await prisma.usersinflocks.findMany({
             where: {
                 flockId: flockId
             },
@@ -53,8 +53,6 @@ export module user {
                 user: true
             }
         });
-
-        console.log(usersInFlocks);
         return usersInFlocks;
     }
 
