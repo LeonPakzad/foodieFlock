@@ -1,9 +1,7 @@
 
+import { flock } from './flockController';
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-
-import { flock } from './flockController';
-
 
 export module user {
 
@@ -43,6 +41,21 @@ export module user {
     {
         const users = await prisma.user.findMany({});
         return users;
+    }
+
+    export const getUsersByFlockId = async(flockId: number) =>
+    {
+        const usersInFlocks = await prisma.usersInFlocks.findMany({
+            where: {
+                flockId: flockId
+            },
+            include: {
+                user: true
+            }
+        });
+
+        console.log(usersInFlocks);
+        return usersInFlocks;
     }
 
     // MARK: setter
@@ -91,16 +104,17 @@ export module user {
     {
         var deletedUserId = JSON.parse(decodeURIComponent(_req.params.id)); 
 
-        console.log(_req.user.userId);
-        console.log(deletedUserId);
-        // check if the current user is to be deleted -- admins cant delete themself to ensure there is at least one admin persists
         if(_req.user.userId != deletedUserId.id)
         {
             // log out user from flocks
             await flock.leaveFlocks(deletedUserId.id);
             // delete user
             await deleteUser(deletedUserId)
-        } 
+        }
+        else
+        {
+            console.log("admins cant delete themself to ensure that at least one admin persists");
+        }
 
         res.redirect('/user-index');
     }

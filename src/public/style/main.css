@@ -15,6 +15,8 @@ html {
 }
 
 body {
+    padding: 0;
+    margin: 0;
     height: 100%;
     background-image: url("../../public/style/assets/background.jpg")
 }
@@ -49,7 +51,7 @@ h1 {
     flex-direction: column;
 }
 
-.content {
+.content-card {
     color: var(--color-light);
     background: var(--color-darker);
     box-sizing:border-box;
@@ -58,6 +60,15 @@ h1 {
     border-width: 5px;
     border-image-source: linear-gradient(to bottom, var(--primary-color) 0%, var(--secondary-color) 80%);
     width: fit-content;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.content {
+    color: var(--color-light);
+    background: var(--color-darker);
+
+    width: 100%;
     margin: 0 auto;
     padding: 10px;
 }
@@ -196,6 +207,7 @@ div {
     flex-wrap: wrap;
     display: flex;
     align-items: center;
+    padding: 10px;
 }
 
 [data-tooltip]:hover::after {

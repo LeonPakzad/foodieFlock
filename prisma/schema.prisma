@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,63 +7,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id              Int @id @default(autoincrement())
-  name            String
-  email           String @unique
-  password        String
-  salt            String
-
-  created         DateTime  @default(now())
-  updated         DateTime  @default(now())
-  
-  flocks          UsersInFlocks[]
+model flock {
+  id            Int             @id @default(autoincrement())
+  created       DateTime        @default(now())
+  name          String
+  updated       DateTime        @default(now())
+  usersinflocks usersinflocks[]
 }
 
-model Flock {
-  id              Int @id @default(autoincrement())
-  name            String
-  users           UsersInFlocks[]
-
-  created         DateTime  @default(now())
-  updated         DateTime  @default(now())
-
-}
-
-model UsersInFlocks {
-  user            User @relation(fields: [userId], references: [id])
-  userId          Int 
-  flock           Flock @relation(fields: [flockId], references: [id])
-  flockId         Int
-  assignedAt      DateTime @default(now())
-
-  @@id([userId, flockId])
-}
-
-model Restaurant {
-  id              Int @id @default(autoincrement())
+model restaurant {
+  id              Int      @id @default(autoincrement())
   name            String?
-  node            Int @unique
-
+  node            Int      @unique(map: "Restaurant_node_key")
   lat             Float?
   long            Float?
   city            String?
   housenumber     Int?
   postcode        Int?
   street          String?
-
   cuisine         String?
   takeaway        String?
-
   operator        String?
   website         String?
   phone           String?
   opening_hours   String?
   brand           String?
+  diet_kosher     Boolean? @default(false)
+  diet_halal      Boolean? @default(false)
+  diet_diabetes   Boolean? @default(false)
+  diet_vegan      Boolean? @default(false)
+  diet_vegetarian Boolean? @default(false)
+}
 
-  diet_kosher     Boolean?  @default(false)
-  diet_halal      Boolean?  @default(false)
-  diet_diabetes   Boolean?  @default(false)
-  diet_vegan      Boolean?  @default(false)
-  diet_vegetarian Boolean?  @default(false) 
+model user {
+  id            Int             @id @default(autoincrement())
+  name          String
+  password      String
+  created       DateTime        @default(now())
+  updated       DateTime        @default(now())
+  email         String          @unique(map: "User_email_key")
+  salt          String
+  usersinflocks usersinflocks[]
+}
+
+model usersinflocks {
+  userId     Int
+  flockId    Int
+  assignedAt DateTime @default(now())
+  flock      flock    @relation(fields: [flockId], references: [id], map: "UsersInFlocks_flockId_fkey")
+  user       user     @relation(fields: [userId], references: [id], map: "UsersInFlocks_userId_fkey")
+
+  @@id([userId, flockId])
+  @@index([flockId], map: "UsersInFlocks_flockId_fkey")
 }
