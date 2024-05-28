@@ -11,22 +11,23 @@ export module auth {
         {
             const token = req.cookies.token;
             if(token)
-                {
-                    jwt.verify(token, process.env.TOKEN_SECRET, (error: string, decoded: string) => {
-                if (error) return res.status(403).json({ message: 'Failed to authenticate token' });
-                req.user = decoded;
-                next();
-            });
-        }
-        else
-        {
-            return res.status(401).json({ message: 'Token not provided' });
-        }
+            {
+                jwt.verify(token, process.env.TOKEN_SECRET, (error: string, decoded: string) => {
+                    if (error) throw("failed to authenticate token");
+                    
+                    req.user = decoded;
+                    next();
+                });
+            }
+            else
+            {
+                throw("token not provided");
+            }
         }
         catch (error)
         {
             console.log(error);
-            res.redirect('/');
+            res.redirect('/auth');
         }
     }
 

@@ -4,44 +4,6 @@ const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient()
 
-interface FlattenedObject {
-    [key: string]: any;
-}
-
-function flattenArrayOfObjects(array: any[]): FlattenedObject[] {
-    return array.map((object: any) => {
-        return flattenObject(object);
-    });
-}
-
-function flattenObject(object: any, parentId?: string): FlattenedObject {
-
-    const flattenedObject: FlattenedObject = {};
-
-    // Iterate over each key in the input object.
-    Object.keys(object).forEach((key: string) => {
-
-        // Check if the current key is "id" and if a parentId is provided. If so, construct a composite key.
-        if (key === 'id' && parentId) 
-        {
-            flattenedObject[`${parentId}_${key}`] = object[key];
-        }
-
-        // If the current value is an object and not null, and it's not an instance of Date, recurse into it.
-        else if (typeof object[key] === 'object' && object[key] !== null && !(object[key] instanceof Date)) 
-        {
-            const flattened = flattenObject(object[key], key);
-            Object.assign(flattenedObject, flattened);
-        }
-        else 
-        {
-            flattenedObject[key] = object[key];
-        }
-    });
-
-    return flattenedObject;
-}
-
 export module flock {
 
     export const getFlockById = async (_req: {id: number;}) =>
@@ -69,19 +31,28 @@ export module flock {
         return flocks;
     }
 
-    export const showFlock = async(_req: any, res: { render: (arg0: string, arg1: {})=> void;}) => 
+    export const showFlock = async(_req: any, res: { render: (arg0: string, arg1: {})=> void; redirect: (arg0:string,) => void}) => 
     {
         var flockId = JSON.parse(decodeURIComponent(_req.params.id))
 
         var usersInFlock = await user.getUsersByFlockId(flockId.id)
         var usersInFlockArray  = usersInFlock.map(function(iteration){ return iteration.user}) 
         var flock = await getFlockById(flockId);
-        
-        res.render("flock/view", {
-            title: "flock",
-            flock: flock,
-            usersInFlock: usersInFlockArray,
-        });
+
+        if(flock != null)
+        {
+                
+            res.render("flock/view", {
+                title: "flock",
+                flock: flock,
+                inviteLink: "http://" + _req.hostname +  ":3000" + "/flock-accept-invitation/" + encodeURIComponent(JSON.stringify({salt: flock.salt})),
+                usersInFlock: usersInFlockArray,
+            });
+        }
+        else 
+        {
+            res.redirect("flock-index");
+        }
     }
 
     export const indexFlocks = async (_req: {user:{userId:any;}}, res: { render: (arg0: string, arg1: {}) => void; }) =>
@@ -119,15 +90,28 @@ export module flock {
 
     export const addUserToFlock = async (userId: number, flockSalt: string) =>
     {
-        var flock = await prisma.flock.findFirst({
-            where: 
-            {
-                salt: flockSalt
-            }
-        })
-
-        if(flock != null)
+        try
         {
+            // check if the flock exists
+            var flock = await prisma.flock.findFirst({
+                where: 
+                {
+                    salt: flockSalt
+                }
+            })
+            if(flock == null) throw new Error('flock doesnt exist');
+            
+            // check if user is already in the flock
+            var userIsInFlock = await prisma.usersinflocks.count({
+                where: 
+                {
+                    userId: userId,
+                    flockId: flock.id
+                }
+            }) 
+            if(userIsInFlock > 0) throw new Error('user already in flock');
+
+            // add user to the flock
             await prisma.usersinflocks.create({
                 data: {
                     userId: userId,
@@ -135,16 +119,16 @@ export module flock {
                 }
             })
         }
-        else
+        catch(error)
         {
-            console.log("flock not found")
+            console.log(error);
         }
     }
 
     export const addUserToFlockLink = async (_req: {user:{userId:any;}, params: any}, res: {redirect: (arg0:string,) => void}) =>
     {
-        var flockSalt = _req.params;
-        var userId = JSON.parse(decodeURIComponent(_req.user.userId))
+        var flockSalt = JSON.parse(decodeURIComponent(_req.params.salt));
+        var userId:number = Number(_req.user.userId); 
 
         if(userId == null)
         {
@@ -152,7 +136,7 @@ export module flock {
         }
         else
         {
-            addUserToFlock(userId, flockSalt);
+            await addUserToFlock(userId, flockSalt.salt);
             res.redirect("/flock-index");
         }
     }
