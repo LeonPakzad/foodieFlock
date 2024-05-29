@@ -56,6 +56,61 @@ export module user {
         return usersInFlocks;
     }
 
+    export const getFriends = async(userId: number) =>
+    {
+        var user = await prisma.user.findFirst({
+            where: {
+            id: userId,
+            },
+            include: {
+            friends: true,
+            },
+        });
+        if(user != null) return user.friends;
+    }
+
+    // ToDo: maybe add a accept / decline later
+    export const addFriend = async(_req: {user: { userId: any; }, params:any }) =>
+    {
+        var friendId = JSON.parse(decodeURIComponent(_req.params.id)); 
+        var userId = _req.user.userId;
+
+        var user = await prisma.user.update({
+            where: {
+              id: userId,
+            },
+            data: {
+              friends: {
+                connect: {
+                  id: friendId.userId,
+                },
+              },
+            },
+            include: {
+              friends: true,
+            },
+        });
+
+        await prisma.user.update({
+            where: {
+              id: friendId.userId,
+            },
+            data: {
+              friends: {
+                connect: {
+                  id: userId,
+                },
+              },
+            },
+            include: {
+              friends: false,
+              _count: false,
+              friendsRelation: false,
+            },
+        });
+        return user;
+    }
+
     // MARK: setter
     export const createUser = async (_req: {name: string; email: string; password: string; salt: string, }) => 
     {
@@ -133,10 +188,14 @@ export module user {
         var user = await getUserById({id: _req.user.userId});
         if(user != null)
         {   
+            var isThisUser = user.id === _req.user.userId;
+            var friends = await getFriends(user.id);
             res.render("user/profile", {
                 title: "profile",
                 user: user,
+                isThisUser: isThisUser,
                 thisUser: _req.user.userId ?? null,
+                friends: friends,
             } );
         }
     }
@@ -144,13 +203,17 @@ export module user {
     export const userProfileByMail = async (_req:  any, res: { render: (arg0: string, arg1: {}) => void; }) => {
         
         var user = await getUserById(JSON.parse(decodeURIComponent(_req.params.id)));
-        
         if(user != null)
         {   
+            var isThisUser = user.id === _req.user.userId;
+            var friends = await getFriends(user.id);
+
             res.render("user/profile", {
                 title: "profile",
                 user: user,
+                isThisUser,
                 thisUser: _req.user.userId ?? null,
+                friends: friends,
             } );
         }
     }

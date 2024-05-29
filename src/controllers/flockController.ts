@@ -38,13 +38,14 @@ export module flock {
         var usersInFlock = await user.getUsersByFlockId(flockId.id)
         var usersInFlockArray  = usersInFlock.map(function(iteration){ return iteration.user}) 
         var flock = await getFlockById(flockId);
+        var friends = await user.getFriends(_req.user.userId)
 
         if(flock != null)
         {
-                
             res.render("flock/view", {
                 title: "flock",
                 flock: flock,
+                friends: friends,
                 inviteLink: "http://" + _req.hostname +  ":3000" + "/flock-accept-invitation/" + encodeURIComponent(JSON.stringify({salt: flock.salt})),
                 usersInFlock: usersInFlockArray,
             });

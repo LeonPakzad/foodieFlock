@@ -5,8 +5,25 @@
         name: 
     </b>
     <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %></div>
+    
     <b>
         mail: 
     </b>
     <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
+
+    <%if(isThisUser){%>
+        <b>
+            friends:
+        </b>
+
+        <% friends.forEach(function(friend) { %>
+            <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: friend.id}))%>">
+                <div class="col-size-2" data-tooltip= "<%=friend.name%>"><%= friend.name == undefined || null? '-' : friend.name %> </div>
+            </a>
+        <% }); %>
+
+        <a class="link-button" href="/add-friend/<%=encodeURIComponent(JSON.stringify({userId: user.id}))%>">
+            <img title="invite as friend" alt="invite as friend" src="../../public/assets/icon-user-add-white.png">
+        </a>
+    <%}%>
 </div>

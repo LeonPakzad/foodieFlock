@@ -49,6 +49,7 @@ router.get('/flock-leave/:id', auth.verifyToken, flock.leaveFlock);
 
 router.get('/flock-accept-invitation/:salt', auth.verifyToken, flock.addUserToFlockLink);
 
+router.get('/add-friend/:id', auth.verifyToken, user.addFriend)
 
 // get 404 error page for all urls that were not specified
 router.get('*', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {

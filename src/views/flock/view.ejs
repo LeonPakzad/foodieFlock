@@ -12,24 +12,35 @@
     <div class="row">
 
         <% usersInFlock.forEach(function(user) { %>
-            <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
+            <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
+            </a>
+            
             <% }); %>
         </div>
 
     <b>
         add users:
     </b>
-    <div class="row-center">
+    <div class="row">
         <a class="link-button" href="/flock-invite/<%=encodeURIComponent(JSON.stringify({salt: flock.salt}))%>">
             <img title="invite friend" alt="invite friend" src="../../public/assets/icon-user-add-white.png">
         </a>
+
+        <select>
+            <% friends.forEach(function(friend) { %>
+                <option class="link-button">
+                    <%= friend.name == undefined || null? '-' : friend.name %>
+                </option>
+            <% }); %>
+        </select>
     </div>
-    <div class="row-center">
-        <div id="invite-link" class="link-button-text "><%= inviteLink%></div>
+    <div class="row">
         <button class="link-button" onclick="copyInviteLink()">            
             <img title="copy invite link" alt="copy invite link" src="../../public/assets/icon-copy-white.png">
             <div id="invite-link-copyed" class="invite-link-copyed">copyed link to your clipboard!</div>        
         </button> 
+        <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
     </div>
 
 </div>

@@ -41,14 +41,19 @@ model restaurant {
 }
 
 model user {
-  id            Int             @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   name          String
   password      String
-  created       DateTime        @default(now())
-  updated       DateTime        @default(now())
-  email         String          @unique(map: "User_email_key")
+  created       DateTime  @default(now())
+  updated       DateTime  @default(now())
+  email         String    @unique(map: "User_email_key")
   salt          String
   usersinflocks usersinflocks[]
+
+  friendsRelation user[]  @relation("friends")
+  friends         user[]  @relation("friends")
+
+  @@map("users")
 }
 
 model usersinflocks {
