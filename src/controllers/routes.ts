@@ -47,6 +47,7 @@ router.post('/flock-create/:name', auth.verifyToken, flock.createFlock);
 router.get('/flock-delete/:id', auth.verifyToken, flock.deleteFlock);  
 router.get('/flock-leave/:id', auth.verifyToken, flock.leaveFlock);  
 
+router.post('/invite-friend-to-flock', auth.verifyToken, flock.addFriendToFlock);
 router.get('/flock-accept-invitation/:salt', auth.verifyToken, flock.addUserToFlockLink);
 
 router.get('/add-friend/:id', auth.verifyToken, user.addFriend)

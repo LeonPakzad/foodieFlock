@@ -91,6 +91,7 @@ export module flock {
 
     export const addUserToFlock = async (userId: number, flockSalt: string) =>
     {
+        console.log(userId);
         try
         {
             // check if the flock exists
@@ -140,6 +141,14 @@ export module flock {
             await addUserToFlock(userId, flockSalt.salt);
             res.redirect("/flock-index");
         }
+    }
+
+    export const addFriendToFlock = async(_req: { body: { userId: number; flockSalt: string; };}, res: {redirect: (arg0:string,) => void}) =>
+    {
+        const { userId, flockSalt } = _req.body;
+
+        await addUserToFlock(Number(userId), flockSalt);
+        res.redirect("/flock-show/" + flockSalt);
     }
 
     // delete all user in flocks entrys and the correlating flock

@@ -41,6 +41,42 @@ if(addFlockForm != null)
     });
 }
 
+var inviteFriendToFlockForm = document.getElementById('invite-friend-to-flock-form');
+
+if(inviteFriendToFlockForm != null)
+{
+    inviteFriendToFlockForm.addEventListener('submit', async function(event) {
+    
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const userId = formData.get('userId');
+        const flockSalt = formData.get('flockSalt');
+
+        try 
+        {
+            const response = await fetch('/invite-friend-to-flock', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, flockSalt})
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) 
+            {
+                throw new Error(data.message || 'adding failed');
+            } 
+        } 
+        catch (error) 
+        {
+            console.error('flock error:', error.message);
+        }
+    });
+}
+
 function copyInviteLink() 
 {
     var copyText = document.getElementById("invite-link");

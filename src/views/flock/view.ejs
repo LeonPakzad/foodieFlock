@@ -10,7 +10,6 @@
         members:
     </b>
     <div class="row">
-
         <% usersInFlock.forEach(function(user) { %>
             <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
                 <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
@@ -18,23 +17,23 @@
             
             <% }); %>
         </div>
-
     <b>
         add users:
     </b>
-    <div class="row">
-        <a class="link-button" href="/flock-invite/<%=encodeURIComponent(JSON.stringify({salt: flock.salt}))%>">
+    <form id="invite-friend-to-flock-form" class="row">
+        <button type="submit" class="link-button">
             <img title="invite friend" alt="invite friend" src="../../public/assets/icon-user-add-white.png">
-        </a>
-
-        <select>
+        </button>
+        <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
+        <select name ="userId" id="userId">
             <% friends.forEach(function(friend) { %>
-                <option class="link-button">
-                    <%= friend.name == undefined || null? '-' : friend.name %>
+                <option value="<%=friend.id%>"class="link-button">
+                    <%= friend.name %>
                 </option>
             <% }); %>
         </select>
-    </div>
+    </form>
+
     <div class="row">
         <button class="link-button" onclick="copyInviteLink()">            
             <img title="copy invite link" alt="copy invite link" src="../../public/assets/icon-copy-white.png">
