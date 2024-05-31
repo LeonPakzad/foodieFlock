@@ -254,13 +254,19 @@ div {
 }
 
 .head-row {
-    color: var(--color-darker);
+    margin: 0 auto;
+    max-width: 800px;
+    color: var(--color-light);
     display: flex;
     align-items: center;
-    background: var(--secondary-color);
+    border-bottom: solid 2px var(--secondary-color);
 }
 
 .body-row {
+    border-left: 2px solid var(--secondary-color);
+    border-right: 2px solid var(--primary-color);
+    margin: 0 auto;
+    max-width: 800px;
     flex-wrap: wrap;
     display: flex;
     align-items: center;

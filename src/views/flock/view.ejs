@@ -20,19 +20,22 @@
     <b>
         add users:
     </b>
-    <form id="invite-friend-to-flock-form" class="row">
-        <button type="submit" class="link-button">
-            <img title="invite friend" alt="invite friend" src="../../public/assets/icon-user-add-white.png">
-        </button>
-        <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
-        <select name ="userId" id="userId">
-            <% friends.forEach(function(friend) { %>
-                <option value="<%=friend.id%>"class="link-button">
-                    <%= friend.name %>
-                </option>
-            <% }); %>
-        </select>
-    </form>
+
+    <% if(uninvitedFriends.length > 0) { %>
+        <form id="invite-friend-to-flock-form" class="row">
+            <button type="submit" class="link-button">
+                <img title="invite friend" alt="invite friend" src="../../public/assets/icon-user-add-white.png">
+            </button>
+            <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
+            <select name ="userId" id="userId">
+                <% uninvitedFriends.forEach(function(uninvitedFriends) { %>
+                    <option value="<%=uninvitedFriends.id%>"class="link-button">
+                        <%= uninvitedFriends.name %>
+                    </option>
+                <% }); %>
+            </select>
+        </form>
+    <% } %>
 
     <div class="row">
         <button class="link-button" onclick="copyInviteLink()">            
@@ -41,6 +44,19 @@
         </button> 
         <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
     </div>
+
+    <div class="row-end">
+        <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+            <img title="leave flock" alt="leave flock" src="../../public/assets/icon-leave-white.png">
+        </a>
+
+        <% if(flock.flockLeaderId == userId) { %>
+            <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                <img title="delete flock" alt="delete flock" src="../../public/assets/icon-delete-white.png">
+            </a>
+        <% } %>
+    </div>
+
 
 </div>
 

@@ -12,6 +12,16 @@
             </form>
         </div>
     </div>
+</div>
+
+<br>
+
+<div class="content">
+
+    <div class="head-row">
+        <div class="col-size-2">name</div>
+        <div class="col-size-2">actions</div>
+    </div>
 
     <% flocks.forEach(function(flock) { %>
         
@@ -27,10 +37,13 @@
                 <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
                     <img title="leave flock" alt="leave flock" src="../../public/assets/icon-leave-white.png">
                 </a>
-                
-                <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                    <img title="delete flock" alt="delete flock" src="../../public/assets/icon-delete-white.png">
-                </a>
+
+                <% if(flock.flockLeaderId == userId) { %>
+                    <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                        <img title="delete flock" alt="delete flock" src="../../public/assets/icon-delete-white.png">
+                    </a>
+                <% } %>
+            
             </div>
         </div>  
     <% }); %>        

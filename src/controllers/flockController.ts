@@ -34,20 +34,37 @@ export module flock {
     export const showFlock = async(_req: any, res: { render: (arg0: string, arg1: {})=> void; redirect: (arg0:string,) => void}) => 
     {
         var flockId = JSON.parse(decodeURIComponent(_req.params.id))
+        var flock = await getFlockById(flockId);
 
         var usersInFlock = await user.getUsersByFlockId(flockId.id)
-        var usersInFlockArray  = usersInFlock.map(function(iteration){ return iteration.user}) 
-        var flock = await getFlockById(flockId);
         var friends = await user.getFriends(_req.user.userId)
+
+        var usersInFlockArray = usersInFlock.map(function(iteration) {
+            return iteration.user;
+        });
+        var friendArray = friends!.map(function(iteration) {
+            return iteration;
+        });
+        var uninvitedFriends: { id: number; name: string; password: string; created: Date; updated: Date; email: string; salt: string; }[] | undefined = [];
+
+        for(let i = 0; i < friendArray.length; i++)
+        {
+            // only add those friends who are not already in the flock
+            if(!usersInFlockArray.some(({ id }) => id === friendArray[i].id))
+            {
+                uninvitedFriends.push(friendArray[i])
+            }
+        }   
 
         if(flock != null)
         {
             res.render("flock/view", {
                 title: "flock",
                 flock: flock,
-                friends: friends,
+                uninvitedFriends: uninvitedFriends,
                 inviteLink: "http://" + _req.hostname +  ":3000" + "/flock-accept-invitation/" + encodeURIComponent(JSON.stringify({salt: flock.salt})),
                 usersInFlock: usersInFlockArray,
+                userId: _req.user.userId,
             });
         }
         else 
@@ -62,7 +79,8 @@ export module flock {
 
         res.render("flock/index", {
             title: "flocks",
-            flocks: flocks
+            flocks: flocks,
+            userId: _req.user.userId,
         })
     }
 
@@ -72,6 +90,7 @@ export module flock {
         const assignCategories = await prisma.flock.create({
             data: {
                 name: _req.query.name,
+                flockLeaderId:userId,
                 usersinflocks: {
                     create: [{
                         assignedAt: new Date(),
@@ -91,7 +110,6 @@ export module flock {
 
     export const addUserToFlock = async (userId: number, flockSalt: string) =>
     {
-        console.log(userId);
         try
         {
             // check if the flock exists
@@ -146,9 +164,8 @@ export module flock {
     export const addFriendToFlock = async(_req: { body: { userId: number; flockSalt: string; };}, res: {redirect: (arg0:string,) => void}) =>
     {
         const { userId, flockSalt } = _req.body;
-
         await addUserToFlock(Number(userId), flockSalt);
-        res.redirect("/flock-show/" + flockSalt);
+        res.redirect("/flock-index");
     }
 
     // delete all user in flocks entrys and the correlating flock
