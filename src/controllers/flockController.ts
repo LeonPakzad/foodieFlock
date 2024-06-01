@@ -31,6 +31,17 @@ export module flock {
         return flocks;
     }
 
+    export const getFlockLeaderByFlockId = async (flockId:number) =>
+    {
+
+        return await prisma.usersinflocks.findFirst({
+            where: {
+                flockId: flockId,
+                isFlockLeader: true,
+            }
+        });
+    }
+
     export const showFlock = async(_req: any, res: { render: (arg0: string, arg1: {})=> void; redirect: (arg0:string,) => void}) => 
     {
         var flockId = JSON.parse(decodeURIComponent(_req.params.id))
@@ -56,6 +67,14 @@ export module flock {
             }
         }   
 
+        var isFlockLeader: boolean = false;
+        var flockLeaderId = await getFlockLeaderByFlockId(flockId.id);
+
+        if(_req.user.userId == flockLeaderId?.userId)
+        {
+            isFlockLeader = true;
+        }
+
         if(flock != null)
         {
             res.render("flock/view", {
@@ -64,7 +83,7 @@ export module flock {
                 uninvitedFriends: uninvitedFriends,
                 inviteLink: "http://" + _req.hostname +  ":3000" + "/flock-accept-invitation/" + encodeURIComponent(JSON.stringify({salt: flock.salt})),
                 usersInFlock: usersInFlockArray,
-                userId: _req.user.userId,
+                isFlockLeader: isFlockLeader,
             });
         }
         else 
@@ -87,12 +106,12 @@ export module flock {
     export const createFlock = async (_req: {user:{userId:any;}, query: any}, res: {redirect: (arg0:string,) => void}) => 
     {
         var userId:number = Number(_req.user.userId); 
-        const assignCategories = await prisma.flock.create({
+        await prisma.flock.create({
             data: {
                 name: _req.query.name,
-                flockLeaderId:userId,
                 usersinflocks: {
                     create: [{
+                        isFlockLeader: true,
                         assignedAt: new Date(),
                         user: {
                             connect: {

@@ -13,8 +13,6 @@ model flock {
   name          String
   updated       DateTime        @default(now())
   salt          String
-  flockLeaderId Int
-  flockLeader   user @relation(fields: [flockLeaderId], references: [id])
   usersinflocks usersinflocks[]
 }
 
@@ -33,25 +31,26 @@ model restaurant {
   operator        String?
   website         String?
   phone           String?
-  opening_hours   String?
+  openingHours    String?
   brand           String?
-  diet_kosher     Boolean? @default(false)
-  diet_halal      Boolean? @default(false)
-  diet_diabetes   Boolean? @default(false)
-  diet_vegan      Boolean? @default(false)
-  diet_vegetarian Boolean? @default(false)
+  dietKosher      Boolean? @default(false)
+  dietHalal       Boolean? @default(false)
+  dietDiabetes    Boolean? @default(false)
+  dietVegan       Boolean? @default(false)
+  dietVegetarian  Boolean? @default(false)
 }
 
 model user {
   id            Int       @id @default(autoincrement())
   name          String
+  email         String    @unique(map: "User_email_key")
   password      String
+  salt          String
+
   created       DateTime  @default(now())
   updated       DateTime  @default(now())
-  email         String    @unique(map: "User_email_key")
-  salt          String
+
   usersinflocks usersinflocks[]
-  leadingFlocks flock[]
 
   friendsRelation user[]  @relation("friends")
   friends         user[]  @relation("friends")
@@ -63,6 +62,7 @@ model usersinflocks {
   userId     Int
   flockId    Int
   assignedAt DateTime @default(now())
+  isFlockLeader Boolean @default(false)
   flock      flock    @relation(fields: [flockId], references: [id], map: "UsersInFlocks_flockId_fkey")
   user       user     @relation(fields: [userId], references: [id], map: "UsersInFlocks_userId_fkey")
 

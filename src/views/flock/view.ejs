@@ -50,7 +50,7 @@
             <img title="leave flock" alt="leave flock" src="../../public/assets/icon-leave-white.png">
         </a>
 
-        <% if(flock.flockLeaderId == userId) { %>
+        <% if(isFlockLeader) { %>
             <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
                 <img title="delete flock" alt="delete flock" src="../../public/assets/icon-delete-white.png">
             </a>
