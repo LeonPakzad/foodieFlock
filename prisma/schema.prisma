@@ -8,64 +8,105 @@ datasource db {
 }
 
 model flock {
-  id            Int             @id @default(autoincrement())
-  created       DateTime        @default(now())
-  name          String
-  updated       DateTime        @default(now())
-  salt          String
-  usersinflocks usersinflocks[]
-}
-
-model restaurant {
-  id              Int      @id @default(autoincrement())
-  name            String?
-  node            Int      @unique(map: "Restaurant_node_key")
-  lat             Float?
-  long            Float?
-  city            String?
-  housenumber     Int?
-  postcode        Int?
-  street          String?
-  cuisine         String?
-  takeaway        String?
-  operator        String?
-  website         String?
-  phone           String?
-  openingHours    String?
-  brand           String?
-  dietKosher      Boolean? @default(false)
-  dietHalal       Boolean? @default(false)
-  dietDiabetes    Boolean? @default(false)
-  dietVegan       Boolean? @default(false)
-  dietVegetarian  Boolean? @default(false)
+  id                Int             @id @default(autoincrement())
+  created           DateTime        @default(now())
+  name              String
+  updated           DateTime        @default(now())
+  salt              String
+  usersinflocks     usersinflocks[]
 }
 
 model user {
-  id            Int       @id @default(autoincrement())
-  name          String
-  email         String    @unique(map: "User_email_key")
-  password      String
-  salt          String
+  id                  Int       @id @default(autoincrement())
+  name                String
+  email               String    @unique(map: "User_email_key")
+  password            String
+  salt                String
+    
+  created             DateTime  @default(now())
+  updated             DateTime  @default(now())
 
-  created       DateTime  @default(now())
-  updated       DateTime  @default(now())
+  usersinflocks       usersinflocks[]
+  usersinfoodsession usersinfoodsession[]
 
-  usersinflocks usersinflocks[]
-
-  friendsRelation user[]  @relation("friends")
-  friends         user[]  @relation("friends")
+  friendsRelation     user[]    @relation("friends")
+  friends             user[]    @relation("friends")
 
   @@map("users")
 }
 
-model usersinflocks {
-  userId     Int
-  flockId    Int
-  assignedAt DateTime @default(now())
-  isFlockLeader Boolean @default(false)
-  flock      flock    @relation(fields: [flockId], references: [id], map: "UsersInFlocks_flockId_fkey")
-  user       user     @relation(fields: [userId], references: [id], map: "UsersInFlocks_userId_fkey")
-
-  @@id([userId, flockId])
-  @@index([flockId], map: "UsersInFlocks_flockId_fkey")
+model foodsession {
+  id                Int       @id @default(autoincrement())
+  fkFlockId         Int
+  name              String
+  foodTime         DateTime  @default(now())
+  usersinfoodsession   usersinfoodsession[]
+  locationinfoodsession locationsinfoodsessions[]
 }
+
+model location {
+  id                Int       @id @default(autoincrement())
+  name              String
+  description       String
+  isPlaceToEat      String
+  isPlaceToGetFood  String
+  locationinfoodsession locationsinfoodsessions[]
+}
+
+model usersinflocks {
+  fkUserId            Int
+  fkFlockId           Int
+  assignedAt        DateTime  @default(now())
+  isFlockLeader     Boolean   @default(false)
+  flock             flock     @relation(fields: [fkFlockId], references: [id], map: "UsersInFlocks_flockId_fkey")
+  user              user      @relation(fields: [fkUserId], references: [id], map: "UsersInFlocks_userId_fkey")
+
+  @@id([fkUserId, fkFlockId])
+  @@index([fkFlockId], map: "UsersInFlocks_flockId_fkey")
+}
+
+model usersinfoodsession {
+  fkUserId          Int
+  fkFoodSessionId  Int
+  assignedAt        DateTime
+  user              user            @relation(fields: [fkUserId], references: [id], map: "UsersInFoodsessions_userId_fkey")
+  foodsession      foodsession     @relation(fields: [fkFoodSessionId], references: [id], map: "UsersInFoodsessions_foodsessionId_fkey")
+
+  @@id([fkUserId, fkFoodSessionId])
+  @@index([fkFoodSessionId], map: "UsersInFoodSession_fkFoodSessionIdId_fkey")
+}
+
+model locationsinfoodsessions {
+  fkFoodSessionId  Int
+  fkLocationId      Int
+
+  location          location        @relation(fields: [fkLocationId], references: [id], map: "locationInFoodSessions_locationId_fkey")
+  foodsession      foodsession    @relation(fields: [fkFoodSessionId], references: [id], map: "locationInFoodSessions_foodsessionId_fkey")
+
+  @@id([fkLocationId, fkFoodSessionId])
+  @@index([fkLocationId], map: "locationInFoodsessions_fkLocationId_fkey")
+}
+
+// model restaurant {
+//   id              Int      @id @default(autoincrement())
+//   name            String?
+//   node            Int      @unique(map: "Restaurant_node_key")
+//   lat             Float?
+//   long            Float?
+//   city            String?
+//   housenumber     Int?
+//   postcode        Int?
+//   street          String?
+//   cuisine         String?
+//   takeaway        String?
+//   operator        String?
+//   website         String?
+//   phone           String?
+//   openingHours    String?
+//   brand           String?
+//   dietKosher      Boolean? @default(false)
+//   dietHalal       Boolean? @default(false)
+//   dietDiabetes    Boolean? @default(false)
+//   dietVegan       Boolean? @default(false)
+//   dietVegetarian  Boolean? @default(false)
+// }

@@ -22,7 +22,7 @@ export module flock {
             where: {
                 usersinflocks: {
                     some: {
-                        userId: userId,
+                        fkUserId: userId,
                     },
                 },
             },
@@ -36,7 +36,7 @@ export module flock {
 
         return await prisma.usersinflocks.findFirst({
             where: {
-                flockId: flockId,
+                fkFlockId: flockId,
                 isFlockLeader: true,
             }
         });
@@ -70,7 +70,7 @@ export module flock {
         var isFlockLeader: boolean = false;
         var flockLeaderId = await getFlockLeaderByFlockId(flockId.id);
 
-        if(_req.user.userId == flockLeaderId?.userId)
+        if(_req.user.userId == flockLeaderId?.fkUserId)
         {
             isFlockLeader = true;
         }
@@ -144,8 +144,8 @@ export module flock {
             var userIsInFlock = await prisma.usersinflocks.count({
                 where: 
                 {
-                    userId: userId,
-                    flockId: flock.id
+                    fkUserId: userId,
+                    fkFlockId: flock.id
                 }
             }) 
             if(userIsInFlock > 0) throw new Error('user already in flock');
@@ -153,8 +153,8 @@ export module flock {
             // add user to the flock
             await prisma.usersinflocks.create({
                 data: {
-                    userId: userId,
-                    flockId: flock.id
+                    fkUserId: userId,
+                    fkFlockId: flock.id
                 }
             })
         }
@@ -203,7 +203,7 @@ export module flock {
         {
             await prisma.usersinflocks.deleteMany({
                 where: {
-                    flockId: flockId,
+                    fkFlockId: flockId,
                 },
             })
             
@@ -228,8 +228,8 @@ export module flock {
         await prisma.usersinflocks.deleteMany({
             where: {
                 AND: [
-                    {userId: userId},
-                    {flockId: flockId.id},
+                    {fkUserId: userId},
+                    {fkFlockId: flockId.id},
                 ]
             },
         })
@@ -237,7 +237,7 @@ export module flock {
         // check if others are still in the flock, if no delete flock
         var usersInFlock = await prisma.usersinflocks.count({
             where: {
-                flockId: flockId.id
+                fkFlockId: flockId.id
             }
         });
 
@@ -254,7 +254,7 @@ export module flock {
     {
         await prisma.usersinflocks.deleteMany({
             where:{
-                userId: userId
+                fkUserId: userId
             }
         })
     }
