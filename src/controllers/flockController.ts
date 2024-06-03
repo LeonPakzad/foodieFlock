@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { user } from './userController';
+import { foodsession } from './foodsessionController';
+
 const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient()
@@ -10,7 +12,7 @@ export module flock {
     {
         const flock = await prisma.flock.findFirst({
             where: {
-                id: _req.id
+                id: Number(_req.id)
             },
         });
         return flock;
@@ -33,10 +35,9 @@ export module flock {
 
     export const getFlockLeaderByFlockId = async (flockId:number) =>
     {
-
         return await prisma.usersinflocks.findFirst({
             where: {
-                fkFlockId: flockId,
+                fkFlockId: Number(flockId),
                 isFlockLeader: true,
             }
         });
@@ -47,36 +48,38 @@ export module flock {
         var flockId = JSON.parse(decodeURIComponent(_req.params.id))
         var flock = await getFlockById(flockId);
 
-        var usersInFlock = await user.getUsersByFlockId(flockId.id)
-        var friends = await user.getFriends(_req.user.userId)
-
-        var usersInFlockArray = usersInFlock.map(function(iteration) {
-            return iteration.user;
-        });
-        var friendArray = friends!.map(function(iteration) {
-            return iteration;
-        });
-        var uninvitedFriends: { id: number; name: string; password: string; created: Date; updated: Date; email: string; salt: string; }[] | undefined = [];
-
-        for(let i = 0; i < friendArray.length; i++)
-        {
-            // only add those friends who are not already in the flock
-            if(!usersInFlockArray.some(({ id }) => id === friendArray[i].id))
-            {
-                uninvitedFriends.push(friendArray[i])
-            }
-        }   
-
-        var isFlockLeader: boolean = false;
-        var flockLeaderId = await getFlockLeaderByFlockId(flockId.id);
-
-        if(_req.user.userId == flockLeaderId?.fkUserId)
-        {
-            isFlockLeader = true;
-        }
-
         if(flock != null)
         {
+            var usersInFlock = await user.getUsersByFlockId(flockId.id)
+            var friends = await user.getFriends(_req.user.userId)
+
+            var usersInFlockArray = usersInFlock.map(function(iteration) {
+                return iteration.user;
+            });
+            var friendArray = friends!.map(function(iteration) {
+                return iteration;
+            });
+            var uninvitedFriends: { id: number; name: string; password: string; created: Date; updated: Date; email: string; salt: string; }[] | undefined = [];
+
+            for(let i = 0; i < friendArray.length; i++)
+            {
+                // only add those friends who are not already in the flock
+                if(!usersInFlockArray.some(({ id }) => id === friendArray[i].id))
+                {
+                    uninvitedFriends.push(friendArray[i])
+                }
+            }   
+
+            var isFlockLeader: boolean = false;
+            var flockLeaderId = await getFlockLeaderByFlockId(flockId.id);
+
+            if(_req.user.userId == flockLeaderId?.fkUserId)
+            {
+                isFlockLeader = true;
+            }
+
+            var foodsessions = await foodsession.getFoodSessionsByFlockId(flockId.id);
+
             res.render("flock/view", {
                 title: "flock",
                 flock: flock,
@@ -84,6 +87,7 @@ export module flock {
                 inviteLink: "http://" + _req.hostname +  ":3000" + "/flock-accept-invitation/" + encodeURIComponent(JSON.stringify({salt: flock.salt})),
                 usersInFlock: usersInFlockArray,
                 isFlockLeader: isFlockLeader,
+                foodsessions: foodsessions
             });
         }
         else 

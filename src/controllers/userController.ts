@@ -47,7 +47,7 @@ export module user {
     {
         const usersInFlocks = await prisma.usersinflocks.findMany({
             where: {
-                fkFlockId: flockId
+                fkFlockId: Number(flockId)
             },
             include: {
                 user: true

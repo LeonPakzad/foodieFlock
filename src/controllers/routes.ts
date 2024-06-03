@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 import { auth } from '../controllers/auth';
 import { user } from '../controllers/userController'
 import { flock } from '../controllers/flockController'
+import { foodsession } from '../controllers/foodsessionController'
 
 dotenv.config();
 
@@ -51,6 +52,9 @@ router.post('/invite-friend-to-flock', auth.verifyToken, flock.addFriendToFlock)
 router.get('/flock-accept-invitation/:salt', auth.verifyToken, flock.addUserToFlockLink);
 
 router.get('/add-friend/:id', auth.verifyToken, user.addFriend)
+
+router.get('/flock-show/:id/foodsession-show/:id', auth.verifyToken, foodsession.showFoodSession);
+router.post('/flock-show/:id/foodsession-create', auth.verifyToken, foodsession.createFoodSessionLink);
 
 // get 404 error page for all urls that were not specified
 router.get('*', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {

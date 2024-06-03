@@ -67,10 +67,10 @@ model usersinflocks {
 
 model usersinfoodsession {
   fkUserId          Int
-  fkFoodSessionId  Int
-  assignedAt        DateTime
+  fkFoodSessionId   Int 
+  assignedAt        DateTime        @default(now())
   user              user            @relation(fields: [fkUserId], references: [id], map: "UsersInFoodsessions_userId_fkey")
-  foodsession      foodsession     @relation(fields: [fkFoodSessionId], references: [id], map: "UsersInFoodsessions_foodsessionId_fkey")
+  foodsession       foodsession     @relation(fields: [fkFoodSessionId], references: [id], map: "UsersInFoodsessions_foodsessionId_fkey")
 
   @@id([fkUserId, fkFoodSessionId])
   @@index([fkFoodSessionId], map: "UsersInFoodSession_fkFoodSessionIdId_fkey")

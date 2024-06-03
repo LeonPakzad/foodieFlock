@@ -14,13 +14,12 @@
             <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
                 <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
             </a>
-            
-            <% }); %>
-        </div>
+        <% }); %>
+    </div>
+
     <b>
         add users:
     </b>
-
     <% if(uninvitedFriends.length > 0) { %>
         <form id="invite-friend-to-flock-form" class="row">
             <button type="submit" class="link-button">
@@ -43,6 +42,28 @@
             <div id="invite-link-copyed" class="invite-link-copyed">copyed link to your clipboard!</div>        
         </button> 
         <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
+    </div>
+
+    <b>
+        foodsessions:
+    </b>
+    <div class="row">
+        <% foodsessions.forEach(function(foodsession) { %>
+            <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %> </div>
+            </a>
+        <% }); %>
+    </div>
+    <div class="row-center">
+        <div>
+            add a new foodsession
+            <form id="add-foodsession-form">
+                <input name="name" type="text" class="input" placeholder="foodsession name"> </input>
+                <input type="hidden" name="flockId" value="<%=flock.id%>">
+
+                <button class="button">add</button>
+            </form>
+        </div>
     </div>
 
     <div class="row-end">
