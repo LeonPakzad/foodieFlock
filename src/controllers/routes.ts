@@ -54,7 +54,10 @@ router.get('/flock-accept-invitation/:salt', auth.verifyToken, flock.addUserToFl
 router.get('/add-friend/:id', auth.verifyToken, user.addFriend)
 
 router.get('/flock-show/:id/foodsession-show/:id', auth.verifyToken, foodsession.showFoodSession);
-router.post('/flock-show/:id/foodsession-create', auth.verifyToken, foodsession.createFoodSessionLink);
+router.get('/foodsession-delete/:id', auth.verifyToken, foodsession.deleteFoodSession);
+router.get('/foodsession-join/:id', auth.verifyToken, foodsession.joinFoodSession);
+router.get('/foodsession-leave/:id', auth.verifyToken, foodsession.leaveFoodSession);
+router.post('/foodsession-create', auth.verifyToken, foodsession.createFoodSessionLink);
 
 // get 404 error page for all urls that were not specified
 router.get('*', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {

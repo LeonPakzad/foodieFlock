@@ -34,6 +34,18 @@ export module foodsession {
         })
     }
 
+    export const getUserViewsInFoodSessionById = async(foodSessionId:number) =>
+    {
+        return await prisma.usersinfoodsession.findMany({
+            where: {
+                fkFoodSessionId: Number(foodSessionId),
+            },
+            include: {
+                user: true
+            }
+        })
+    }
+
     export const viewFoodSessionById = async (foodsessionId: number) => 
     {
         const foodsession = await prisma.foodsession.findFirst({
@@ -63,19 +75,28 @@ export module foodsession {
 
     export const getFlockIdByFoodSessionId = async(foodsessionId: number) =>
     {
-        return await prisma.foodsession.findFirst({
+        var foodsession = await prisma.foodsession.findFirst({
             where: {
-                id: foodsessionId,
+                id: Number(foodsessionId),
             },
         })
+
+        if(foodsession != null)
+        {
+            return foodsession.fkFlockId;
+        }
+        else 
+        {
+            return null;
+        }
     }
 
     export const showFoodSession = async(_req: any, res: {render: (arg0: string, arg1: any) => void; redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
         var foodsession = await getFoodSessionById(foodsessionId);
-        var usersinfoodsession = await getUsersInFoodSessionById(foodsessionId.id);
-            
+        var usersinfoodsession = await getUserViewsInFoodSessionById(foodsessionId.id);  
+
         if(foodsession != null)
         {
             var isFlockLeader: boolean = false;
@@ -106,7 +127,7 @@ export module foodsession {
     export const joinFoodSession = async(_req: any, res: {redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
-        var flockId = await getFlockIdByFoodSessionId(foodsessionId);
+        var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
 
         try
         {
@@ -123,8 +144,58 @@ export module foodsession {
         }
         
         res.redirect(   
-            "/flock-show/" + encodeURIComponent(JSON.stringify({id: flockId}))) + 
-            "/foodsession-show/" + encodeURIComponent(JSON.stringify({id: foodsessionId.id})
+            "/flock-show/" + encodeURIComponent(JSON.stringify({id: flockId})) + "/foodsession-show/" + encodeURIComponent(JSON.stringify({id: foodsessionId.id}))
         );
+    }
+
+    export const leaveFoodSession = async (_req: any, res: {redirect: (arg0: string) => void;}) =>
+    {
+        var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
+        var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
+        var userId = _req.user.userId;
+        
+        await prisma.usersinfoodsession.deleteMany({
+            where: {
+                fkUserId: Number(userId),
+                fkFoodSessionId: Number(foodsessionId.id),
+            }
+        });
+
+        res.redirect(
+            "/flock-show/" + encodeURIComponent(JSON.stringify({id: flockId})) + "/foodsession-show/" + encodeURIComponent(JSON.stringify({id: foodsessionId.id}))
+        );
+    }
+
+    export const deleteFoodSession = async(_req: any, res: {redirect: (arg0: string) => void;}) =>
+    {
+        var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
+        var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
+
+        await prisma.usersinfoodsession.deleteMany({
+            where: {
+                fkFoodSessionId: foodsessionId.id
+            }
+        })
+
+        await prisma.locationsinfoodsessions.deleteMany({
+            where: {
+                fkFoodSessionId: foodsessionId.id
+            }
+        })
+
+        await prisma.foodsession.delete({
+            where: {
+                id: foodsessionId.id
+            }
+        })
+        
+        if(flockId != null)
+        {
+            res.redirect("/flock-show/" + encodeURIComponent(JSON.stringify({id: flockId})));
+        }
+        else
+        {
+            res.redirect("/flock-index");
+        }
     }
 }

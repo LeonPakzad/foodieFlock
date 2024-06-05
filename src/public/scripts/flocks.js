@@ -1,44 +1,52 @@
-var addFlockForm = document.getElementById('add-flock-form');
-if(addFlockForm != null)
+function copyInviteLink() 
 {
-    addFlockForm.addEventListener('submit', async function(event) {
+    var copyText = document.getElementById("invite-link");
+    var textCopied = document.getElementById("invite-link-copied");
+    textCopied.style.display = "block";
+
+    navigator.clipboard.writeText(copyText.innerHTML);
+} 
+
+// var addFlockForm = document.getElementById('add-flock-form');
+// if(addFlockForm != null)
+// {
+//     addFlockForm.addEventListener('submit', async function(event) {
     
-        var flockErrorMessage = document.getElementById("flock-error-message");
+//         var flockErrorMessage = document.getElementById("flock-error-message");
     
-        event.preventDefault();
+//         event.preventDefault();
 
-        const formData = new FormData(this);
-        const name = formData.get('name');
+//         const formData = new FormData(this);
+//         const name = formData.get('name');
 
-        try 
-        {
-            const response = await fetch('/flock-create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name })
-            });
+//         try 
+//         {
+//             const response = await fetch('/flock-create', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify({ name })
+//             });
 
-            const data = await response.json();
+//             const data = await response.json();
+//             if (response.ok) 
+//             {
+//                 window.location.replace('/flock-index');
+//             } 
+//             else 
+//             {
+//                 flockErrorMessage.style.display = 'initial';
 
-            if (response.ok) 
-            {
-                window.location.replace('/flock-index');
-            } 
-            else 
-            {
-                flockErrorMessage.style.display = 'initial';
-
-                throw new Error(data.message || 'creation failed');
-            }
-        } 
-        catch (error) 
-        {
-            console.error('flock error:', error.message);
-        }
-    });
-}
+//                 throw new Error(data.message || 'creation failed');
+//             }
+//         } 
+//         catch (error) 
+//         {
+//             console.error('flock error:', error.message);
+//         }
+//     });
+// }
 
 var inviteFriendToFlockForm = document.getElementById('invite-friend-to-flock-form');
 if(inviteFriendToFlockForm != null)
@@ -75,21 +83,10 @@ if(inviteFriendToFlockForm != null)
     });
 }
 
-function copyInviteLink() 
-{
-    var copyText = document.getElementById("invite-link");
-    var textCopyed = document.getElementById("invite-link-copyed");
-    textCopyed.style.display = "block";
-
-    navigator.clipboard.writeText(copyText.innerHTML);
-} 
-
 var addFoodsessionForm = document.getElementById('add-foodsession-form');
 if(addFoodsessionForm != null)
 {
     addFoodsessionForm.addEventListener('submit', async function(event) {
-    
-        var foodsessionErrorMessage = document.getElementById("foodsession-error-message");
     
         event.preventDefault();
 
@@ -99,12 +96,12 @@ if(addFoodsessionForm != null)
 
         try 
         {
-            const response = await fetch(flockId + '/foodsession-create/', {
+            const response = await fetch('/foodsession-create/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({name,flockId})
+                body: JSON.stringify({name, flockId})
             });
 
             const data = await response.json();
@@ -114,8 +111,6 @@ if(addFoodsessionForm != null)
             } 
             else 
             {
-                foodsessionErrorMessage.style.display = 'initial';
-
                 throw new Error(data.message || 'creation failed');
             }
         } 

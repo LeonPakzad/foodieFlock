@@ -18,7 +18,6 @@ body {
     padding: 0;
     margin: 0;
     height: 100%;
-    background-image: url("../../public/style/assets/background.jpg")
 }
 
 a {
@@ -62,14 +61,14 @@ h1 {
     border-image-source: linear-gradient(to bottom, var(--primary-color) 0%, var(--secondary-color) 80%);
     width: fit-content;
     margin: 0 auto;
-    padding: 10px;
+    padding: 15px;
 }
 
 .content {
     color: var(--color-light);
     background: var(--color-darker);
 
-    width: 100%;
+    width: 80%;
     margin: 0 auto;
     padding: 10px;
 }
@@ -147,7 +146,7 @@ summary:hover,
     cursor: pointer;
 }
 
-.invite-link-copyed {
+.invite-link-copied {
     display: none;
     position: absolute;
     padding: 10px;

@@ -12,7 +12,7 @@
     <div class="row">
         <% usersinfoodsession.forEach(function(user) { %>
             <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
+                <div class="col-size-2" data-tooltip= "<%=user.user.name%>"><%= user.user.name == undefined || null? '-' : user.user.name %> </div>
             </a>
         <% }); %>
     </div>
@@ -24,21 +24,21 @@
         </a>
 
         <% if(isUserInFoodSession) {%>
-            <a class="link-button" href="/lunchsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
+            <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
             </a>
         <% } else { %>
-            <a class="link-button" href="/lunchsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
+            <a class="link-button" href="/foodsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
             </a>
         <% } %>
 
         <% if(isFlockLeader) { %>
-            <a class="link-button" href="/lunchsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+            <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
                 <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
             </a>
         <% } %>
     </div>
 </div>
 
-<script src="../../public/scripts/flocks.js"></script>
+<script src="/public/scripts/flocks.js"></script>

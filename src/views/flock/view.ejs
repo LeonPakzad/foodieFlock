@@ -23,7 +23,7 @@
     <% if(uninvitedFriends.length > 0) { %>
         <form id="invite-friend-to-flock-form" class="row">
             <button type="submit" class="link-button">
-                <img title="invite friend" alt="invite friend" src="../../public/assets/icon-user-add-white.png">
+                <img title="invite friend" alt="invite friend" src="/public/assets/icon-user-add-white.png">
             </button>
             <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
             <select name ="userId" id="userId">
@@ -38,8 +38,8 @@
 
     <div class="row">
         <button class="link-button" onclick="copyInviteLink()">            
-            <img title="copy invite link" alt="copy invite link" src="../../public/assets/icon-copy-white.png">
-            <div id="invite-link-copyed" class="invite-link-copyed">copyed link to your clipboard!</div>        
+            <img title="copy invite link" alt="copy invite link" src="/public/assets/icon-copy-white.png">
+            <div id="invite-link-copied" class="invite-link-copied">copied link to your clipboard!</div>        
         </button> 
         <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
     </div>
@@ -61,19 +61,19 @@
                 <input name="name" type="text" class="input" placeholder="foodsession name"> </input>
                 <input type="hidden" name="flockId" value="<%=flock.id%>">
 
-                <button class="button">add</button>
+                <button type="submit" class="button">add</button>
             </form>
         </div>
     </div>
 
     <div class="row-end">
         <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-            <img title="leave flock" alt="leave flock" src="../../public/assets/icon-leave-white.png">
+            <img title="leave flock" alt="leave flock" src="/public/assets/icon-leave-white.png">
         </a>
 
         <% if(isFlockLeader) { %>
             <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                <img title="delete flock" alt="delete flock" src="../../public/assets/icon-delete-white.png">
+                <img title="delete flock" alt="delete flock" src="/public/assets/icon-delete-white.png">
             </a>
         <% } %>
     </div>
@@ -81,4 +81,4 @@
 
 </div>
 
-<script src="../../public/scripts/flocks.js"></script>
+<script src="/public/scripts/flocks.js"></script>

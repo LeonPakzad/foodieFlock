@@ -22,8 +22,9 @@
             </a>
         <% }); %>
 
+    <%} else { %>
         <a class="link-button" href="/add-friend/<%=encodeURIComponent(JSON.stringify({userId: user.id}))%>">
-            <img title="invite as friend" alt="invite as friend" src="../../public/assets/icon-user-add-white.png">
+            <img title="invite as friend" alt="invite as friend" src="/public/assets/icon-user-add-white.png">
         </a>
-    <%}%>
+    <% } %>
 </div>
