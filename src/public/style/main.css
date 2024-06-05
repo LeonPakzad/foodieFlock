@@ -12,12 +12,17 @@
 html {
     scrollbar-color: var(--primary-color) var(--secondary-color);
     background: var(--color-dark);
+    min-height: 100%;
+}
+
+.screen {
+    display: flex;
 }
 
 body {
     padding: 0;
     margin: 0;
-    height: 100%;
+    height: 100vh;
 }
 
 a {
@@ -51,6 +56,11 @@ h1 {
     flex-direction: column;
 }
 
+.content {
+    width: 100%;
+    margin: 0 auto;
+}
+
 .content-card {
     color: var(--color-light);
     background: var(--color-darker);
@@ -64,11 +74,11 @@ h1 {
     padding: 15px;
 }
 
-.content {
+.content-block {
     color: var(--color-light);
     background: var(--color-darker);
 
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     padding: 10px;
 }
@@ -136,7 +146,6 @@ summary:hover,
 }
 
 .link-button{
-    margin-right: 5px;
     padding: 0;
     background:none;
     border: none;
@@ -291,29 +300,33 @@ div {
     padding:5px;
 }
 
-/* sidenav */
 .sidenav {
     height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
     background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    border-right: solid 2px var(--primary-color);
+}
+
+.sidenav[sidenav-closed="true"] .nav-text {
+    display: none;
+}
+
+.sidenav[sidenav-closed="false"] .nav-image {
+    display: none;
 }
   
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 8px 0px;
     text-decoration: none;
     font-size: 25px;
     color: var(--secondary-color);
     display: block;
     transition: 0.3s;
+    height: 50px;
 }
   
 .sidenav a:hover {
@@ -327,7 +340,6 @@ div {
 }
 
 .sidenav .close-nav-button {
-    position: absolute;
     top: 0;
     right: 25px;
     font-size: 36px;

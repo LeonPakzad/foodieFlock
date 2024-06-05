@@ -1,30 +1,32 @@
-<%- include('../templates/sidenav'); -%>
-
-<div class="content-card">
-    <b>
-        name: 
-    </b>
-    <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %></div>
+<div class="screen">
+    <%- include('../templates/sidenav'); -%>
     
-    <b>
-        mail: 
-    </b>
-    <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
-
-    <%if(isThisUser){%>
+    <div class="content-card">
         <b>
-            friends:
+            name: 
         </b>
-
-        <% friends.forEach(function(friend) { %>
-            <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: friend.id}))%>">
-                <div class="col-size-2" data-tooltip= "<%=friend.name%>"><%= friend.name == undefined || null? '-' : friend.name %> </div>
+        <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %></div>
+        
+        <b>
+            mail: 
+        </b>
+        <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
+    
+        <%if(isThisUser){%>
+            <b>
+                friends:
+            </b>
+    
+            <% friends.forEach(function(friend) { %>
+                <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: friend.id}))%>">
+                    <div class="col-size-2" data-tooltip= "<%=friend.name%>"><%= friend.name == undefined || null? '-' : friend.name %> </div>
+                </a>
+            <% }); %>
+    
+        <%} else if(!isFriendOfUser) { %>
+            <a class="link-button" href="/add-friend/<%=encodeURIComponent(JSON.stringify({userId: user.id}))%>">
+                <img title="invite as friend" alt="invite as friend" src="/public/assets/icon-user-add-white.png">
             </a>
-        <% }); %>
-
-    <%} else { %>
-        <a class="link-button" href="/add-friend/<%=encodeURIComponent(JSON.stringify({userId: user.id}))%>">
-            <img title="invite as friend" alt="invite as friend" src="/public/assets/icon-user-add-white.png">
-        </a>
-    <% } %>
+        <% } %>
+    </div>
 </div>

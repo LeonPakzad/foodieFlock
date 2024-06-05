@@ -1,84 +1,85 @@
-<%- include('../templates/sidenav'); -%>
+<div class="screen">
 
-<div class="content-card">
-    <b>
-        name: 
-    </b>
-    <div class="col-size-2" data-tooltip= "<%=flock.name%>"><%= flock.name == undefined || null? '-' : flock.name %></div>
-
-    <b>
-        members:
-    </b>
-    <div class="row">
-        <% usersInFlock.forEach(function(user) { %>
-            <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
-            </a>
-        <% }); %>
-    </div>
-
-    <b>
-        add users:
-    </b>
-    <% if(uninvitedFriends.length > 0) { %>
-        <form id="invite-friend-to-flock-form" class="row">
-            <button type="submit" class="link-button">
-                <img title="invite friend" alt="invite friend" src="/public/assets/icon-user-add-white.png">
-            </button>
-            <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
-            <select name ="userId" id="userId">
-                <% uninvitedFriends.forEach(function(uninvitedFriends) { %>
-                    <option value="<%=uninvitedFriends.id%>"class="link-button">
-                        <%= uninvitedFriends.name %>
-                    </option>
-                <% }); %>
-            </select>
-        </form>
-    <% } %>
-
-    <div class="row">
-        <button class="link-button" onclick="copyInviteLink()">            
-            <img title="copy invite link" alt="copy invite link" src="/public/assets/icon-copy-white.png">
-            <div id="invite-link-copied" class="invite-link-copied">copied link to your clipboard!</div>        
-        </button> 
-        <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
-    </div>
-
-    <b>
-        foodsessions:
-    </b>
-    <div class="row">
-        <% foodsessions.forEach(function(foodsession) { %>
-            <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %> </div>
-            </a>
-        <% }); %>
-    </div>
-    <div class="row-center">
-        <div>
-            add a new foodsession
-            <form id="add-foodsession-form">
-                <input name="name" type="text" class="input" placeholder="foodsession name"> </input>
-                <input type="hidden" name="flockId" value="<%=flock.id%>">
-
-                <button type="submit" class="button">add</button>
+    <%- include('../templates/sidenav'); -%>
+    
+    <div class="content-card">
+        <b>
+            name: 
+        </b>
+        <div class="col-size-2" data-tooltip= "<%=flock.name%>"><%= flock.name == undefined || null? '-' : flock.name %></div>
+    
+        <b>
+            members:
+        </b>
+        <div class="row">
+            <% usersInFlock.forEach(function(user) { %>
+                <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                    <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
+                </a>
+            <% }); %>
+        </div>
+    
+        <b>
+            add users:
+        </b>
+        <% if(uninvitedFriends.length > 0) { %>
+            <form id="invite-friend-to-flock-form" class="row">
+                <button type="submit" class="link-button">
+                    <img title="invite friend" alt="invite friend" src="/public/assets/icon-user-add-white.png">
+                </button>
+                <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
+                <select name ="userId" id="userId">
+                    <% uninvitedFriends.forEach(function(uninvitedFriends) { %>
+                        <option value="<%=uninvitedFriends.id%>"class="link-button">
+                            <%= uninvitedFriends.name %>
+                        </option>
+                    <% }); %>
+                </select>
             </form>
+        <% } %>
+    
+        <div class="row">
+            <button class="link-button" onclick="copyInviteLink()">            
+                <img title="copy invite link" alt="copy invite link" src="/public/assets/icon-copy-white.png">
+                <div id="invite-link-copied" class="invite-link-copied">copied link to your clipboard!</div>        
+            </button> 
+            <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
+        </div>
+    
+        <b>
+            foodsessions:
+        </b>
+        <div class="row">
+            <% foodsessions.forEach(function(foodsession) { %>
+                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                    <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %> </div>
+                </a>
+            <% }); %>
+        </div>
+        <div class="row-center">
+            <div>
+                add a new foodsession
+                <form id="add-foodsession-form">
+                    <input name="name" type="text" class="input" placeholder="foodsession name"> </input>
+                    <input type="hidden" name="flockId" value="<%=flock.id%>">
+    
+                    <button type="submit" class="button">add</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="row-end">
+            <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                <img title="leave flock" alt="leave flock" src="/public/assets/icon-leave-white.png">
+            </a>
+    
+            <% if(isFlockLeader) { %>
+                <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                    <img title="delete flock" alt="delete flock" src="/public/assets/icon-delete-white.png">
+                </a>
+            <% } %>
         </div>
     </div>
-
-    <div class="row-end">
-        <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-            <img title="leave flock" alt="leave flock" src="/public/assets/icon-leave-white.png">
-        </a>
-
-        <% if(isFlockLeader) { %>
-            <a class="link-button" href="/flock-delete/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                <img title="delete flock" alt="delete flock" src="/public/assets/icon-delete-white.png">
-            </a>
-        <% } %>
-    </div>
-
-
 </div>
 
 <script src="/public/scripts/flocks.js"></script>

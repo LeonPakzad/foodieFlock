@@ -7,25 +7,55 @@
 </head>
 
 
-<div class="header-row">
-    <span class="open-nav-button" onclick="openNav()">&#x2630;</span>
-</div>
-    
-<div id="sidenav" class="sidenav column">
-    <a href="javascript:void(0)" class="close-nav-button" onclick="closeNav()">&times;</a>
 
-    <div class="navigation-side-bar">
+<div id="sidenav" class="sidenav column" sidenav-closed="true" style="width: 50px">
+    
+    <div class="header-row">
+        <span class="open-nav-button" onclick="toggleNav()">&#x2630;</span>
+    </div>
+    
+    <div class="navigation-side-bar ">
         <a <% if (title == 'users') { %> class="selected" <% } %> href='/user-index'>
-            users
+            <div class="nav-image link-button">
+                <img title="leave flock" alt="leave flock" src="/public/assets/icon-users-white.png">
+            </div>
+            <div class="nav-text">
+                users
+            </div>
         </a>
         <a <% if (title == 'profile') { %> class="selected" <% } %> href='/profile'>
-            profile
+            <div class="nav-image link-button">
+                <img title="leave flock" alt="leave flock" src="/public/assets/icon-user-white.png">
+            </div>
+            <div class="nav-text">
+                user
+            </div>
         </a>
         <a <% if (title == 'flocks') { %> class="selected" <% } %> href='/flock-index'>
-            flocks
+            <div class="nav-image link-button">
+                <img title="leave flock" alt="leave flock" src="/public/assets/icon-sheep-white.png">
+            </div>
+            <div class="nav-text">
+                flocks
+            </div>
+        </a>
+        <a <% if (title == 'foodsessions') { %> class="selected" <% } %> href='/foodsession-index'>
+            <div class="nav-image link-button">
+                <img title="leave flock" alt="leave flock" src="/public/assets/icon-food-white.png">
+            </div>
+            <div class="nav-text">
+                foodsessions
+            </div>
         </a>
 
-        <a href='/logout'>logout</a>
+        <a href='/logout'>
+            <div class="nav-image link-button">
+                <img title="logout" alt="logout" src="/public/assets/icon-leave-white.png">
+            </div>
+            <div class="nav-text">
+                logout
+            </div>
+        </a>
     </div> 
 </div>
 

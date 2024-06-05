@@ -58,6 +58,7 @@ router.get('/foodsession-delete/:id', auth.verifyToken, foodsession.deleteFoodSe
 router.get('/foodsession-join/:id', auth.verifyToken, foodsession.joinFoodSession);
 router.get('/foodsession-leave/:id', auth.verifyToken, foodsession.leaveFoodSession);
 router.post('/foodsession-create', auth.verifyToken, foodsession.createFoodSessionLink);
+router.get('/foodsession-index', auth.verifyToken, foodsession.indexFoodSessions);
 
 // get 404 error page for all urls that were not specified
 router.get('*', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {

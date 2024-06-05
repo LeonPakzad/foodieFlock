@@ -184,16 +184,45 @@ export module user {
         )
     }
 
+    export const isFriendOfUser = async(userId: number, friendId: number) =>
+    {
+        var user = await prisma.user.findFirst({
+            where: {
+            id: userId,
+            },
+            include: {
+            friends: true,
+            },
+        });
+
+        if(user != null)
+        {
+            for(var i = 0; i < user.friends.length; i++)
+            {
+                if(user.friends[i].id == friendId)
+                {
+                    return true;    
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     export const userProfile = async (_req: {user: { userId: any; }; }, res: { render: (arg0: string, arg1: {}) => void; }) => {
         var user = await getUserById({id: _req.user.userId});
         if(user != null)
         {   
             var isThisUser = user.id === _req.user.userId;
             var friends = await getFriends(user.id);
+            
             res.render("user/profile", {
                 title: "profile",
                 user: user,
                 isThisUser: isThisUser,
+                isFriendOfUser: false,
                 thisUser: _req.user.userId ?? null,
                 friends: friends,
             } );
@@ -207,11 +236,11 @@ export module user {
         {   
             var isThisUser = user.id === _req.user.userId;
             var friends = await getFriends(user.id);
-
             res.render("user/profile", {
                 title: "profile",
                 user: user,
                 isThisUser,
+                isFriendOfUser: await isFriendOfUser(user.id, _req.user.userId),
                 thisUser: _req.user.userId ?? null,
                 friends: friends,
             } );

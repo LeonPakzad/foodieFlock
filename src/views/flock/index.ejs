@@ -1,43 +1,47 @@
-<%- include('../templates/sidenav'); -%>
-
-<div class="content">
-
-    <div class="row-center">
-        <div>
-            add a new flock
-            <form action="flock-create">
-                <input name="name" type="text" class="input" placeholder="flock-name"> </input>
+<div class="screen">
+    <%- include('../templates/sidenav'); -%>
+    
+    <div class="content">
+    
+        <div class="content-block">
+            <div class="row-center">
+                <div>
+                    add a new flock
+                    <form action="flock-create">
+                        <input name="name" type="text" class="input" placeholder="flock-name"> </input>
+                        
+                        <button class="button">add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <br>
+        
+        <div class="content-block">
+        
+            <div class="head-row">
+                <div class="col-size-2">name</div>
+                <div class="col-size-2">actions</div>
+            </div>
+        
+            <% flocks.forEach(function(flock) { %>
                 
-                <button class="button">add</button>
-            </form>
+                <div class="body-row">
+                    
+                    <div class="col-size-2" data-tooltip= "<%=flock.name%>"><%= flock.name == undefined || null? '-' : flock.name %></div>
+                    
+                    <div class="col-size-2">
+                        <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                            <img title="show flock" alt="show flock" src="/public/assets/icon-show-white.png">
+                        </a>
+                        
+                        <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
+                            <img title="leave flock" alt="leave flock" src="/public/assets/icon-leave-white.png">
+                        </a>
+                    </div>
+                </div>  
+            <% }); %>        
         </div>
     </div>
-</div>
-
-<br>
-
-<div class="content">
-
-    <div class="head-row">
-        <div class="col-size-2">name</div>
-        <div class="col-size-2">actions</div>
-    </div>
-
-    <% flocks.forEach(function(flock) { %>
-        
-        <div class="body-row">
-            
-            <div class="col-size-2" data-tooltip= "<%=flock.name%>"><%= flock.name == undefined || null? '-' : flock.name %></div>
-            
-            <div class="col-size-2">
-                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                    <img title="show flock" alt="show flock" src="/public/assets/icon-show-white.png">
-                </a>
-                
-                <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
-                    <img title="leave flock" alt="leave flock" src="/public/assets/icon-leave-white.png">
-                </a>
-            </div>
-        </div>  
-    <% }); %>        
 </div>
