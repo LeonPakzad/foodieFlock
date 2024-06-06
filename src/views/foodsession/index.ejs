@@ -12,14 +12,14 @@
             
             <div class="body-row">
                 
-                <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %></div>
+                <div class="col-size-2" data-tooltip= "<%=foodsession.foodsession.name%>"><%= foodsession.foodsession.name == undefined || null? '-' : foodsession.foodsession.name %></div>
                 
                 <div class="col-size-2">
-                    <a class="link-button" href="/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                    <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFoodSessionId}))%>">
                         <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-show-white.png">
                     </a>
                     
-                    <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                    <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFoodSessionId}))%>">
                         <img title="leave foodsession" alt="leave foodsession" src="/public/assets/icon-leave-white.png">
                     </a>
                 </div>

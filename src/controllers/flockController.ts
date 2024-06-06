@@ -81,7 +81,7 @@ export module flock {
             var foodsessions = await foodsession.getFoodSessionsByFlockId(flockId.id);
 
             res.render("flock/view", {
-                title: "flock",
+                title: "flocks",
                 flock: flock,
                 uninvitedFriends: uninvitedFriends,
                 inviteLink: "http://" + _req.hostname +  ":3000" + "/flock-accept-invitation/" + encodeURIComponent(JSON.stringify({salt: flock.salt})),

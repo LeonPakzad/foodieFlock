@@ -56,18 +56,22 @@ export module foodsession {
         return foodsession;
     }
 
-    export const findFoodSessionsByUserID = async (userId: number) =>
+    export const findFoodSessionViewsByUserID = async (userId: number) =>
     {
         return await prisma.usersinfoodsession.findMany({
             where: {
                 fkUserId: userId
             },
+            include: {
+                foodsession: true
+            }
         })
     }
 
     export const indexFoodSessions = async (_req: any, res: {render: (arg0: string, arg1: {}) => void;}) => 
     {
-        const foodsessions = await findFoodSessionsByUserID(_req.user.userId);
+        const foodsessions = await findFoodSessionViewsByUserID(_req.user.userId);
+        console.log(foodsessions);
         res.render('foodsession/index', {
             title: 'foodsessions',
             foodsessions: foodsessions
@@ -128,7 +132,7 @@ export module foodsession {
             var isUserInFoodSession = usersinfoodsession.some(({ fkUserId }) => fkUserId === _req.user.userId);
 
             res.render("foodsession/view", {
-                title: "foodsession",
+                title: "foodsessions",
                 flockId: foodsession.fkFlockId,
                 foodsession: foodsession,
                 isFlockLeader: isFlockLeader,
