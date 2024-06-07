@@ -1,29 +1,36 @@
 <div class="screen">
     <%- include('../templates/sidenav'); -%>
-    
-    <div class="content-block">
-    
-        <div class="head-row">
-            <div class="col-size-2">name</div>
-            <div class="col-size-2">email</div>
-            <div class="col-size-2">actions</div>
+    <div class="content">
+
+        <div class="content-block">
+            <div class="row-center">
+                <h1>Users</h1>
+            </div>
         </div>
-    
-        <% users.forEach(function(user) { %>
-            <div class="body-row">
-    
-                <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %></div>
-                <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
-    
-                <div class="col-size-2">
-                    <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                        <img title="show user" alt="show user" src="/public/assets/icon-show-white.png">
-                    </a>
-                    <a class="link-button" href="user-delete/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                        <img title="delete user" alt="delete user" src="/public/assets/icon-delete-white.png">
-                    </a>
-                </div>
-            </div>  
-        <% }); %>
+
+        <div class="content-block">    
+            <div class="head-row">
+                <div class="col-size-2">name</div>
+                <div class="col-size-2">email</div>
+                <div class="col-size-2">actions</div>
+            </div>
+        
+            <% users.forEach(function(user) { %>
+                <div class="body-row">
+        
+                    <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %></div>
+                    <div class="col-size-2" data-tooltip= "<%=user.email%>"><%= user.email == undefined || null? '-' : user.email %></div>
+        
+                    <div class="col-size-2">
+                        <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                            <img title="show user" alt="show user" src="/public/assets/icon-show-white.png">
+                        </a>
+                        <a class="link-button" href="user-delete/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                            <img title="delete user" alt="delete user" src="/public/assets/icon-delete-white.png">
+                        </a>
+                    </div>
+                </div>  
+            <% }); %>
+        </div>
     </div>
 </div>

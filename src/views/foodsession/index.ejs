@@ -1,29 +1,38 @@
 <div class="screen">
     <%- include('../templates/sidenav'); -%>
     
-    <div class="content-block">
-        
-        <div class="head-row">
-            <div class="col-size-2">name</div>
-            <div class="col-size-2">actions</div>
+    <div class="content">
+
+        <div class="content-block">
+            <div class="row-center">
+                <h1>Foodsessions</h1>
+            </div>
         </div>
-        
-        <% foodsessions.forEach(function(foodsession) { %>
+
+        <div class="content-block">
             
-            <div class="body-row">
+            <div class="head-row">
+                <div class="col-size-2">name</div>
+                <div class="col-size-2">actions</div>
+            </div>
+            
+            <% foodsessions.forEach(function(foodsession) { %>
                 
-                <div class="col-size-2" data-tooltip= "<%=foodsession.foodsession.name%>"><%= foodsession.foodsession.name == undefined || null? '-' : foodsession.foodsession.name %></div>
-                
-                <div class="col-size-2">
-                    <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFoodSessionId}))%>">
-                        <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-show-white.png">
-                    </a>
+                <div class="body-row">
                     
-                    <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFoodSessionId}))%>">
-                        <img title="leave foodsession" alt="leave foodsession" src="/public/assets/icon-leave-white.png">
-                    </a>
-                </div>
-            </div>  
-        <% }); %>        
+                    <div class="col-size-2" data-tooltip= "<%=foodsession.foodsession.name%>"><%= foodsession.foodsession.name == undefined || null? '-' : foodsession.foodsession.name %></div>
+                    
+                    <div class="col-size-2">
+                        <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFoodSessionId}))%>">
+                            <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-show-white.png">
+                        </a>
+                        
+                        <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFoodSessionId}))%>">
+                            <img title="leave foodsession" alt="leave foodsession" src="/public/assets/icon-leave-white.png">
+                        </a>
+                    </div>
+                </div>  
+            <% }); %>        
+        </div>
     </div>
 </div>

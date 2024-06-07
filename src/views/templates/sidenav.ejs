@@ -11,18 +11,18 @@
 <div id="sidenav" class="sidenav column" sidenav-closed="true" style="width: 50px">
     
     <div class="header-row">
-        <span class="open-nav-button" onclick="toggleNav()">&#x2630;</span>
+        <div class="open-nav-button" onclick="toggleNav()">
+            <div class="hamburger-lines">
+                <span class="line line1"></span>
+                <span class="line line2 middle-line"></span>
+                <span class="line line3 middle-line"></span>
+                <span class="line line4 middle-line"></span>
+                <span class="line line5"></span>
+        </div>  
+    </div>
     </div>
     
     <div class="navigation-side-bar ">
-        <a <% if (title == 'users') { %> class="selected" <% } %> href='/user-index'>
-            <div class="nav-image link-button">
-                <img title="users" alt="users" src="/public/assets/icon-users-white.png">
-            </div>
-            <div class="nav-text">
-                users
-            </div>
-        </a>
         <a <% if (title == 'profile') { %> class="selected" <% } %> href='/profile'>
             <div class="nav-image link-button">
                 <img title="user" alt="user" src="/public/assets/icon-user-white.png">
@@ -31,6 +31,15 @@
                 user
             </div>
         </a>
+        <a <% if (title == 'users') { %> class="selected" <% } %> href='/user-index'>
+            <div class="nav-image link-button">
+                <img title="users" alt="users" src="/public/assets/icon-users-white.png">
+            </div>
+            <div class="nav-text">
+                users
+            </div>
+        </a>
+        
         <a <% if (title == 'flocks') { %> class="selected" <% } %> href='/flock-index'>
             <div class="nav-image link-button">
                 <img title="flocks" alt="flocks" src="/public/assets/icon-sheep-white.png">
@@ -41,10 +50,10 @@
         </a>
         <a <% if (title == 'foodsessions') { %> class="selected" <% } %> href='/foodsession-index'>
             <div class="nav-image link-button">
-                <img title="foodsessions" alt="foodsessions" src="/public/assets/icon-food-white.png">
+                <img title="my foodsessions" alt="my foodsessions" src="/public/assets/icon-food-white.png">
             </div>
             <div class="nav-text">
-                foodsessions
+                my foodsessions
             </div>
         </a>
 

@@ -1,47 +1,55 @@
 <div class="screen">
     <%- include('../templates/sidenav'); -%>
     
-    <div class="content-card">
-        <b>
-            name: 
-        </b>
-        <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %></div>
-    
-        <b>
-            members:
-        </b>
-        <div class="row">
-            <% usersinfoodsession.forEach(function(user) { %>
-                <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                    <div class="col-size-2" data-tooltip= "<%=user.user.name%>"><%= user.user.name == undefined || null? '-' : user.user.name %> </div>
-                </a>
-            <% }); %>
+    <div class="content">
+        
+        <div class="content-block">
+            <div class="row-center">
+                <h1>Foodsession</h1>
+            </div>
         </div>
-    
-        <div class="row-end">
-    
-            <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flockId}))%>">
-                <img title="back to flock" alt="back to flock" src="/public/assets/icon-sheep-white.png">
-            </a>
-    
-            <% if(isUserInFoodSession) {%>
-                <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                    <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
+
+        <div class="content-card">
+            <b>
+                name: 
+            </b>
+            <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %></div>
+        
+            <b>
+                members:
+            </b>
+            <div class="row">
+                <% usersinfoodsession.forEach(function(user) { %>
+                    <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                        <div class="col-size-2" data-tooltip= "<%=user.user.name%>"><%= user.user.name == undefined || null? '-' : user.user.name %> </div>
+                    </a>
+                <% }); %>
+            </div>
+        
+            <div class="row-end">
+        
+                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flockId}))%>">
+                    <img title="back to flock" alt="back to flock" src="/public/assets/icon-sheep-white.png">
                 </a>
-            <% } else { %>
-                <a class="link-button" href="/foodsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                    <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
-                </a>
-            <% } %>
-    
-            <% if(isFlockLeader) { %>
-                <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                    <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
-                </a>
-            <% } %>
+        
+                <% if(isUserInFoodSession) {%>
+                    <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
+                    </a>
+                <% } else { %>
+                    <a class="link-button" href="/foodsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
+                    </a>
+                <% } %>
+        
+                <% if(isFlockLeader) { %>
+                    <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
+                    </a>
+                <% } %>
+            </div>
         </div>
-    </div>
-    
+    </div>    
 </div>
 
 <script src="/public/scripts/flocks.js"></script>
