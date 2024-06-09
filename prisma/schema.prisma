@@ -27,7 +27,7 @@ model user {
   updated             DateTime  @default(now())
 
   usersinflocks       usersinflocks[]
-  usersinfoodsession usersinfoodsession[]
+  usersinfoodsession  usersinfoodsession[]
 
   friendsRelation     user[]    @relation("friends")
   friends             user[]    @relation("friends")
@@ -39,7 +39,7 @@ model foodsession {
   id                Int       @id @default(autoincrement())
   fkFlockId         Int
   name              String
-  foodTime         DateTime  @default(now())
+  foodTime          DateTime  @default(now())
   usersinfoodsession   usersinfoodsession[]
   locationinfoodsession locationsinfoodsessions[]
 }
@@ -77,11 +77,11 @@ model usersinfoodsession {
 }
 
 model locationsinfoodsessions {
-  fkFoodSessionId  Int
+  fkFoodSessionId   Int
   fkLocationId      Int
 
   location          location        @relation(fields: [fkLocationId], references: [id], map: "locationInFoodSessions_locationId_fkey")
-  foodsession      foodsession    @relation(fields: [fkFoodSessionId], references: [id], map: "locationInFoodSessions_foodsessionId_fkey")
+  foodsession       foodsession      @relation(fields: [fkFoodSessionId], references: [id], map: "locationInFoodSessions_foodsessionId_fkey")
 
   @@id([fkLocationId, fkFoodSessionId])
   @@index([fkLocationId], map: "locationInFoodsessions_fkLocationId_fkey")

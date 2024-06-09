@@ -25,36 +25,20 @@
                         <img title="delete flock" alt="delete flock" src="/public/assets/icon-delete-white.png">
                     </a>
                 <% } %>
-
-                <div class="row-center">
-                    <div>
-                        add a new foodsession
-                        <form id="add-foodsession-form">
-                            <input name="name" type="text" class="input" placeholder="foodsession name"> </input>
-                            <input type="hidden" name="flockId" value="<%=flock.id%>">
-    
-                            <button type="submit" class="button">add</button>
-                        </form>
-                    </div>
-                </div>
                 
             </div>
             
             <div class="content-block">
 
-                <h2 class="row-center">
-                    members:
-                </h2>
-
                 <div class="row">
+                    <h2 class="row-center">
+                        members:
+                    </h2>
+
                     <% usersInFlock.forEach(function(user) { %>
-                        <div class="body-row">
-                            <div class="col-size-2">
-                                <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                                    <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
-                                </a>
-                            </div>
-                        </div>  
+                        <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                            <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
+                        </a>
                     <% }); %>
                 </div>
             </div>
@@ -88,6 +72,18 @@
             <h2 class="row-center">
                 this flocks foodsessions
             </h2>
+
+            <div class="row-center">
+                <div>
+                    add a new foodsession
+                    <form id="add-foodsession-form">
+                        <input name="name" type="text" class="input" placeholder="foodsession name"> </input>
+                        <input type="hidden" name="flockId" value="<%=flock.id%>">
+
+                        <button type="submit" class="button">add</button>
+                    </form>
+                </div>
+            </div>
 
             <div class="head-row">
                 <div class="col-size-2">name</div>

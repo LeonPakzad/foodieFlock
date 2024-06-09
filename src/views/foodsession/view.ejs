@@ -8,13 +8,33 @@
                 <h1>Foodsession</h1>
             </div>
         </div>
-
-        <div class="content-card">
-            <b>
-                name: 
-            </b>
-            <div class="col-size-2" data-tooltip= "<%=foodsession.name%>"><%= foodsession.name == undefined || null? '-' : foodsession.name %></div>
         
+        <div class="content-card">
+            
+            <div class="row-center">
+                <h2>
+                    <%= foodsession.name %>
+                </h2>
+            </div>
+                
+            <div class="row">
+                <h2>Food-Time: </h2>
+                <h2><%= foodsession.foodTime %></h2>
+            </div>
+            
+            <% if(isUserInFoodSession) { %>
+
+                <div class="row">
+                    <input type="date"></input>
+                    <div class="button">propose different date</div>
+
+                    <div class="col-size-1"> </div>
+
+                    <input type="time"></input>
+                    <div class="button">propose different time</div>
+                </div>
+            <% } %>
+
             <b>
                 members:
             </b>

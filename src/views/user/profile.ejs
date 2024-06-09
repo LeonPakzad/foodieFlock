@@ -35,6 +35,10 @@
                         no friends added yet    
                     </div>
                 <% } %>
+
+                <a class="link-button" href="/user-delete/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                    <img title="delete user" alt="delete user" src="/public/assets/icon-delete-white.png">
+                </a>
         
             <%} else if(!isFriendOfUser) { %>
                 <a class="link-button" href="/add-friend/<%=encodeURIComponent(JSON.stringify({userId: user.id}))%>">
