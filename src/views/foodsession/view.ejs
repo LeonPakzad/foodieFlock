@@ -28,8 +28,6 @@
                     <input type="date"></input>
                     <div class="button">propose different date</div>
 
-                    <div class="col-size-1"> </div>
-
                     <input type="time"></input>
                     <div class="button">propose different time</div>
                 </div>
@@ -39,7 +37,7 @@
                 members:
             </b>
             <div class="row">
-                <% usersinfoodsession.forEach(function(user) { %>
+                <% foodsessionentrys.forEach(function(user) { %>
                     <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
                         <div class="col-size-2" data-tooltip= "<%=user.user.name%>"><%= user.user.name == undefined || null? '-' : user.user.name %> </div>
                     </a>

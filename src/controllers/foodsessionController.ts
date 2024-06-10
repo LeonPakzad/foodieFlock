@@ -25,9 +25,9 @@ export module foodsession {
         return foodsessions;
     }
 
-    export const getUsersInFoodSessionById = async(foodSessionId: number) =>
+    export const getFoodSessionEntrysById = async(foodSessionId: number) =>
     {
-        return await prisma.usersinfoodsession.findMany({
+        return await prisma.foodsessionentry.findMany({
             where: {
                 fkFoodSessionId: Number(foodSessionId),
             },
@@ -36,7 +36,7 @@ export module foodsession {
 
     export const getUserViewsInFoodSessionById = async(foodSessionId:number) =>
     {
-        return await prisma.usersinfoodsession.findMany({
+        return await prisma.foodsessionentry.findMany({
             where: {
                 fkFoodSessionId: Number(foodSessionId),
             },
@@ -58,7 +58,7 @@ export module foodsession {
 
     export const findFoodSessionViewsByUserID = async (userId: number) =>
     {
-        return await prisma.usersinfoodsession.findMany({
+        return await prisma.foodsessionentry.findMany({
             where: {
                 fkUserId: userId
             },
@@ -71,7 +71,6 @@ export module foodsession {
     export const indexFoodSessions = async (_req: any, res: {render: (arg0: string, arg1: {}) => void;}) => 
     {
         const foodsessions = await findFoodSessionViewsByUserID(_req.user.userId);
-        console.log(foodsessions);
         res.render('foodsession/index', {
             title: 'foodsessions',
             foodsessions: foodsessions
@@ -117,7 +116,7 @@ export module foodsession {
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
         var foodsession = await getFoodSessionById(foodsessionId);
-        var usersinfoodsession = await getUserViewsInFoodSessionById(foodsessionId.id);  
+        var foodsessionentrys = await getUserViewsInFoodSessionById(foodsessionId.id);  
 
         if(foodsession != null)
         {
@@ -129,14 +128,14 @@ export module foodsession {
                 isFlockLeader = true;
             }
 
-            var isUserInFoodSession = usersinfoodsession.some(({ fkUserId }) => fkUserId === _req.user.userId);
+            var isUserInFoodSession = foodsessionentrys.some(({ fkUserId }) => fkUserId === _req.user.userId);
 
             res.render("foodsession/view", {
                 title: "foodsessions",
                 flockId: foodsession.fkFlockId,
                 foodsession: foodsession,
                 isFlockLeader: isFlockLeader,
-                usersinfoodsession: usersinfoodsession,
+                foodsessionentrys: foodsessionentrys,
                 isUserInFoodSession: isUserInFoodSession,
             });
         }
@@ -153,7 +152,7 @@ export module foodsession {
 
         try
         {
-            await prisma.usersinfoodsession.create({
+            await prisma.foodsessionentry.create({
                 data: {
                     fkFoodSessionId: foodsessionId.id,
                     fkUserId: _req.user.userId
@@ -176,7 +175,7 @@ export module foodsession {
         var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
         var userId = _req.user.userId;
         
-        await prisma.usersinfoodsession.deleteMany({
+        await prisma.foodsessionentry.deleteMany({
             where: {
                 fkUserId: Number(userId),
                 fkFoodSessionId: Number(foodsessionId.id),
@@ -193,7 +192,7 @@ export module foodsession {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
         var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
 
-        await prisma.usersinfoodsession.deleteMany({
+        await prisma.foodsessionentry.deleteMany({
             where: {
                 fkFoodSessionId: foodsessionId.id
             }

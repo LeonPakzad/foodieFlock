@@ -109,8 +109,6 @@ export module flock {
 
     export const createFlock = async (_req: {user:{userId:any;}, query: any}, res: {redirect: (arg0:string,) => void}) => 
     {
-        
-        console.log(_req)
         var userId:number = Number(_req.user.userId); 
         await prisma.flock.create({
             data: {
