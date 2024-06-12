@@ -41,7 +41,7 @@ model foodsession {
   name              String
   foodTime          DateTime  @default(now())
   foodsessionentry   foodsessionentry[]
-  locationinfoodsession locationsinfoodsessions[]
+  locationinfoodsession locationsinfoodsessionentrys[]
 }
 
 model location {
@@ -50,7 +50,7 @@ model location {
   description       String
   isPlaceToEat      String
   isPlaceToGetFood  String
-  locationinfoodsession locationsinfoodsessions[]
+  locationinfoodsession locationsinfoodsessionentrys[]
 }
 
 model usersinflocks {
@@ -76,7 +76,7 @@ model foodsessionentry {
   @@index([fkFoodSessionId], map: "foodsessionentry_fkFoodSessionIdId_fkey")
 }
 
-model locationsinfoodsessions {
+model locationsinfoodsessionentrys {
   fkFoodSessionId   Int
   fkLocationId      Int
 

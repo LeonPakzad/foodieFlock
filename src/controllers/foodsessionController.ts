@@ -198,7 +198,7 @@ export module foodsession {
             }
         })
 
-        await prisma.locationsinfoodsessions.deleteMany({
+        await prisma.locationsinfoodsessionentrys.deleteMany({
             where: {
                 fkFoodSessionId: foodsessionId.id
             }

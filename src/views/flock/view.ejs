@@ -56,7 +56,7 @@
                         <img title="invite friend" alt="invite friend" src="/public/assets/icon-user-add-white.png">
                     </button>
                     <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
-                    <select name ="userId" id="userId">
+                    <select class="select" name ="userId" id="userId">
                         <% uninvitedFriends.forEach(function(uninvitedFriends) { %>
                             <option value="<%=uninvitedFriends.id%>"class="link-button">
                                 <%= uninvitedFriends.name %>

@@ -16,7 +16,78 @@
                     <%= foodsession.name %>
                 </h2>
             </div>
+
+            <% if(isFlockLeader) { %>
+                <h2>foodsession settings</h2>
+                <div class="row-center">
+                    <div>
+                        <div>set foodsession-type:</div>
+                        <select id="foodsession-type" class="select" onchange="setFoodSessionType()">
+                            <option value="single-session"> Single Session</option>
+                            <option value="daily-fooding">  Daily Fooding</option>
+                            <option value="decision">       Decision</option>
+                        </select>
+                    </div>
+                </div>
                 
+                <div id="daily-fooding-container" class="row-center" style="display:none">
+                    <div>
+                        <div class="row-center">set weekly schedule:</div>
+                        <div class="row">
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Monday   </input>
+                            </div>
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Tuesday  </input>
+                            </div>
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Wednesday</input>
+                            </div>
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Thursday </input>
+                            </div>
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Friday   </input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Saturday </input>
+                            </div>
+                            <div class="checkbox-containter">
+                                <input class="checkbox" type="checkbox">Sunday   </input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="single-session-container" class="row-center" style="display:none">
+                    <div>
+                        <div class="row-center">set time:</div>
+                        <input type="time"></input>
+                    </div>
+                </div>
+
+                <div id="decision-container" class="row-center" style="display:none">
+                    <div class="row-center">
+                        <h3>
+                            A decision has to be made! 
+                            Let´s decide with
+                        </h3>
+                        <select class="select">
+                            <option>Roulette</option>
+                            <option>Poll</option>
+                            <option>Swyping</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row-end">
+                    <button class="button">save</button>
+                </div>
+                <hr>
+            <% } %>
+
             <div class="row">
                 <h2>Food-Time: </h2>
                 <h2><%= foodsession.foodTime %></h2>
@@ -30,6 +101,11 @@
 
                     <input type="time"></input>
                     <div class="button">propose different time</div>
+                </div>
+
+                <div class="row">
+                    <input type="text"></input>
+                    <div class="button">propose different food</div>
                 </div>
             <% } %>
 
@@ -59,15 +135,17 @@
                         <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
                     </a>
                 <% } %>
-        
+
                 <% if(isFlockLeader) { %>
                     <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
                         <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
                     </a>
                 <% } %>
+        
+                
             </div>
         </div>
     </div>    
 </div>
 
-<script src="/public/scripts/flocks.js"></script>
+<script src="/public/scripts/foodsession.js"></script>
