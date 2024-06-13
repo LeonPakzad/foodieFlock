@@ -180,18 +180,6 @@ summary:hover,
     height: auto;
 }
 
-.input {
-    margin: 5px;
-    color: var(--primary-color);
-    background: none;
-    padding: 10px;
-    border: solid 2px var(--primary-color);
-}
-
-.input option {
-    background-color: var(--secondary-color);
-}
-
 .input.empty-error {
     border: solid 2px var(--color-error);
 }
@@ -233,6 +221,14 @@ div {
     padding: 10px;
     margin: 5px;
     display: block;
+}
+
+.input {
+    margin: 5px;
+    color: var(--primary-color);
+    background: none;
+    padding: 10px;
+    border: solid 2px var(--primary-color);
 }
 
 .select {

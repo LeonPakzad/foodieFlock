@@ -27,7 +27,7 @@ model user {
   updated             DateTime  @default(now())
 
   usersinflocks       usersinflocks[]
-  foodsessionentry  foodsessionentry[]
+  foodsessionentry    foodsessionentry[]
 
   friendsRelation     user[]    @relation("friends")
   friends             user[]    @relation("friends")
@@ -36,12 +36,24 @@ model user {
 }
 
 model foodsession {
-  id                Int       @id @default(autoincrement())
-  fkFlockId         Int
-  name              String
-  foodTime          DateTime  @default(now())
-  foodsessionentry   foodsessionentry[]
+  id                    Int       @id @default(autoincrement())
+  fkFlockId             Int       @unique
+  type                  String    @default("unset")
+  name                  String
+  foodTime              DateTime  @default(now())
+
+  foodsessionentry      foodsessionentry[]
   locationinfoodsession locationsinfoodsessionentrys[]
+  foodtime              foodtime[]
+}
+
+model foodtime {
+  id        Int @id @default(autoincrement())
+  fkFoodsessionId Int
+  weekday   Int @default(0)
+  foodtime  DateTime @default(now())
+
+  foodsession foodsession @relation(fields: [fkFoodsessionId], references: [id])
 }
 
 model location {
@@ -50,16 +62,18 @@ model location {
   description       String
   isPlaceToEat      String
   isPlaceToGetFood  String
+
   locationinfoodsession locationsinfoodsessionentrys[]
 }
 
 model usersinflocks {
   fkUserId            Int
   fkFlockId           Int
-  assignedAt        DateTime  @default(now())
-  isFlockLeader     Boolean   @default(false)
-  flock             flock     @relation(fields: [fkFlockId], references: [id], map: "UsersInFlocks_flockId_fkey")
-  user              user      @relation(fields: [fkUserId], references: [id], map: "UsersInFlocks_userId_fkey")
+  assignedAt          DateTime  @default(now())
+  isFlockLeader       Boolean   @default(false)
+
+  flock               flock     @relation(fields: [fkFlockId], references: [id], map: "UsersInFlocks_flockId_fkey")
+  user                user      @relation(fields: [fkUserId], references: [id], map: "UsersInFlocks_userId_fkey")
 
   @@id([fkUserId, fkFlockId])
   @@index([fkFlockId], map: "UsersInFlocks_flockId_fkey")
@@ -70,6 +84,7 @@ model foodsessionentry {
   fkUserId          Int
   fkFoodSessionId   Int 
   assignedAt        DateTime        @default(now())
+
   user              user            @relation(fields: [fkUserId], references: [id], map: "foodsessionentrys_userId_fkey")
   foodsession       foodsession     @relation(fields: [fkFoodSessionId], references: [id], map: "foodsessionentry_foodsessionId_fkey")
 

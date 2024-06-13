@@ -11,6 +11,9 @@ export module foodsession {
             where: {
                 id: _req.id
             },
+            include: {
+                
+            }
         });
         return foodsession;
     }
@@ -83,7 +86,7 @@ export module foodsession {
             data: {
                 name: name,
                 fkFlockId: flockId,
-            },
+            }
         })
     }
 
@@ -127,7 +130,6 @@ export module foodsession {
             {
                 isFlockLeader = true;
             }
-
             var isUserInFoodSession = foodsessionentrys.some(({ fkUserId }) => fkUserId === _req.user.userId);
 
             res.render("foodsession/view", {
@@ -137,6 +139,10 @@ export module foodsession {
                 isFlockLeader: isFlockLeader,
                 foodsessionentrys: foodsessionentrys,
                 isUserInFoodSession: isUserInFoodSession,
+                foodsessionType: foodsession.type,
+                input: {
+                    radius: _req.query.radius,
+                },
             });
         }
         else
