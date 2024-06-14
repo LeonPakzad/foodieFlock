@@ -209,6 +209,11 @@ div {
     align-items: center;
 }
 
+.row-gap {
+    display:flex;
+    justify-content: space-between;
+}
+
 .form-content {
     display: flex;
     flex-direction: column;
@@ -251,6 +256,7 @@ div {
 .checkbox-containter {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .checkbox {
@@ -482,6 +488,10 @@ div {
     
 .navbar .nav-container input[type=checkbox]:checked ~ .hamburger-lines {
     justify-content: space-between;
+}
+
+.individual-time {
+    display: none;
 }
     
 @media screen and (max-width: 450px) {

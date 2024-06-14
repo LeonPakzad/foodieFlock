@@ -1,3 +1,26 @@
+function toggleSessionTimeInput() {
+    var individualTimes = document.getElementsByClassName("individual-time");
+    var groupTimeContainer = document.getElementById("group-time-container");
+    var isIndividualTimeSwitch = document.getElementById("individual-time-switch");
+
+    console.log(isIndividualTimeSwitch.checked)
+    if(isIndividualTimeSwitch.checked)
+    {
+        Array.from(individualTimes).forEach((element) => {
+            element.style.display= "block"
+        });
+
+        groupTimeContainer.style.display = "none";
+    }
+    else
+    {
+        Array.from(individualTimes).forEach((element) => {
+            element.style.display= "none";
+        });
+        groupTimeContainer.style.display = "block";
+    }
+}
+
 function setFoodSessionType() {
     var foodsessionSelect = document.getElementById("foodsession-type");
 

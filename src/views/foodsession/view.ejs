@@ -32,32 +32,54 @@
                 
                 <div id="daily-fooding-container" class="row-center" style="display:none">
                     <div>
-                        <div class="row-center">set weekly schedule:</div>
-                        <div class="row">
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Monday   </input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Tuesday  </input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Wednesday</input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Thursday </input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Friday   </input>
-                            </div>
+                        <div class="checkbox-container">
+                            Individual Times
+                            <input id="individual-time-switch" class="checkbox" type="checkbox" onchange="toggleSessionTimeInput()"></input>
                         </div>
-                        <div class="row">
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Saturday </input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Sunday   </input>
-                            </div>
+                        <div></div>
+                        <div id="group-time-container" class="checkbox-containter">
+                            Session Time: 
+                            <input id="group-time" type="time"></input>
                         </div>
+
+                        <div class="row-center">
+                            set weekly schedule:
+                        </div>
+                            <div class="checkbox-containter">
+                                Monday   
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-containter">
+                                Tuesday
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-containter">
+                                Wednesday
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-containter">
+                                Thursday 
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-containter">
+                                Friday   
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-containter">
+                                Saturday 
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-containter">
+                                Sunday   
+                                <input class="checkbox" type="checkbox"></input>
+                                <input class="individual-time" type="time"></input>
+                            </div>
                     </div>
                 </div>
 
@@ -111,15 +133,6 @@
                             </div>
                             <div class="checkbox-containter">
                                 <input class="checkbox" type="checkbox">anonymous answers?</input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Wednesday</input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Thursday </input>
-                            </div>
-                            <div class="checkbox-containter">
-                                <input class="checkbox" type="checkbox">Friday   </input>
                             </div>
                         </div>
                     </div>
