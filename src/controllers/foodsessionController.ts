@@ -115,6 +115,24 @@ export module foodsession {
         }
     }
 
+    export const editFoodSessions = async(_req: any, res: {render: (arg0: string, arg1: any) => void}) =>
+    {
+        var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id))
+        var foodsession = await getFoodSessionById(foodsessionId);
+
+        if(foodsession != null)
+        {
+            res.render("foodsession/edit", {
+                title: "foodsessions",
+                flockId: foodsession.fkFlockId,
+                foodsession: foodsession,
+                input: {
+                    radius: _req.query.radius,
+                },
+            })
+        }
+    }
+
     export const showFoodSession = async(_req: any, res: {render: (arg0: string, arg1: any) => void; redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));

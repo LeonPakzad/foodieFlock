@@ -54,6 +54,7 @@ router.get('/flock-accept-invitation/:salt', auth.verifyToken, flock.addUserToFl
 router.get('/add-friend/:id', auth.verifyToken, user.addFriend)
 
 router.get('/flock-show/:id/foodsession-show/:id', auth.verifyToken, foodsession.showFoodSession);
+router.get('/foodsession-edit/:id', auth.verifyToken, foodsession.editFoodSessions);
 router.get('/foodsession-delete/:id', auth.verifyToken, foodsession.deleteFoodSession);
 router.get('/foodsession-join/:id', auth.verifyToken, foodsession.joinFoodSession);
 router.get('/foodsession-leave/:id', auth.verifyToken, foodsession.leaveFoodSession);

@@ -1,0 +1,169 @@
+<div class="screen">
+    <%- include('../templates/sidenav'); -%>
+    
+    <div class="content">
+                
+        <div class="content-card">
+        <div class="row-center">
+            <h2>
+                <%= foodsession.name %>
+            </h2>
+        </div>
+            
+        <h2>foodsession settings</h2>
+        <div class="row-center">
+            <div>
+                <div>set foodsession-type:</div>
+                <select id="foodsession-type" class="select" onchange="setFoodSessionType()">
+                    <option value="">?</option>
+                    <option value="single-session"> Single Session</option>
+                    <option value="daily-fooding">  Daily Fooding</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="daily-fooding-container" class="row-center" style="display:none">
+            <div>
+                <div class="checkbox-container">
+                    Individual Times
+                    <input id="individual-time-switch" class="checkbox" type="checkbox" onchange="toggleSessionTimeInput()"></input>
+                </div>
+                <div></div>
+                <div id="group-time-container" class="checkbox-containter">
+                    Session Time: 
+                    <input id="group-time" type="time"></input>
+                </div>
+
+                <div class="row-center">
+                    set weekly schedule:
+                </div>
+                    <div class="checkbox-containter">
+                        Monday   
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+                    <div class="checkbox-containter">
+                        Tuesday
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+                    <div class="checkbox-containter">
+                        Wednesday
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+                    <div class="checkbox-containter">
+                        Thursday 
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+                    <div class="checkbox-containter">
+                        Friday   
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+                    <div class="checkbox-containter">
+                        Saturday 
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+                    <div class="checkbox-containter">
+                        Sunday   
+                        <input class="checkbox" type="checkbox"></input>
+                        <input class="individual-time" type="time"></input>
+                    </div>
+            </div>
+        </div>
+
+        <div id="single-session-container" class="row-center" style="display:none">
+            <div>
+                <div class="row-center">set time:</div>
+                <input type="time"></input>
+            </div>
+        </div>
+
+        <div id="decision-container" class="row-center">
+            <h3>
+                How do you decide what to eat?
+            </h3>
+            <select class="select" id="decision-type" onchange="setDecisionType()">
+                <option default value="">?</option>
+                <option value="roulette">       Roulette</option>
+                <option value="poll">           Poll</option>
+                <option value="swyping">        Swyping</option>
+                <option value="individual">     Individual</option>
+            </select>
+        </div>
+
+        <div class="row-center" id="roulette-container" style="display:none">
+            <div>
+                Set filters for the food roulette.
+
+                <div class="row-center">
+                    <select class="select" name="radius" id="distanceSelect" onchange="updateDistanceSelect()">
+                        <option value="1"       <% if (input.radius == 1) { %> selected <% } %>>1 km</option>
+                        <option value="2"       <% if (input.radius == 2) { %> selected <% } %>>2 km</option>
+                        <option value="3"       <% if (input.radius == 3) { %> selected <% } %>>3 km</option>
+                        <option value="5"       <% if (input.radius == 5) { %> selected <% } %>>5 km</option>
+                        <option value="10"      <% if (input.radius == 10) { %> selected <% } %>>10 km</option>
+                        <option value="15"      <% if (input.radius == 15) { %> selected <% } %>>15 km</option>
+                        <option value="20"      <% if (input.radius == 20) { %> selected <% } %>>20 km</option>
+                        <option value="custom"  <% if (input.radius == 'custom') { %> selected <% } %>>custom (km)</option>
+                    </select>
+
+                    <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-center" id="poll-container" style="display:none">
+            <div>
+                <div class="row-center">Poll settings:</div>
+                <div class="row">
+                    <div class="checkbox-containter">
+                        <input class="checkbox" type="checkbox">allow Multiple answers</input>
+                    </div>
+                    <div class="checkbox-containter">
+                        <input class="checkbox" type="checkbox">anonymous answers?</input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-center" id="swyping-container" style="display:none">
+            <div>
+                Set filters for the food swype.
+
+                <div class="row-center">
+                    <select class="select" name="radius" id="distanceSelect" onchange="updateDistanceSelect()">
+                        <option value="1"       <% if (input.radius == 1) { %> selected <% } %>>1 km</option>
+                        <option value="2"       <% if (input.radius == 2) { %> selected <% } %>>2 km</option>
+                        <option value="3"       <% if (input.radius == 3) { %> selected <% } %>>3 km</option>
+                        <option value="5"       <% if (input.radius == 5) { %> selected <% } %>>5 km</option>
+                        <option value="10"      <% if (input.radius == 10) { %> selected <% } %>>10 km</option>
+                        <option value="15"      <% if (input.radius == 15) { %> selected <% } %>>15 km</option>
+                        <option value="20"      <% if (input.radius == 20) { %> selected <% } %>>20 km</option>
+                        <option value="custom"  <% if (input.radius == 'custom') { %> selected <% } %>>custom (km)</option>
+                    </select>
+
+                    <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-center" id="individual-container" style="display:none">
+            individual
+        </div>
+        
+        <div class="row-end">
+            <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-back-white.png">
+            </a>
+            <div></div>
+            <button class="button">save</button>
+        </div>
+    </div>
+
+    </div>
+    <script src="/public/scripts/foodsessionEdit.js"></script>
+</div>
