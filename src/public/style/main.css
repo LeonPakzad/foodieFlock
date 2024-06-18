@@ -214,6 +214,8 @@ div {
     justify-content: space-between;
 }
 
+
+
 .form-content {
     display: flex;
     flex-direction: column;
@@ -314,6 +316,7 @@ div {
 
 .body-row {
     margin: 0 auto;
+    width: 100%;
     max-width: 800px;
     flex-wrap: wrap;
     display: flex;
@@ -343,6 +346,7 @@ div {
     background-color: var(--color-dark);
     min-height: 40px;
     align-content: center;
+    justify-content: space-around;
 }
 
 .sidenav {
@@ -492,6 +496,10 @@ div {
 
 .individual-time {
     display: none;
+}
+
+.poll-item-text {
+    align-self: center;
 }
     
 @media screen and (max-width: 450px) {
