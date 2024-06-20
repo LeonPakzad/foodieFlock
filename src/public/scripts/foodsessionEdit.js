@@ -124,40 +124,49 @@ function updateDistanceSelect()
 }
 
 function addPollOption() {
+    var pollOptionInput = document.getElementById("add-poll-option-input");
+    if (pollOptionInput.value == "") return;
 
-    var value = document.getElementById("add-poll-option-input").value;
+    var pollList = document.getElementById("poll-options-container");
+    var pollListLength = pollList.childElementCount;
 
-    //Create an input type dynamically.
-    var row = document.createElement("div");
-    row.setAttribute("class", "col-size-2 row");
+    var bodyrow = document.createElement("div");
+    bodyrow.setAttribute("class", "body-row");
+    bodyrow.setAttribute("id", "poll-option-container-" + pollListLength);
+    bodyrow.setAttribute("data-number", pollListLength);
+
+    var rowOne = document.createElement("div");
+    rowOne.setAttribute("class", "col-size-2");
+    var rowTwo = document.createElement("div");
+    rowTwo.setAttribute("class", "col-size-2");
 
     var pollItemText = document.createElement("div");
     pollItemText.setAttribute("class", "poll-item-text");
-    pollItemText.innerHTML = value;
+    pollItemText.innerHTML = pollOptionInput.value;
 
     var link = document.createElement("div");
     link.setAttribute("class", "link-button");
+    link.setAttribute("onclick", "deletePollOption(" + pollListLength + ")");
 
-    //Create Labels
-    var label = document.createElement("Label");
-    label.innerHTML = "New Label";     
-    
-    //Assign different attributes to the element.
-    element.setAttribute("type", "text");
-    element.setAttribute("value", "");
-    element.setAttribute("name", "Test Name");
-    element.setAttribute("style", "width:200px");
-    
-    label.setAttribute("style", "font-weight:normal");
-    
-    // 'foobar' is the div id, where new fields are to be added
-    var pollList = document.getElementById("fooBar");
-    
-    //Append the element in page (in span).
-    pollList.appendChild(label);
-    pollList.appendChild(element);
+    var linkImage = document.createElement("img");
+    linkImage.setAttribute("title", "delete poll option");
+    linkImage.setAttribute("alt", "delete poll option");
+    linkImage.setAttribute("src", "/public/assets/icon-delete-white.png");
+
+    pollList.appendChild(bodyrow);
+    bodyrow.appendChild(rowOne);
+    bodyrow.appendChild(rowTwo);
+    rowOne.appendChild(pollItemText);
+    rowTwo.appendChild(link);
+    link.appendChild(linkImage);
+
+    pollOptionInput.value = "";
 }
 
+
 function deletePollOption(id) {
-    console.log(id)
+    var pollOptionContainer = document.getElementById("poll-option-container-" + id);
+    if (pollOptionContainer) {
+        pollOptionContainer.remove();
+    }
 }

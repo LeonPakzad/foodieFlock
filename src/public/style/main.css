@@ -502,6 +502,20 @@ div {
     align-self: center;
 }
     
+.info-card {
+    margin: 5px;
+    padding: 5px;
+    background-color: var(--primary-color);
+    color: var(--color-light);
+}
+
+.info-card-twoo {
+    margin: 5px;
+    padding: 5px;
+    background-color: var(--secondary-color);
+    color: var(--color-dark);
+}
+
 @media screen and (max-width: 450px) {
     
     .sidenav {

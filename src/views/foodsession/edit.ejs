@@ -97,7 +97,13 @@
 
         <div class="row-center" id="roulette-container" style="display:none">
             <div>
-                Set filters for the food roulette.
+                <div class="info-card">
+                    get a random restaurant in your area
+                </div>
+
+                <h3>
+                    Set filters for the food roulette.
+                </h3>
 
                 <div class="row-center">
                     <select class="select" name="radius" id="distanceSelect" onchange="updateDistanceSelect()">
@@ -118,7 +124,15 @@
 
         <div class="row-center" id="poll-container" style="display:none">
             <div>
-                <div class="row-center">Poll settings:</div>
+                <div class="info-card">
+                    create a poll of everyones favorite food-options for the people in the foodsession to vote on.
+                </div>
+
+                <div class="row-center">
+                    <h3>
+                        Poll settings:
+                    </h3>
+                </div>
                 <div class="row">
                     <div class="checkbox-containter">
                         <input class="checkbox" type="checkbox">allow Multiple answers</input>
@@ -127,31 +141,35 @@
                         <input class="checkbox" type="checkbox">anonymous answers?</input>
                     </div>
                 </div>
-                <div class="row-center">Poll answers:</div> 
                 <div class="row-center">
-                    <input id="add-poll-option-input"class="input"type="text">
+                    <h3>
+                        Poll options:
+                    </h3>
+                </div> 
+                <div class="row-center">
+                    <input id="add-poll-option-input" class="input" type="text" placeholder="add poll option">
                     <div class="link-button" onclick="addPollOption()">
                         <img title="add poll option" alt="add poll option" src="/public/assets/icon-add-white.png">
                     </div>
                 </div>
                 <div class="row-center">
-                    <div class="body-row">
-                        <div class="col-size-2 row">
-                            <div class="poll-item-text">
-                                test
-                            </div>
-                            <div class="link-button" onclick="deletePollOption()">
-                                <img title="delete poll option" alt="delete poll option" src="/public/assets/icon-delete-white.png">
-                            </div>
-                        </div>
-                    </div>
+                    <div id="poll-options-container"></div>
                 </div>
             </div>
         </div>
 
         <div class="row-center" id="swyping-container" style="display:none">
             <div>
-                Set filters for the food swype.
+                <div class="info-card">
+                    This works like tinder - but for food! Each participant will swype - 
+                    in the end, youll have a list of food options that everyone is fine with.
+                </div>
+                
+                <div class="row-center">
+                    <h3>
+                        Set filters for the food swype.
+                    </h3>
+                </div>
 
                 <div class="row-center">
                     <select class="select" name="radius" id="distanceSelect" onchange="updateDistanceSelect()">
@@ -170,8 +188,9 @@
             </div>
         </div>
 
-        <div class="row-center" id="individual-container" style="display:none">
-            individual
+        <div class="row-center info-card" id="individual-container" style="display:none">
+            Users will be able to individually set when theill go to get their food and when to eat it.
+            This is perfect for larger groups where its not guaranteed that you all get food from the same place. 
         </div>
         
         <div class="row-end">

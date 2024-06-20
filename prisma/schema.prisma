@@ -41,17 +41,26 @@ model foodsession {
   type                  String    @default("unset")
   name                  String
   foodTime              DateTime  @default(now())
+  fkFoodsessionType     Int       @default(0)
 
   foodsessionentry      foodsessionentry[]
   locationinfoodsession locationsinfoodsessionentrys[]
   foodtime              foodtime[]
+  foodsessiontype       foodsessiontype @relation(fields: [fkFoodsessionType], references: [id])
+}
+
+model foodsessiontype {
+  id          Int @id @default(autoincrement())
+  name        String @default("unset")
+
+  foodsession foodsession[]
 }
 
 model foodtime {
-  id        Int @id @default(autoincrement())
+  id              Int @id @default(autoincrement())
   fkFoodsessionId Int
-  weekday   Int @default(0)
-  foodtime  DateTime @default(now())
+  weekday         Int @default(0)
+  foodtime        DateTime @default(now())
 
   foodsession foodsession @relation(fields: [fkFoodsessionId], references: [id])
 }
