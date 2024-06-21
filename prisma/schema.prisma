@@ -37,7 +37,7 @@ model user {
 
 model foodsession {
   id                    Int       @id @default(autoincrement())
-  fkFlockId             Int       @unique
+  fkFlockId             Int       
   fkFoodsessionType     String    @default("unset")
   name                  String
   foodTime              DateTime  @default(now())

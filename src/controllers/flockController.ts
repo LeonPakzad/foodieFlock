@@ -166,6 +166,7 @@ export module flock {
         {
             console.log(error);
         }
+
     }
 
     export const addUserToFlockLink = async (_req: {user:{userId:any;}, params: any}, res: {redirect: (arg0:string,) => void}) =>
@@ -184,11 +185,19 @@ export module flock {
         }
     }
 
-    export const addFriendToFlock = async(_req: { body: { userId: number; flockSalt: string; };}, res: {redirect: (arg0:string,) => void}) =>
+    export const addFriendToFlock = async(_req: { body: { userId: number; flockSalt: string; };}, res: {
+        end(jsonResponse: any): unknown;redirect: (arg0:string,) => void
+    }) =>
     {
         const { userId, flockSalt } = _req.body;
+        
         await addUserToFlock(Number(userId), flockSalt);
-        res.redirect("/flock-index");
+
+        var responseData= {
+            message: "successfully added friend to flock",
+        };
+
+        res.end(JSON.stringify(responseData));
     }
 
     // delete all user in flocks entrys and the correlating flock

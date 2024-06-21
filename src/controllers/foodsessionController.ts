@@ -91,11 +91,16 @@ export module foodsession {
         })
     }
 
-    export const createFoodSessionLink = async (_req: any, res: {redirect: (arg0: string) => void;}) => 
+    export const createFoodSessionLink = async (_req: any, res: { end(jsonResponse: any): unknown;})=> 
     {
         const{flockId, name} = _req.body
         await createFoodSession(Number(flockId), name);
-        res.redirect("/flock-index");
+
+        var responseData = {
+            message: "successfully added Foodsession",
+        }
+
+        res.end(JSON.stringify(responseData))
     }
 
     export const getFlockIdByFoodSessionId = async(foodsessionId: number) =>
@@ -158,7 +163,7 @@ export module foodsession {
                 isFlockLeader: isFlockLeader,
                 foodsessionentrys: foodsessionentrys,
                 isUserInFoodSession: isUserInFoodSession,
-                foodsessionType: foodsession.type,
+                foodsessionType: foodsession.fkFoodsessionType,
                 input: {
                     radius: _req.query.radius,
                 },

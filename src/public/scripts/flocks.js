@@ -7,46 +7,46 @@ function copyInviteLink()
     navigator.clipboard.writeText(copyText.innerHTML);
 } 
 
-// var addFlockForm = document.getElementById('add-flock-form');
-// if(addFlockForm != null)
-// {
-//     addFlockForm.addEventListener('submit', async function(event) {
+var addFlockForm = document.getElementById('add-flock-form');
+if(addFlockForm != null)
+{
+    addFlockForm.addEventListener('submit', async function(event) {
     
-//         var flockErrorMessage = document.getElementById("flock-error-message");
+        var flockErrorMessage = document.getElementById("flock-error-message");
     
-//         event.preventDefault();
+        event.preventDefault();
 
-//         const formData = new FormData(this);
-//         const name = formData.get('name');
+        const formData = new FormData(this);
+        const name = formData.get('name');
 
-//         try 
-//         {
-//             const response = await fetch('/flock-create', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 },
-//                 body: JSON.stringify({ name })
-//             });
+        try 
+        {
+            const response = await fetch('/flock-create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name })
+            });
 
-//             const data = await response.json();
-//             if (response.ok) 
-//             {
-//                 window.location.replace('/flock-index');
-//             } 
-//             else 
-//             {
-//                 flockErrorMessage.style.display = 'initial';
+            const data = await response.json();
+            if (response.ok) 
+            {
+                window.location.reload();
+            } 
+            else 
+            {
+                flockErrorMessage.style.display = 'initial';
 
-//                 throw new Error(data.message || 'creation failed');
-//             }
-//         } 
-//         catch (error) 
-//         {
-//             console.error('flock error:', error.message);
-//         }
-//     });
-// }
+                throw new Error(data.message || 'creation failed');
+            }
+        } 
+        catch (error) 
+        {
+            console.error('flock error:', error.message);
+        }
+    });
+}
 
 var inviteFriendToFlockForm = document.getElementById('invite-friend-to-flock-form');
 if(inviteFriendToFlockForm != null)
@@ -74,6 +74,9 @@ if(inviteFriendToFlockForm != null)
             if (!response.ok) 
             {
                 throw new Error(data.message || 'adding failed');
+            }
+            else {
+                window.location.reload();
             } 
         } 
         catch (error) 
@@ -103,11 +106,10 @@ if(addFoodsessionForm != null)
                 },
                 body: JSON.stringify({name, flockId})
             });
-
             const data = await response.json();
             if (response.ok) 
             {
-                window.location.replace('/flock-show/' + encodeURIComponent(JSON.stringify({id: flockId})));
+                window.location.reload();
             } 
             else 
             {
