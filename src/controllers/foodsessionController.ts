@@ -86,6 +86,7 @@ export module foodsession {
             data: {
                 name: name,
                 fkFlockId: flockId,
+                fkFoodsessionType: "unset"
             }
         })
     }

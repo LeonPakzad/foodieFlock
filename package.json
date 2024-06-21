@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "project prototype to test web elements",
   "main": "index.js",
+  "prisma": {
+    "seed": "npx ts-node prisma/seed.ts"
+  },
   "scripts": {
     "test": "test"
   },
@@ -24,4 +27,5 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12"
   }
+  
 }

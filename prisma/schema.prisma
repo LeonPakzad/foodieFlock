@@ -38,21 +38,19 @@ model user {
 model foodsession {
   id                    Int       @id @default(autoincrement())
   fkFlockId             Int       @unique
-  type                  String    @default("unset")
+  fkFoodsessionType     String    @default("unset")
   name                  String
   foodTime              DateTime  @default(now())
-  fkFoodsessionType     Int       @default(0)
 
   foodsessionentry      foodsessionentry[]
   locationinfoodsession locationsinfoodsessionentrys[]
   foodtime              foodtime[]
-  foodsessiontype       foodsessiontype @relation(fields: [fkFoodsessionType], references: [id])
+  foodsessiontype       foodsessiontype @relation(fields: [fkFoodsessionType], references: [name])
 }
 
 model foodsessiontype {
   id          Int @id @default(autoincrement())
-  name        String @default("unset")
-
+  name        String @unique @default("unset")
   foodsession foodsession[]
 }
 
