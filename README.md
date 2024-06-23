@@ -18,8 +18,6 @@ TOKEN_SECRET="your token_secret string"
 
 ```npx prisma migrate dev --name init```
 
-```npx prisma db seed```
-
 ```cd /src```
 
 ```npx ts-node index.ts```

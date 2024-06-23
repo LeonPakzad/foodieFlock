@@ -18,6 +18,7 @@ model flock {
 
 model user {
   id                  Int       @id @default(autoincrement())
+  
   name                String
   email               String    @unique(map: "User_email_key")
   password            String
@@ -36,22 +37,41 @@ model user {
 }
 
 model foodsession {
-  id                    Int       @id @default(autoincrement())
-  fkFlockId             Int       
-  fkFoodsessionType     String    @default("unset")
-  name                  String
-  foodTime              DateTime  @default(now())
+  id                            Int       @id @default(autoincrement())
+  
+  name                          String
+  foodsessionAppointmentType    String    @default("unset")
+  foodTime                      DateTime  @default(now())
+  isIndividualTimeSwitchChecked Boolean   @default(false)
 
-  foodsessionentry      foodsessionentry[]
+  rouletteRadius                Float     @default(1)
+  swypeRadius                   Float     @default(1)
+  
+  fkFlockId                     Int       
+  fkFoodsessionDecisionType     Int       @default(1)
+
+  foodsessionntry      foodsessionentry[]
   locationinfoodsession locationsinfoodsessionentrys[]
   foodtime              foodtime[]
-  foodsessiontype       foodsessiontype @relation(fields: [fkFoodsessionType], references: [name])
+  foodsessiondecisiontype       foodsessiondecisiontype @relation(fields: [fkFoodsessionDecisionType], references: [id])
+  foodsessionpoll foodsessionpoll[]
 }
 
-model foodsessiontype {
+model foodsessiondecisiontype {
   id          Int @id @default(autoincrement())
-  name        String @unique @default("unset")
+  name        String @default("unset")
   foodsession foodsession[]
+}
+
+model foodsessionpoll {
+  id            Int @id @default(autoincrement())
+
+  isPollAnswersAnonymousChecked Boolean
+  isPollMultipleAnwersChecked   Boolean
+
+  fkFoodSession Int
+
+  foodsession   foodsession @relation(fields: [fkFoodSession], references: [id])
 }
 
 model foodtime {

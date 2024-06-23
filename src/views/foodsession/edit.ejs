@@ -2,214 +2,220 @@
     <%- include('../templates/sidenav'); -%>
     
     <div class="content">
-        
-        <div class="content-block">
-            <div class="row-center">
-                <h1>
-                    <%= foodsession.name %>
-                    - settings
-                </h1>
+        <form id="update-foodsession-form">
+            <div>
+            <div class="content-block">
+                <div class="row-center">
+                    <h1>
+                        <%= foodsession.name %>
+                        - settings
+                    </h1>
+                </div>
             </div>
-        </div>
             
+            <input name="foodsession-id" value="<%=foodsession.id%>" type="hidden"> 
 
-        <div class="content-card">
-            <div class="row-center">
-                <div>
-                    <div>set foodsession-type:</div>
-                    <select id="foodsession-type" class="select" onchange="setFoodSessionType()">
-                        <option value="">?</option>
-                        <option value="single-session"> Single Session</option>
-                        <option value="daily-fooding">  Daily Fooding</option>
+            <div class="content-card">
+                <div class="row-center">
+                    <div>
+                        <div>set if this is a single or weekly appointment:</div>
+                        <select name="foodsession-appointment-type" id="foodsession-appointment-type" class="select" onchange="setFoodsessionAppointmentType()">
+                            <option value="">?</option>
+                            <option value="single-session"> Single Session</option>
+                            <option value="weekly-fooding">  Weekly Fooding</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="weekly-fooding-container" class="row-center" style="display:none">
+                    <div>
+                        <div class="row-center">
+                            <div class="checkbox-container">
+                                Individual Times
+                                <input id="individual-time-switch" class="checkbox" type="checkbox" onchange="toggleSessionTimeInput()"></input>
+                            </div>
+                            <div id="collective-session-time-container" class="checkbox-container">
+                                <div class="row-center">
+                                    Collective Session Time: 
+                                    <input name="collective-session-time" id="collective-session-time" type="time"></input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-center">
+                            set weekly schedule:
+                        </div>
+                            <div class="checkbox-container">
+                                Monday   
+                                <input id="is-monday-switch"    class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-container">
+                                Tuesday
+                                <input id="is-tuesday-switch"   class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-container">
+                                Wednesday
+                                <input id="is-wednesday-switch" class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-container">
+                                Thursday 
+                                <input id="is-thursday-switch"  class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-container">
+                                Friday   
+                                <input id="is-friday-switch"    class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-container">
+                                Saturday 
+                                <input id="is-saturday-switch"  class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                            <div class="checkbox-container">
+                                Sunday   
+                                <input id="is-sunday-switch"    class="checkbox"        type="checkbox"></input>
+                                <input name="individual-time"   class="individual-time" type="time"></input>
+                            </div>
+                    </div>
+                </div>
+
+                <div id="single-session-container" class="row-center" style="display:none">
+                    <div>
+                        <div class="row-center">set time:</div>
+                        <input name="single-session-time" type="time"></input>
+                    </div>
+                </div>
+            </div>
+            <div class="content-card">
+
+                <div id="decision-container" class="row-center">
+                    <h3>
+                        How do you decide what to eat?
+                    </h3>
+                    <select name="foodsession-decision-type" class="select" id="foodsession-decision-type" onchange="setFoodsessionDecisionType()">
+                        <option default value="">?</option>
+                        <option value="roulette">       Roulette</option>
+                        <option value="poll">           Poll</option>
+                        <option value="swyping">        Swyping</option>
+                        <option value="individual">     Individual</option>
                     </select>
                 </div>
-            </div>
-            
-            <div id="daily-fooding-container" class="row-center" style="display:none">
-                <div>
-                    <div class="checkbox-container">
-                        Individual Times
-                        <input id="individual-time-switch" class="checkbox" type="checkbox" onchange="toggleSessionTimeInput()"></input>
-                    </div>
-                    <div></div>
-                    <div id="group-time-container" class="checkbox-containter">
-                        Session Time: 
-                        <input id="group-time" type="time"></input>
-                    </div>
 
-                    <div class="row-center">
-                        set weekly schedule:
-                    </div>
-                        <div class="checkbox-containter">
-                            Monday   
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
+            </div> 
+            <div class="content-card">
+
+                <div class="row-center" id="roulette-container" style="display:none">
+                    <div>
+                        <div class="info-card">
+                            get a random restaurant in your area
                         </div>
-                        <div class="checkbox-containter">
-                            Tuesday
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
-                        </div>
-                        <div class="checkbox-containter">
-                            Wednesday
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
-                        </div>
-                        <div class="checkbox-containter">
-                            Thursday 
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
-                        </div>
-                        <div class="checkbox-containter">
-                            Friday   
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
-                        </div>
-                        <div class="checkbox-containter">
-                            Saturday 
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
-                        </div>
-                        <div class="checkbox-containter">
-                            Sunday   
-                            <input class="checkbox" type="checkbox"></input>
-                            <input class="individual-time" type="time"></input>
-                        </div>
-                </div>
-            </div>
 
-            <div id="single-session-container" class="row-center" style="display:none">
-                <div>
-                    <div class="row-center">set time:</div>
-                    <input type="time"></input>
-                </div>
-            </div>
-        </div>
-        <div class="content-card">
-
-            <div id="decision-container" class="row-center">
-                <h3>
-                    How do you decide what to eat?
-                </h3>
-                <select class="select" id="decision-type" onchange="setDecisionType()">
-                    <option default value="">?</option>
-                    <option value="roulette">       Roulette</option>
-                    <option value="poll">           Poll</option>
-                    <option value="swyping">        Swyping</option>
-                    <option value="individual">     Individual</option>
-                </select>
-            </div>
-
-        </div> 
-        <div class="content-card">
-
-            <div class="row-center" id="roulette-container" style="display:none">
-                <div>
-                    <div class="info-card">
-                        get a random restaurant in your area
-                    </div>
-
-                    <h3>
-                        Set filters for the food roulette.
-                    </h3>
-
-                    <div class="row-center">
-                        <select class="select" name="radius" id="distanceSelect" onchange="updateDistanceSelect()">
-                            <option value="1"       <% if (input.radius == 1) { %> selected <% } %>>1 km</option>
-                            <option value="2"       <% if (input.radius == 2) { %> selected <% } %>>2 km</option>
-                            <option value="3"       <% if (input.radius == 3) { %> selected <% } %>>3 km</option>
-                            <option value="5"       <% if (input.radius == 5) { %> selected <% } %>>5 km</option>
-                            <option value="10"      <% if (input.radius == 10) { %> selected <% } %>>10 km</option>
-                            <option value="15"      <% if (input.radius == 15) { %> selected <% } %>>15 km</option>
-                            <option value="20"      <% if (input.radius == 20) { %> selected <% } %>>20 km</option>
-                            <option value="custom"  <% if (input.radius == 'custom') { %> selected <% } %>>custom (km)</option>
-                        </select>
-
-                        <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-center" id="poll-container" style="display:none">
-                <div>
-                    <div class="info-card">
-                        create a poll of everyones favorite food-options for the people in the foodsession to vote on.
-                    </div>
-
-                    <div class="row-center">
                         <h3>
-                            Poll settings:
+                            Set filters for the food roulette.
                         </h3>
-                    </div>
-                    <div class="row">
-                        <div class="checkbox-containter">
-                            <input class="checkbox" type="checkbox">allow Multiple answers</input>
+
+                        <div class="row-center">
+                            <select class="select" name="roulette-radius" id="distanceSelect" onchange="updateDistanceSelect()">
+                                <option value="1"       <% if (input.radius == 1)       { %> selected <% } %>>1 km</option>
+                                <option value="2"       <% if (input.radius == 2)       { %> selected <% } %>>2 km</option>
+                                <option value="3"       <% if (input.radius == 3)       { %> selected <% } %>>3 km</option>
+                                <option value="5"       <% if (input.radius == 5)       { %> selected <% } %>>5 km</option>
+                                <option value="10"      <% if (input.radius == 10)      { %> selected <% } %>>10 km</option>
+                                <option value="15"      <% if (input.radius == 15)      { %> selected <% } %>>15 km</option>
+                                <option value="20"      <% if (input.radius == 20)      { %> selected <% } %>>20 km</option>
+                                <option value="custom"  <% if (input.radius == 'custom'){ %> selected <% } %>>custom (km)</option>
+                            </select>
+
+                            <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
                         </div>
-                        <div class="checkbox-containter">
-                            <input class="checkbox" type="checkbox">anonymous answers?</input>
-                        </div>
-                    </div>
-                    <div class="row-center">
-                        <h3>
-                            Poll options:
-                        </h3>
-                    </div> 
-                    <div class="row-center">
-                        <input id="add-poll-option-input" class="input" type="text" placeholder="add poll option">
-                        <div class="link-button" onclick="addPollOption()">
-                            <img title="add poll option" alt="add poll option" src="/public/assets/icon-add-white.png">
-                        </div>
-                    </div>
-                    <div class="row-center">
-                        <div id="poll-options-container"></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row-center" id="swyping-container" style="display:none">
-                <div>
-                    <div class="info-card">
-                        This works like tinder - but for food! Each participant will swype - 
-                        in the end, youll have a list of food options that everyone is fine with.
-                    </div>
-                    
-                    <div class="row-center">
-                        <h3>
-                            Set filters for the food swype.
-                        </h3>
-                    </div>
+                <div class="row-center" id="poll-container" style="display:none">
+                    <div>
+                        <div class="info-card">
+                            create a poll of everyones favorite food-options for the people in the foodsession to vote on.
+                        </div>
 
-                    <div class="row-center">
-                        <select class="select" name="radius" id="distanceSelect" onchange="updateDistanceSelect()">
-                            <option value="1"       <% if (input.radius == 1) { %> selected <% } %>>1 km</option>
-                            <option value="2"       <% if (input.radius == 2) { %> selected <% } %>>2 km</option>
-                            <option value="3"       <% if (input.radius == 3) { %> selected <% } %>>3 km</option>
-                            <option value="5"       <% if (input.radius == 5) { %> selected <% } %>>5 km</option>
-                            <option value="10"      <% if (input.radius == 10) { %> selected <% } %>>10 km</option>
-                            <option value="15"      <% if (input.radius == 15) { %> selected <% } %>>15 km</option>
-                            <option value="20"      <% if (input.radius == 20) { %> selected <% } %>>20 km</option>
-                            <option value="custom"  <% if (input.radius == 'custom') { %> selected <% } %>>custom (km)</option>
-                        </select>
-
-                        <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
+                        <div class="row-center">
+                            <h3>
+                                Poll settings:
+                            </h3>
+                        </div>
+                        <div class="row-center">
+                            <div class="checkbox-container">
+                                <input id="is-poll-multiple-answers" class="checkbox" type="checkbox">allow Multiple answers</input>
+                            </div>
+                            <div class="checkbox-container">
+                                <input id="is-poll-answers-anonymous" class="checkbox" type="checkbox">anonymous answers?</input>
+                            </div>
+                        </div>
+                        <div class="row-center">
+                            <h3>
+                                Poll options:
+                            </h3>
+                        </div> 
+                        <div class="row-center">
+                            <input id="add-poll-option-input" class="input" type="text" placeholder="add poll option">
+                            <div class="link-button" onclick="addPollOption()">
+                                <img title="add poll option" alt="add poll option" src="/public/assets/icon-add-white.png">
+                            </div>
+                        </div>
+                        <div class="row-center">
+                            <div id="poll-options-container"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row-center info-card" id="individual-container" style="display:none">
-                Users will be able to individually set when theill go to get their food and when to eat it.
-                This is perfect for larger groups where its not guaranteed that you all get food from the same place. 
-            </div>
-            
-        </div>
-        <div class="row-center">
-            <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-back-white.png">
-            </a>
-            <div></div>
-            <button class="button">save</button>
-        </div>
+                <div class="row-center" id="swyping-container" style="display:none">
+                    <div>
+                        <div class="info-card">
+                            This works like tinder - but for food! Each participant will swype - 
+                            in the end, youll have a list of food options that everyone is fine with.
+                        </div>
+                        
+                        <div class="row-center">
+                            <h3>
+                                Set filters for the food swype.
+                            </h3>
+                        </div>
 
-    </div>
-    <script src="/public/scripts/foodsessionEdit.js"></script>
+                        <div class="row-center">
+                            <select class="select" name="swype-radius" id="distanceSelect" onchange="updateDistanceSelect()">
+                                <option value="1"       <% if (input.radius == 1)       { %> selected <% } %>>1 km</option>
+                                <option value="2"       <% if (input.radius == 2)       { %> selected <% } %>>2 km</option>
+                                <option value="3"       <% if (input.radius == 3)       { %> selected <% } %>>3 km</option>
+                                <option value="5"       <% if (input.radius == 5)       { %> selected <% } %>>5 km</option>
+                                <option value="10"      <% if (input.radius == 10)      { %> selected <% } %>>10 km</option>
+                                <option value="15"      <% if (input.radius == 15)      { %> selected <% } %>>15 km</option>
+                                <option value="20"      <% if (input.radius == 20)      { %> selected <% } %>>20 km</option>
+                                <option value="custom"  <% if (input.radius == 'custom'){ %> selected <% } %>>custom (km)</option>
+                            </select>
+
+                            <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-center info-card" id="individual-container" style="display:none">
+                    Users will be able to individually set when theill go to get their food and when to eat it.
+                    This is perfect for larger groups where its not guaranteed that you all get food from the same place. 
+                </div>
+                
+            </div>
+            <div class="row-center">
+                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                    <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-back-white.png">
+                </a>
+                <div></div>
+                <button type="submit" class="button">save</button>
+            </div>
+        </form>
+    </div>  
 </div>
+
+<script src="/public/scripts/foodsessionEdit.js"></script>

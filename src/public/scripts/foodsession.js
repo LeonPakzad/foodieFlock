@@ -1,6 +1,6 @@
 function toggleSessionTimeInput() {
     var individualTimes = document.getElementsByClassName("individual-time");
-    var groupTimeContainer = document.getElementById("group-time-container");
+    var collectiveSessionTimeContainer = document.getElementById("collective-session-time-container");
     var isIndividualTimeSwitch = document.getElementById("individual-time-switch");
 
     console.log(isIndividualTimeSwitch.checked)
@@ -10,32 +10,32 @@ function toggleSessionTimeInput() {
             element.style.display= "block"
         });
 
-        groupTimeContainer.style.display = "none";
+        collectiveSessionTimeContainer.style.display = "none";
     }
     else
     {
         Array.from(individualTimes).forEach((element) => {
             element.style.display= "none";
         });
-        groupTimeContainer.style.display = "block";
+        collectiveSessionTimeContainer.style.display = "block";
     }
 }
 
-function setFoodSessionType() {
-    var foodsessionSelect = document.getElementById("foodsession-type");
+function setFoodSessionDecisionType() {
+    var foodsessionAppointmentTypeSelect = document.getElementById("foodsession-appointment-type");
 
-    var dailyFoolingContainer = document.getElementById("daily-fooding-container");
+    var weeklyFoodingContainer = document.getElementById("weekly-fooding-container");
     var singleSessionContainer = document.getElementById("single-session-container");
 
     var rouletteContainer = document.getElementById("roulette-container");
     var pollContainer = document.getElementById("poll-container");
     var swypingContainer = document.getElementById("swyping-container");
 
-    switch(foodsessionSelect.value)
+    switch(foodsessionAppointmentTypeSelect.value)
     {
         case "single-session":
             singleSessionContainer.style.display = "flex";    
-            dailyFoolingContainer.style.display = "none";   
+            weeklyFoodingContainer.style.display = "none";   
             
             // single decision elements
             rouletteContainer.style.display = "none";    
@@ -43,8 +43,8 @@ function setFoodSessionType() {
             swypingContainer.style.display = "none"; 
         break;
 
-        case "daily-fooding":
-            dailyFoolingContainer.style.display = "flex";    
+        case "weekly-fooding":
+            weeklyFoodingContainer.style.display = "flex";    
             singleSessionContainer.style.display = "none";
             
             // single decision elements
@@ -53,7 +53,7 @@ function setFoodSessionType() {
             swypingContainer.style.display = "none"; 
         break;
         default:
-            dailyFoolingContainer.style.display = "none";    
+            weeklyFoodingContainer.style.display = "none";    
             singleSessionContainer.style.display = "none";
             
             // single decision elements
@@ -64,8 +64,8 @@ function setFoodSessionType() {
     }
 }
 
-function setDecisionType() {    
-    var decisionSelect = document.getElementById("decision-type");
+function setFoodsessionAppointmentType() {    
+    var decisionSelect = document.getElementById("foodsession-decision-type");
 
     var rouletteContainer = document.getElementById("roulette-container");
     var pollContainer = document.getElementById("poll-container");

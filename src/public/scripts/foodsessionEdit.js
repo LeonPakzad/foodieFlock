@@ -1,41 +1,40 @@
 function toggleSessionTimeInput() {
     var individualTimes = document.getElementsByClassName("individual-time");
-    var groupTimeContainer = document.getElementById("group-time-container");
+    var collectiveSessionTimeContainer = document.getElementById("collective-session-time-container");
     var isIndividualTimeSwitch = document.getElementById("individual-time-switch");
 
-    console.log(isIndividualTimeSwitch.checked)
     if(isIndividualTimeSwitch.checked)
     {
         Array.from(individualTimes).forEach((element) => {
             element.style.display= "block"
         });
 
-        groupTimeContainer.style.display = "none";
+        collectiveSessionTimeContainer.style.display = "none";
     }
     else
     {
         Array.from(individualTimes).forEach((element) => {
             element.style.display= "none";
         });
-        groupTimeContainer.style.display = "block";
+        collectiveSessionTimeContainer.style.display = "block";
     }
 }
 
-function setFoodSessionType() {
-    var foodsessionSelect = document.getElementById("foodsession-type");
+function setFoodsessionAppointmentType() {
+    var foodsessionAppointmentTypeSelect = document.getElementById("foodsession-appointment-type");
 
-    var dailyFoolingContainer = document.getElementById("daily-fooding-container");
+    var weeklyFoodingContainer = document.getElementById("weekly-fooding-container");
     var singleSessionContainer = document.getElementById("single-session-container");
 
     var rouletteContainer = document.getElementById("roulette-container");
     var pollContainer = document.getElementById("poll-container");
     var swypingContainer = document.getElementById("swyping-container");
 
-    switch(foodsessionSelect.value)
+    switch(foodsessionAppointmentTypeSelect.value)
     {
         case "single-session":
             singleSessionContainer.style.display = "flex";    
-            dailyFoolingContainer.style.display = "none";   
+            weeklyFoodingContainer.style.display = "none";   
             
             // single decision elements
             rouletteContainer.style.display = "none";    
@@ -43,8 +42,8 @@ function setFoodSessionType() {
             swypingContainer.style.display = "none"; 
         break;
 
-        case "daily-fooding":
-            dailyFoolingContainer.style.display = "flex";    
+        case "weekly-fooding":
+            weeklyFoodingContainer.style.display = "flex";    
             singleSessionContainer.style.display = "none";
             
             // single decision elements
@@ -53,7 +52,7 @@ function setFoodSessionType() {
             swypingContainer.style.display = "none"; 
         break;
         default:
-            dailyFoolingContainer.style.display = "none";    
+            weeklyFoodingContainer.style.display = "none";    
             singleSessionContainer.style.display = "none";
             
             // single decision elements
@@ -64,8 +63,8 @@ function setFoodSessionType() {
     }
 }
 
-function setDecisionType() {    
-    var decisionSelect = document.getElementById("decision-type");
+function setFoodsessionDecisionType() {    
+    var decisionSelect = document.getElementById("foodsession-decision-type");
 
     var rouletteContainer = document.getElementById("roulette-container");
     var pollContainer = document.getElementById("poll-container");
@@ -169,4 +168,110 @@ function deletePollOption(id) {
     if (pollOptionContainer) {
         pollOptionContainer.remove();
     }
+}
+
+var updateFoodsessionForm = document.getElementById('update-foodsession-form');
+if(updateFoodsessionForm != null)
+{
+    updateFoodsessionForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const foodsessionID = formData.get('foodsession-id');
+
+        const foodsessionAppointmentType    = formData.get('foodsession-appointment-type');
+        const isIndividualTimeSwitchChecked = document.getElementById("individual-time-switch").checked;
+        const foodsessionDecisionType       = formData.get('foodsession-decision-type');
+        const collectiveSessionTime         = formData.get('collective-session-time');
+        const individualTimes               = formData.getAll('individual-time');
+        const rouletteRadius                = formData.get('roulette-radius');
+        const swypeRadius                   = formData.get('swype-radius');
+        const singleSessionTime             = formData.get('single-session-time');
+
+        const isMondaySwitchChecked         = document.getElementById('is-monday-switch').checked;
+        const isTuesdaySwitchChecked        = document.getElementById('is-tuesday-switch').checked;
+        const isWednesdaySwitchChecked      = document.getElementById('is-wednesday-switch').checked;
+        const isThursdaySwitchChecked       = document.getElementById('is-thursday-switch').checked;
+        const isFridaySwitchChecked         = document.getElementById('is-friday-switch').checked;
+        const isSaturdaySwitchChecked       = document.getElementById('is-saturday-switch').checked;
+        const isSundaySwitchChecked         = document.getElementById('is-sunday-switch').checked;
+
+        const isPollMultipleAnswersChecked  = document.getElementById('is-poll-multiple-answers').checked;
+        const isPollAnswersAnonymousChecked = document.getElementById('is-poll-answers-anonymous').checked;
+        const pollAnswers = Array.from(document.querySelectorAll('.poll-item-text').values()).map(element => element.textContent);
+
+
+        console.log(foodsessionID);
+        console.log(foodsessionAppointmentType);
+        console.log(isIndividualTimeSwitchChecked);
+        console.log(foodsessionDecisionType);
+
+        console.log("radius:")
+        console.log(rouletteRadius);
+        console.log(swypeRadius);
+        
+        console.log("times:")
+        console.log(singleSessionTime);
+        console.log(collectiveSessionTime);
+        console.log(individualTimes);
+        console.log(isMondaySwitchChecked);
+        console.log(isTuesdaySwitchChecked);
+        console.log(isWednesdaySwitchChecked);
+        console.log(isThursdaySwitchChecked);
+        console.log(isFridaySwitchChecked);
+        console.log(isSaturdaySwitchChecked);
+        console.log(isSundaySwitchChecked);
+
+        console.log("poll:")
+        console.log(isPollMultipleAnswersChecked);
+        console.log(isPollAnswersAnonymousChecked);
+        console.log(pollAnswers);
+        try 
+        {
+            const response = await fetch('/foodsession-update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    foodsessionID,
+                    foodsessionAppointmentType,
+                    isIndividualTimeSwitchChecked,
+                    foodsessionDecisionType,
+
+                    singleSessionTime,
+                    collectiveSessionTime,
+                    individualTimes,
+                    isMondaySwitchChecked,
+                    isTuesdaySwitchChecked,
+                    isWednesdaySwitchChecked,
+                    isThursdaySwitchChecked,
+                    isFridaySwitchChecked,
+                    isSaturdaySwitchChecked,
+                    isSundaySwitchChecked,
+
+                    rouletteRadius,
+                    swypeRadius,
+
+                    isPollAnswersAnonymousChecked,
+                    isPollMultipleAnswersChecked,
+                    pollAnswers,
+                })
+            });
+    
+            const data = await response.json();
+    
+            if (!response.ok) 
+            {
+                throw new Error(data.message || 'updating failed');
+            }
+            else 
+            {
+                // window.location.reload();
+            } 
+        }
+        catch(error)
+        {
+            console.error('foodsession error:', error.message);
+        }
+    });
 }

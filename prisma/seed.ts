@@ -3,31 +3,31 @@ const prisma = new PrismaClient()
 
 async function main() {
 
-    await prisma.foodsessiontype.create({
+    await prisma.foodsessiondecisiontype.create({
         data: {
             name: "unset", 
         }
     });
 
-    await prisma.foodsessiontype.create({
+    await prisma.foodsessiondecisiontype.create({
         data: {
             name: "roulette", 
         }
     });
 
-    await prisma.foodsessiontype.create({
+    await prisma.foodsessiondecisiontype.create({
         data: {
             name: "poll", 
         }
     });
 
-    await prisma.foodsessiontype.create({
+    await prisma.foodsessiondecisiontype.create({
         data: {
             name: "swyping", 
         }
     });
 
-    await prisma.foodsessiontype.create({
+    await prisma.foodsessiondecisiontype.create({
         data: {
             name: "individual", 
         }

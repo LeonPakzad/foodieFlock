@@ -86,7 +86,10 @@ export module foodsession {
             data: {
                 name: name,
                 fkFlockId: flockId,
-                fkFoodsessionType: "unset"
+                fkFoodsessionDecisionType: 1,
+                swypeRadius: 1,
+                rouletteRadius: 1,
+                isIndividualTimeSwitchChecked: false,
             }
         })
     }
@@ -97,7 +100,7 @@ export module foodsession {
         await createFoodSession(Number(flockId), name);
 
         var responseData = {
-            message: "successfully added Foodsession",
+            message: "successfully added foodsession",
         }
 
         res.end(JSON.stringify(responseData))
@@ -163,7 +166,7 @@ export module foodsession {
                 isFlockLeader: isFlockLeader,
                 foodsessionentrys: foodsessionentrys,
                 isUserInFoodSession: isUserInFoodSession,
-                foodsessionType: foodsession.fkFoodsessionType,
+                foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
                 input: {
                     radius: _req.query.radius,
                 },
@@ -248,5 +251,96 @@ export module foodsession {
         {
             res.redirect("/flock-index");
         }
+    }
+
+    export const getFoodsessionDecisionTypeByName = async(decisionType: string) =>
+    {
+        var foodsessionDecisionType = await prisma.foodsessiondecisiontype.findFirst({
+            where: {
+                name: decisionType
+            }
+        });
+
+        if(foodsessionDecisionType == null)
+        {
+            return 1;
+        }
+        else
+        {
+            return foodsessionDecisionType.id;
+        }
+    }
+
+    export const updateFoodSession = async(
+        _req: any, 
+        res: {
+            end: (responseData: any) => void;
+            render: (arg0: string, arg1: any) => void;json: any;
+            redirect: (arg0: string) => void;
+        }
+    ) =>
+    {
+        const { 
+            foodsessionID,
+            foodsessionAppointmentType,
+            isIndividualTimeSwitchChecked,
+            fooddecisionType,
+
+            singleSessionTime,
+            collectiveSessionTime,
+            individualTimes,
+            isMondaySwitchChecked,
+            isTuesdaySwitchChecked,
+            isWednesdaySwitchChecked,
+            isThursdaySwitchChecked,
+            isFridaySwitchChecked,
+            isSaturdaySwitchChecked,
+            isSundaySwitchChecked,
+
+            rouletteRadius,
+            swypeRadius,
+
+            isPollAnswersAnonymousChecked,
+            isPollMultipleAnswersChecked,
+            pollAnswers
+        } = _req.body;
+
+        console.log(swypeRadius);
+
+        await prisma.foodsession.update({
+            where: {
+                id: foodsessionID
+            },
+            data: {
+                foodsessionAppointmentType: foodsessionAppointmentType,
+                isIndividualTimeSwitchChecked: isIndividualTimeSwitchChecked,
+                fkFoodsessionDecisionType: await getFoodsessionDecisionTypeByName(fooddecisionType),
+
+                rouletteRadius: rouletteRadius,
+                swypeRadius: swypeRadius,
+            }
+        })
+        
+        // isPollAnswersAnonymousChecked: isPollAnswersAnonymousChecked,
+        // isPollMultipleAnswersChecked: isPollMultipleAnswersChecked,
+        // pollAnswers: pollAnswers
+        // singleSessionTime: singleSessionTime,
+        // collectiveSessionTime: collectiveSessionTime,
+        // individualTimes: individualTimes,
+
+        // isMondaySwitchChecked: isMondaySwitchChecked,
+        // isTuesdaySwitchChecked: isTuesdaySwitchChecked,
+        // isWednesdaySwitchChecked: isWednesdaySwitchChecked,
+        // isThursdaySwitchChecked: isThursdaySwitchChecked,
+        // isFridaySwitchChecked: isFridaySwitchChecked,
+        // isSaturdaySwitchChecked: isSaturdaySwitchChecked,
+        // isSundaySwitchChecked: isSundaySwitchChecked,
+
+
+        var responseData = {
+            message: "successfully updated foodsession",
+        }
+
+        res.end(JSON.stringify(responseData))
     }
 }
