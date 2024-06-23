@@ -309,15 +309,15 @@ export module foodsession {
 
         await prisma.foodsession.update({
             where: {
-                id: foodsessionID
+                id: Number(foodsessionID)
             },
             data: {
                 foodsessionAppointmentType: foodsessionAppointmentType,
                 isIndividualTimeSwitchChecked: isIndividualTimeSwitchChecked,
                 fkFoodsessionDecisionType: await getFoodsessionDecisionTypeByName(fooddecisionType),
 
-                rouletteRadius: rouletteRadius,
-                swypeRadius: swypeRadius,
+                rouletteRadius: Number(rouletteRadius),
+                swypeRadius: Number(swypeRadius),
             }
         })
         
