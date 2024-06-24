@@ -288,8 +288,6 @@ export module foodsession {
             isPollAnswersAnonymousChecked, isPollMultipleAnswersChecked, pollAnswers
         } = _req.body;
 
-        console.log(swypeRadius);
-
         await prisma.foodsession.update({
             where: {
                 id: Number(foodsessionID)
@@ -304,21 +302,6 @@ export module foodsession {
             }
         })
         
-        // isPollAnswersAnonymousChecked: isPollAnswersAnonymousChecked,
-        // isPollMultipleAnswersChecked: isPollMultipleAnswersChecked,
-        // pollAnswers: pollAnswers
-
-        // singleSessionTime: singleSessionTime,
-        // collectiveSessionTime: collectiveSessionTime,
-        // individualTimes: individualTimes,
-        // isMondaySwitchChecked: isMondaySwitchChecked,
-        // isTuesdaySwitchChecked: isTuesdaySwitchChecked,
-        // isWednesdaySwitchChecked: isWednesdaySwitchChecked,
-        // isThursdaySwitchChecked: isThursdaySwitchChecked,
-        // isFridaySwitchChecked: isFridaySwitchChecked,
-        // isSaturdaySwitchChecked: isSaturdaySwitchChecked,
-        // isSundaySwitchChecked: isSundaySwitchChecked,
-
         await createOrUpdateFoodsessionTime(foodsessionID, 0, singleSessionTime,        false);
         await createOrUpdateFoodsessionTime(foodsessionID, 1, individualTimes[0],       isMondaySwitchChecked);
         await createOrUpdateFoodsessionTime(foodsessionID, 2, individualTimes[1],       isTuesdaySwitchChecked);
@@ -329,6 +312,8 @@ export module foodsession {
         await createOrUpdateFoodsessionTime(foodsessionID, 7, individualTimes[6],       isSundaySwitchChecked);
         await createOrUpdateFoodsessionTime(foodsessionID, 8, collectiveSessionTime,    false);
 
+        createorUpdateFoodsessionPoll(foodsessionID, isPollMultipleAnswersChecked, isPollAnswersAnonymousChecked, pollAnswers)
+
         var responseData = {
             message: "successfully updated foodsession",
         }
@@ -338,41 +323,126 @@ export module foodsession {
 
     export const createorUpdateFoodsessionPoll = async(foodsessionId: number, isPollMultipleAnswersChecked: boolean, isPollAnswersAnonymousChecked: boolean, pollAnswers: string) =>
     {
-        var foodsessionpoll = await prisma.foodsessionpoll.update({
-            where: {
-                id: Number(foodsessionId)
-            },
-            data: {
-                fkFoodSession: foodsessionId,
-                isPollMultipleAnswersChecked: isPollMultipleAnswersChecked,
-                isPollAnswersAnonymousChecked: isPollAnswersAnonymousChecked,
-            }
-        })
 
-        for(var i = 0; i < pollAnswers.length; i++)
+        var foodsessionpoll = await prisma.foodsessionpoll.findFirst({
+            where: {
+                fkFoodSession: Number(foodsessionId)
+            }
+        });
+
+        if(foodsessionpoll == null)
         {
-            await prisma.foodsessionpollanswer.create({
+            foodsessionpoll = await prisma.foodsessionpoll.create({
                 data: {
-                    fkFoodsessionPoll: foodsessionpoll.id,
-                    name: pollAnswers[i],
+                    fkFoodSession: Number(foodsessionId),
+                    isPollMultipleAnswersChecked: Boolean(isPollMultipleAnswersChecked),
+                    isPollAnswersAnonymousChecked: Boolean(isPollAnswersAnonymousChecked),
                 }
             })
+
+            for(var i = 0; i < pollAnswers.length; i++)
+            {
+                await prisma.foodsessionpollanswer.create({
+                    data: {
+                        fkFoodsessionPoll: foodsessionpoll.id,
+                        name: pollAnswers[i],
+                        count: 0,
+                    }
+                })
+            }
+        }
+        else
+        {
+            console.log(foodsessionId);
+            await prisma.foodsessionpoll.updateMany({
+                where: {
+                    fkFoodSession: Number(foodsessionId)
+                },
+                data: {
+                    fkFoodSession: Number(foodsessionId),
+                    isPollMultipleAnswersChecked: Boolean(isPollMultipleAnswersChecked),
+                    isPollAnswersAnonymousChecked: Boolean(isPollAnswersAnonymousChecked),
+                }
+            })
+
+            // delete all poll answers and create the new ones
+            await prisma.foodsessionpollanswer.deleteMany({
+                where: {
+                    fkFoodsessionPoll: foodsessionpoll.id
+                }
+            })
+            for(var i = 0; i < pollAnswers.length; i++)
+            {
+                await prisma.foodsessionpollanswer.create({
+                    data: {
+                        fkFoodsessionPoll: foodsessionpoll.id,
+                        name: pollAnswers[i],
+                        count: 0,
+                    }
+                })
+            }
         }
     }
 
-    export const createOrUpdateFoodsessionTime = async(foodsessionId: number, weekday: number, foodtime: string, isChecked: boolean ) =>
-    {
-        await prisma.foodtime.updateMany({
+    export const createOrUpdateFoodsessionTime = async(foodsessionId: number, weekday: number, foodtime: string, isChecked: boolean ) => {
+        
+        if(!(foodtime === ""))
+        {
+            try 
+            {
+                if (foodtime.length !== 5 || foodtime[2] !== ':') 
+                {
+                    throw ('Invalid foodtime format. Please use HH:MM format.');
+                }
+            
+                const hours = parseInt(foodtime.slice(0, 2));
+                const minutes = parseInt(foodtime.slice(3));
+            
+                if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) 
+                {
+                    throw ('Invalid time values. Hours should be between 0 and 23, and minutes should be between 0 and 59.');
+                }
+            }
+            catch(error)
+            {
+                console.error('foodsession error:', error);
+            }
+        }
+        
+        var foodtimeentry = await prisma.foodtime.findFirst({
             where: {
                 AND: [
                     {fkFoodsessionId: Number(foodsessionId)},
                     {weekday: weekday},
                 ]
             },
-            data: {
-                foodtime: foodtime,
-                isChecked: isChecked,
-            },
         });
+    
+        if(foodtimeentry == null) 
+        {
+            await prisma.foodtime.create({
+                data: {
+                    fkFoodsessionId: Number(foodsessionId),
+                    weekday: weekday,
+                    foodtime: foodtime,
+                    isChecked: Boolean(isChecked),
+                }
+            })
+        } 
+        else 
+        {
+            await prisma.foodtime.updateMany({
+                where: {
+                    AND: [
+                        {fkFoodsessionId: Number(foodsessionId)},
+                        {weekday: weekday},
+                    ]
+                },
+                data: {
+                    foodtime: foodtime,
+                    isChecked: Boolean(isChecked),
+                },
+            });
+        }
     }
 } 

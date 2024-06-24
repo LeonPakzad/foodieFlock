@@ -101,7 +101,7 @@ model foodtime {
   id              Int         @id @default(autoincrement())
   fkFoodsessionId Int
   weekday         Int         @default(0)
-  foodtime        DateTime    @default(now())
+  foodtime        String?     @default("12:00")
   isChecked       Boolean     @default(false)
 
   foodsession     foodsession @relation(fields: [fkFoodsessionId], references: [id])
