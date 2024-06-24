@@ -29,6 +29,7 @@ model user {
 
   usersinflocks       usersinflocks[]
   foodsessionentry    foodsessionentry[]
+  userpollvoting      userpollvoting[]
 
   friendsRelation     user[]    @relation("friends")
   friends             user[]    @relation("friends")
@@ -50,11 +51,11 @@ model foodsession {
   fkFlockId                     Int       
   fkFoodsessionDecisionType     Int       @default(1)
 
-  foodsessionntry      foodsessionentry[]
-  locationinfoodsession locationsinfoodsessionentrys[]
-  foodtime              foodtime[]
+  foodsessionntry               foodsessionentry[]
+  locationinfoodsession         locationsinfoodsessionentrys[]
+  foodtime                      foodtime[]
   foodsessiondecisiontype       foodsessiondecisiontype @relation(fields: [fkFoodsessionDecisionType], references: [id])
-  foodsessionpoll foodsessionpoll[]
+  foodsessionpoll               foodsessionpoll[]
 }
 
 model foodsessiondecisiontype {
@@ -67,20 +68,43 @@ model foodsessionpoll {
   id            Int @id @default(autoincrement())
 
   isPollAnswersAnonymousChecked Boolean
-  isPollMultipleAnwersChecked   Boolean
+  isPollMultipleAnswersChecked   Boolean
 
   fkFoodSession Int
 
-  foodsession   foodsession @relation(fields: [fkFoodSession], references: [id])
+  foodsessionpollanswer foodsessionpollanswer[]
+  foodsession           foodsession @relation(fields: [fkFoodSession], references: [id])
+}
+
+model foodsessionpollanswer  {
+  id Int @id @default(autoincrement())
+  fkFoodsessionPoll Int
+  name String
+  count Int
+
+  userpollvoting                userpollvoting[]
+  foodsessionpoll foodsessionpoll @relation(fields: [fkFoodsessionPoll], references: [id])
+}
+
+model userpollvoting {
+  fkUser Int
+  fkFoodsessionPollAnwer Int
+
+  user                  user                  @relation(fields: [fkUser],                 references: [id], map: "userPollVoting_userid_fkey")
+  foodsessionpollanwer  foodsessionpollanswer @relation(fields: [fkFoodsessionPollAnwer], references: [id], map: "userPollVoting_foodsessionpollanwerId_fkey")
+
+  @@id([fkUser, fkFoodsessionPollAnwer])
+  @@index([fkUser], map: "locationInFoodsessions_fkLocationId_fkey")
 }
 
 model foodtime {
-  id              Int @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   fkFoodsessionId Int
-  weekday         Int @default(0)
-  foodtime        DateTime @default(now())
+  weekday         Int         @default(0)
+  foodtime        DateTime    @default(now())
+  isChecked       Boolean     @default(false)
 
-  foodsession foodsession @relation(fields: [fkFoodsessionId], references: [id])
+  foodsession     foodsession @relation(fields: [fkFoodsessionId], references: [id])
 }
 
 model location {

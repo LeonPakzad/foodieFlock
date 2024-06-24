@@ -281,28 +281,11 @@ export module foodsession {
     ) =>
     {
         const { 
-            foodsessionID,
-            foodsessionAppointmentType,
-            isIndividualTimeSwitchChecked,
-            fooddecisionType,
-
-            singleSessionTime,
-            collectiveSessionTime,
-            individualTimes,
-            isMondaySwitchChecked,
-            isTuesdaySwitchChecked,
-            isWednesdaySwitchChecked,
-            isThursdaySwitchChecked,
-            isFridaySwitchChecked,
-            isSaturdaySwitchChecked,
-            isSundaySwitchChecked,
-
-            rouletteRadius,
-            swypeRadius,
-
-            isPollAnswersAnonymousChecked,
-            isPollMultipleAnswersChecked,
-            pollAnswers
+            foodsessionID, foodsessionAppointmentType, isIndividualTimeSwitchChecked, fooddecisionType,
+            singleSessionTime, collectiveSessionTime, individualTimes,
+            isMondaySwitchChecked, isTuesdaySwitchChecked, isWednesdaySwitchChecked, isThursdaySwitchChecked, isFridaySwitchChecked, isSaturdaySwitchChecked, isSundaySwitchChecked,
+            rouletteRadius, swypeRadius,
+            isPollAnswersAnonymousChecked, isPollMultipleAnswersChecked, pollAnswers
         } = _req.body;
 
         console.log(swypeRadius);
@@ -324,10 +307,10 @@ export module foodsession {
         // isPollAnswersAnonymousChecked: isPollAnswersAnonymousChecked,
         // isPollMultipleAnswersChecked: isPollMultipleAnswersChecked,
         // pollAnswers: pollAnswers
+
         // singleSessionTime: singleSessionTime,
         // collectiveSessionTime: collectiveSessionTime,
         // individualTimes: individualTimes,
-
         // isMondaySwitchChecked: isMondaySwitchChecked,
         // isTuesdaySwitchChecked: isTuesdaySwitchChecked,
         // isWednesdaySwitchChecked: isWednesdaySwitchChecked,
@@ -336,6 +319,15 @@ export module foodsession {
         // isSaturdaySwitchChecked: isSaturdaySwitchChecked,
         // isSundaySwitchChecked: isSundaySwitchChecked,
 
+        await createOrUpdateFoodsessionTime(foodsessionID, 0, singleSessionTime,        false);
+        await createOrUpdateFoodsessionTime(foodsessionID, 1, individualTimes[0],       isMondaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 2, individualTimes[1],       isTuesdaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 3, individualTimes[2],       isWednesdaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 4, individualTimes[3],       isThursdaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 5, individualTimes[4],       isFridaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 6, individualTimes[5],       isSaturdaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 7, individualTimes[6],       isSundaySwitchChecked);
+        await createOrUpdateFoodsessionTime(foodsessionID, 8, collectiveSessionTime,    false);
 
         var responseData = {
             message: "successfully updated foodsession",
@@ -343,4 +335,44 @@ export module foodsession {
 
         res.end(JSON.stringify(responseData))
     }
-}
+
+    export const createorUpdateFoodsessionPoll = async(foodsessionId: number, isPollMultipleAnswersChecked: boolean, isPollAnswersAnonymousChecked: boolean, pollAnswers: string) =>
+    {
+        var foodsessionpoll = await prisma.foodsessionpoll.update({
+            where: {
+                id: Number(foodsessionId)
+            },
+            data: {
+                fkFoodSession: foodsessionId,
+                isPollMultipleAnswersChecked: isPollMultipleAnswersChecked,
+                isPollAnswersAnonymousChecked: isPollAnswersAnonymousChecked,
+            }
+        })
+
+        for(var i = 0; i < pollAnswers.length; i++)
+        {
+            await prisma.foodsessionpollanswer.create({
+                data: {
+                    fkFoodsessionPoll: foodsessionpoll.id,
+                    name: pollAnswers[i],
+                }
+            })
+        }
+    }
+
+    export const createOrUpdateFoodsessionTime = async(foodsessionId: number, weekday: number, foodtime: string, isChecked: boolean ) =>
+    {
+        await prisma.foodtime.updateMany({
+            where: {
+                AND: [
+                    {fkFoodsessionId: Number(foodsessionId)},
+                    {weekday: weekday},
+                ]
+            },
+            data: {
+                foodtime: foodtime,
+                isChecked: isChecked,
+            },
+        });
+    }
+} 
