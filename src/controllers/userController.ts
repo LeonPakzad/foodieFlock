@@ -1,5 +1,6 @@
 
 import { flock } from './flockController';
+import {foodsession} from './foodsessionController'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
@@ -51,6 +52,19 @@ export module user {
             },
             include: {
                 user: true
+            }
+        });
+        return usersInFlocks;
+    }
+
+    export const getFlocksByUserId = async(userId: number) =>
+    {
+        const usersInFlocks = await prisma.usersinflocks.findMany({
+            where: {
+                fkUserId: Number(userId)
+            },
+            include: {
+                flock: true
             }
         });
         return usersInFlocks;
@@ -111,6 +125,44 @@ export module user {
         return user;
     }
 
+    export const removeFriend = async (userId: any, friendId: number) =>
+    {
+        var user = await prisma.user.update({
+            where: {
+              id: userId,
+            },
+            data: {
+              friends: {
+                disconnect: {
+                  id: friendId,
+                },
+              },
+            },
+            include: {
+              friends: true,
+            },
+        });
+
+        await prisma.user.update({
+            where: {
+              id: friendId,
+            },
+            data: {
+              friends: {
+                disconnect: {
+                  id: userId,
+                },
+              },
+            },
+            include: {
+              friends: false,
+              _count: false,
+              friendsRelation: false,
+            },
+        });
+        return user;
+    }
+
     // MARK: setter
     export const createUser = async (_req: {name: string; email: string; password: string; salt: string, }) => 
     {
@@ -143,6 +195,27 @@ export module user {
     {
         try 
         {
+            // delete friend relations
+            var friends = await getFriends(_req.id);
+            if(friends != null)
+            {
+                friends.forEach(friend => {
+                    removeFriend(_req.id, friend.id);
+                });
+            }
+
+            // delete their poll votings
+            await prisma.userpollvoting.deleteMany({
+                where: {
+                    fkUser: Number(_req.id)
+                }
+            })
+
+            // delete their foodsessionentries
+            foodsession.leaveAllFoodSessions(Number(_req.id));
+
+            flock.leaveFlocks(_req.id);
+
             await prisma.user.delete({
                 where: {id: _req.id}
             })

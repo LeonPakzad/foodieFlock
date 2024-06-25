@@ -202,28 +202,99 @@ export module foodsession {
         );
     }
 
-    export const leaveFoodSession = async (_req: any, res: {redirect: (arg0: string) => void;}) =>
+    export const leaveFoodSessionLink = async (_req: any, res: {redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
         var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
         var userId = _req.user.userId;
         
-        await prisma.foodsessionentry.deleteMany({
-            where: {
-                fkUserId: Number(userId),
-                fkFoodSessionId: Number(foodsessionId.id),
-            }
-        });
+        await leaveFoodSession(foodsessionId.id, userId);
 
         res.redirect(
             "/flock-show/" + encodeURIComponent(JSON.stringify({id: flockId})) + "/foodsession-show/" + encodeURIComponent(JSON.stringify({id: foodsessionId.id}))
         );
     }
 
+    export const leaveFoodSession = async(foodsessionId: number, userId: number) =>
+    {
+        try
+        {
+            await prisma.foodsessionentry.deleteMany({
+                where: {
+                    fkUserId: Number(userId),
+                    fkFoodSessionId: Number(foodsessionId),
+                }
+            });
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+    }
+
+    export const leaveAllFoodSessions = async(userId: number) =>
+    {
+        try
+        {
+            await prisma.foodsessionentry.deleteMany({
+                where: {
+                    fkUserId: Number(userId),
+                }
+            });
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+    }
+
     export const deleteFoodSession = async(_req: any, res: {redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
         var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
+
+        var foodsessionpolls = await prisma.foodsessionpoll.findMany({
+
+        })
+
+        if(foodsessionpolls != null)
+        {
+            foodsessionpolls.forEach(async foodsessionpoll => {
+
+                var foodsessionpollanswers = prisma.foodsessionpollanswer.findMany({
+                    where: {
+                        fkFoodsessionPoll: foodsessionpoll.id
+                    }
+                }) 
+
+                
+
+                await prisma.foodsessionpollanswer.deleteMany({
+                    where: {
+                        fkFoodsessionPoll: foodsessionpoll.id
+                    }
+                })
+
+                // todo: delete user votings
+                // prisma.userpollvoting.deleteMany({
+                //     where: {
+                //         fkFoodsessionPollAnwer: foodsessionpollanswers
+                //     }
+                // })
+            });
+
+            await prisma.foodsessionpoll.deleteMany({
+                where: {
+                    fkFoodSession: foodsessionId.id
+                }
+            })
+        }
+
+        await prisma.foodtime.deleteMany({
+            where: {
+                fkFoodsessionId: foodsessionId.id
+            }
+        })
 
         await prisma.foodsessionentry.deleteMany({
             where: {
@@ -353,7 +424,6 @@ export module foodsession {
         }
         else
         {
-            console.log(foodsessionId);
             await prisma.foodsessionpoll.updateMany({
                 where: {
                     fkFoodSession: Number(foodsessionId)
