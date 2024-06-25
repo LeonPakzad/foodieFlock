@@ -14,7 +14,7 @@
 
         <div class="content-card">
 
-            <div class="row-start">
+            <div class="row-end">
                 <a class="link-button" href="/flock-leave/<%=encodeURIComponent(JSON.stringify({id: flock.id}))%>">
                     <img title="leave flock" alt="leave flock" src="/public/assets/icon-leave-white.png">
                 </a>
@@ -27,20 +27,10 @@
                 
             </div>
             
-            <div class="content-block">
 
-                <div class="row">
-                    <h2 class="row-center">
-                        members:
-                    </h2>
-
-                    <% usersInFlock.forEach(function(user) { %>
-                        <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
-                            <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
-                        </a>
-                    <% }); %>
-                </div>
-            </div>
+            <h2 class="row-center">
+                invite:
+            </h2>
 
             <div class="row">
                 <button class="link-button" onclick="copyInviteLink()">            
@@ -49,22 +39,46 @@
                 </button> 
                 <div id="invite-link" class="link-button-text "><%=inviteLink%></div>
             </div>
-            <% if(uninvitedFriends.length > 0) { %>   
-                <form id="invite-friend-to-flock-form" class="row">
-                    <button type="submit" class="link-button">
-                        <img title="invite friend" alt="invite friend" src="/public/assets/icon-user-add-white.png">
-                    </button>
-                    <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
-                    <select class="select" name ="userId" id="userId">
-                        <% uninvitedFriends.forEach(function(uninvitedFriends) { %>
-                            <option value="<%=uninvitedFriends.id%>"class="link-button">
-                                <%= uninvitedFriends.name %>
-                            </option>
+
+            <div class="row-center">
+                <% if(uninvitedFriends.length > 0) { %>   
+                    <form id="invite-friend-to-flock-form" class="row">
+                        <button type="submit" class="link-button">
+                            <img title="invite friend" alt="invite friend" src="/public/assets/icon-user-add-white.png">
+                        </button>
+                        <input type="hidden" name="flockSalt" value="<%=flock.salt%>">
+                        <select class="select" name ="userId" id="userId">
+                            <% uninvitedFriends.forEach(function(uninvitedFriends) { %>
+                                <option value="<%=uninvitedFriends.id%>"class="link-button">
+                                    <%= uninvitedFriends.name %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </form>
+                <% } else {%>
+                    <p>all people of your friendlist are in this flock already</p>
+                <% } %>
+            </div>
+
+            <div class="content-block">
+    
+                <div>
+                    <h2 class="row-center">
+                        members:
+                    </h2>
+                    <div class="row-center">
+                        <% usersInFlock.forEach(function(user) { %>
+                            <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                                <div class="col-size-2" data-tooltip= "<%=user.name%>"><%= user.name == undefined || null? '-' : user.name %> </div>
+                            </a>
                         <% }); %>
-                    </select>
-                </form>
-            <% } %>
+                    </div>
+
+                </div>
+            </div>
         </div>
+
+
         
         <div class="content-block">
             <h2 class="row-center">

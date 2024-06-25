@@ -129,6 +129,13 @@ export module foodsession {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id))
         var foodsession = await getFoodSessionById(foodsessionId);
 
+        var foodsessionpoll = await getFoodSessionPollById(foodsessionId.id);
+
+        var foodsessionpollAnswers: any[] = [];
+        if(foodsessionpoll != null)
+        {
+            foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
+        }
         if(foodsession != null)
         {
             res.render("foodsession/edit", {
@@ -136,7 +143,14 @@ export module foodsession {
                 flockId: foodsession.fkFlockId,
                 foodsession: foodsession,
                 input: {
-                    radius: _req.query.radius,
+                    foodsessionAppointmentType: foodsession.fkFoodsessionAppointmentType,
+                    isIndividualTimeSwitchChecked: foodsession.isIndividualTimeSwitchChecked,
+                    foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
+                    rouletteRadius: foodsession.rouletteRadius,
+                    swypeRadius: foodsession.swypeRadius,
+                    isPollAnswersAnonymousChecked: foodsessionpoll?.isPollAnswersAnonymousChecked,
+                    isPollMultipleAnswersChecked: foodsessionpoll?.isPollMultipleAnswersChecked,
+                    pollAnswers: foodsessionpollAnswers,
                 },
             })
         }
@@ -159,6 +173,14 @@ export module foodsession {
             }
             var isUserInFoodSession = foodsessionentrys.some(({ fkUserId }) => fkUserId === _req.user.userId);
 
+            var foodsessionpoll = await getFoodSessionPollById(foodsessionId.id);
+
+            var foodsessionpollAnswers: any[] = [];
+            if(foodsessionpoll != null)
+            {
+                foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
+            }
+
             res.render("foodsession/view", {
                 title: "foodsessions",
                 flockId: foodsession.fkFlockId,
@@ -166,10 +188,21 @@ export module foodsession {
                 isFlockLeader: isFlockLeader,
                 foodsessionentrys: foodsessionentrys,
                 isUserInFoodSession: isUserInFoodSession,
+
+                // todo: load different foodsession show views depending on type?
                 foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
-                input: {
-                    radius: _req.query.radius,
-                },
+
+
+                // input: {
+                //     foodsessionAppointmentType: foodsession.fkFoodsessionAppointmentType,
+                //     isIndividualTimeSwitchChecked: foodsession.isIndividualTimeSwitchChecked,
+                //     foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
+                //     rouletteRadius: foodsession.rouletteRadius,
+                //     swypeRadius: foodsession.swypeRadius,
+                //     isPollAnswersAnonymousChecked: foodsessionpoll?.isPollAnswersAnonymousChecked,
+                //     isPollMultipleAnswersChecked: foodsessionpoll?.isPollMultipleAnswersChecked,
+                //     pollAnswers: foodsessionpollAnswers,
+                // },
             });
         }
         else
@@ -177,6 +210,31 @@ export module foodsession {
             res.redirect("/flock-index");
         }
     }   
+
+    export const getFoodSessionPollById = async(foodsessionId: number|undefined) =>
+    {
+        if(foodsessionId != null)
+        {
+            return prisma.foodsessionpoll.findFirst({
+                where: {
+                    id: foodsessionId
+                },
+            })
+        }
+        else
+        {
+            return null
+        }
+    }
+
+    export const getFoodSessionPollAnswersByPollId = async(foodsessionPollId: number ) =>
+    {
+        return prisma.foodsessionpollanswer.findMany({
+            where: {
+                fkFoodsessionPoll: foodsessionPollId
+            },
+        })
+    }
 
     export const joinFoodSession = async(_req: any, res: {redirect: (arg0: string) => void;}) =>
     {

@@ -13,17 +13,17 @@
         </div>
         
         <div class="content-card">
-            
-            <div class="row-center">
-                <h2>
-                </h2>
-            </div>
 
-            <% if(isFlockLeader) { %>
-                <a class="link-button" href="/foodsession-edit/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                    <img title="edit session" alt="edit session" src="/public/assets/icon-settings-white.png">
-                </a>
-            <% } %>
+            <div class="row-end">
+                <% if(isFlockLeader) { %>                
+                    <a class="link-button" href="/foodsession-edit/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="edit session" alt="edit session" src="/public/assets/icon-settings-white.png">
+                    </a>
+                    <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
+                    </a>
+                <% } %>
+            </div>
 
             <div class="row">
                 <h2>Food-Time: </h2>
@@ -73,11 +73,7 @@
                     </a>
                 <% } %>
 
-                <% if(isFlockLeader) { %>
-                    <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                        <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
-                    </a>
-                <% } %>
+              
             </div>
         </div>
     </div>    

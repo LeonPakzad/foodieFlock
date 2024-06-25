@@ -199,32 +199,6 @@ if(updateFoodsessionForm != null)
         const isPollAnswersAnonymousChecked = document.getElementById('is-poll-answers-anonymous').checked;
         const pollAnswers = Array.from(document.querySelectorAll('.poll-item-text').values()).map(element => element.textContent);
 
-
-        console.log(foodsessionID);
-        console.log(foodsessionAppointmentType);
-        console.log(isIndividualTimeSwitchChecked);
-        console.log(foodsessionDecisionType);
-
-        console.log("radius:")
-        console.log(rouletteRadius);
-        console.log(swypeRadius);
-        
-        console.log("times:")
-        console.log(singleSessionTime);
-        console.log(collectiveSessionTime);
-        console.log(individualTimes);
-        console.log(isMondaySwitchChecked);
-        console.log(isTuesdaySwitchChecked);
-        console.log(isWednesdaySwitchChecked);
-        console.log(isThursdaySwitchChecked);
-        console.log(isFridaySwitchChecked);
-        console.log(isSaturdaySwitchChecked);
-        console.log(isSundaySwitchChecked);
-
-        console.log("poll:")
-        console.log(isPollMultipleAnswersChecked);
-        console.log(isPollAnswersAnonymousChecked);
-        console.log(pollAnswers);
         try 
         {
             const response = await fetch('/foodsession-update', {
