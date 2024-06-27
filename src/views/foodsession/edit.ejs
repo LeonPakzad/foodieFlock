@@ -18,7 +18,7 @@
             <div class="content-card">
                 <div class="row-center">
                     <div class>
-                        <div>set if this is a single or weekly appointment:</div>
+                        <div>is this a single or weekly appointment?</div>
                         <div class="row-center">
                             <select name="foodsession-appointment-type" id="foodsession-appointment-type" class="select row-center" onchange="setFoodsessionAppointmentType()">
                                 <option value="">?</option>
@@ -29,19 +29,21 @@
                     </div>
                 </div>
                 
-                <div id="weekly-fooding-container" class="row-center" style="display:none">
-                    <div>
+                <div id="weekly-fooding-container" class="row-center" <%= input.foodsessionAppointmentType == "weekly-fooding" ? "" : 'style=display:none;'%>>
+                    <div class="">
                         <div class="row-center">
-                            <div class="checkbox-container">
-                                Individual Times
-                                <input id="individual-time-switch" class="checkbox" type="checkbox" <% if(input.isIndividualTimeSwitchChecked){%> checked <%} %> onchange="toggleSessionTimeInput()"></input>
-                            </div>
-                            <div id="collective-session-time-container" class="checkbox-container">
-                                <div class="row-center">
-                                    Collective Session Time: 
-                                    <input name="collective-session-time" id="collective-session-time" type="time" value="<%=input.collectiveSessionTime%>"></input>
+                            <div>
+                                <div class="checkbox-container">
+                                    Individual Times
+                                    <input id="individual-time-switch" class="checkbox" type="checkbox" <% if(input.isIndividualTimeSwitchChecked){%> checked <%} %> onchange="toggleSessionTimeInput()"></input>
                                 </div>
-                            </div>
+                                <div id="collective-session-time-container" class="checkbox-container">
+                                    <div class="checkbox-container">
+                                        Collective Session Time: 
+                                        <input class="input" name="collective-session-time" id="collective-session-time" type="time" value="<%=input.collectiveSessionTime%>"></input>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
 
                         <div class="row-center">
@@ -85,10 +87,10 @@
                     </div>
                 </div>
 
-                <div id="single-session-container" class="row-center" style="display:none">
+                <div id="single-session-container" class="row-center" <%= input.foodsessionAppointmentType == "single-session" ? "" : "style=display:none"%>>
                     <div>
                         <div class="row-center">set time:</div>
-                        <input name="single-session-time" type="time" value="<%=input.singleSessionTime%>"></input>
+                        <input class="input" name="single-session-time" type="time" value="<%=input.singleSessionTime%>"></input>
                     </div>
                 </div>
             </div>
@@ -102,10 +104,10 @@
                         <div class="row-center">
                             <select name="foodsession-decision-type" class="select" id="foodsession-decision-type" onchange="setFoodsessionDecisionType()">
                                 <option default value="unset">?</option>
-                                <option <% if(input.foodsessionDecisionType == 1){%> selected <%} %> value="roulette">       Roulette</option>
-                                <option <% if(input.foodsessionDecisionType == 2){%> selected <%} %> value="poll">           Poll</option>
-                                <option <% if(input.foodsessionDecisionType == 3){%> selected <%} %> value="swyping">        Swyping</option>
-                                <option <% if(input.foodsessionDecisionType == 4){%> selected <%} %> value="individual">     Individual</option>
+                                <option <% if(input.foodsessionDecisionType == 2){%> selected <%} %> value="roulette">       Roulette</option>
+                                <option <% if(input.foodsessionDecisionType == 3){%> selected <%} %> value="poll">           Poll</option>
+                                <option <% if(input.foodsessionDecisionType == 4){%> selected <%} %> value="swyping">        Swyping</option>
+                                <option <% if(input.foodsessionDecisionType == 5){%> selected <%} %> value="individual">     Individual</option>
                             </select>
                         </div>
                     </div>
@@ -113,7 +115,7 @@
             </div> 
             <div class="content-card">
 
-                <div class="row-center" id="roulette-container" style="display:none">
+                <div class="row-center" id="roulette-container" <%= input.foodsessionDecisionType == 2 ? "" : 'style="display:none"'%>>
                     <div>
                         <div class="info-card">
                             get a random restaurant in your area
@@ -140,7 +142,7 @@
                     </div>
                 </div>
 
-                <div class="row-center" id="poll-container" style="display:none">
+                <div class="row-center" id="poll-container" <%= input.foodsessionDecisionType == 3 ? "" : 'style="display:none"'%>>
                     <div>
                         <div class="info-card">
                             create a poll of everyones favorite food-options for the people in the foodsession to vote on.
@@ -189,7 +191,7 @@
                     </div>
                 </div>
 
-                <div class="row-center" id="swyping-container" style="display:none">
+                <div class="row-center" id="swyping-container" <%= input.foodsessionDecisionType == 4 ? "" : 'style="display:none"'%>>
                     <div>
                         <div class="info-card">
                             This works like tinder - but for food! Each participant will swype - 
@@ -219,7 +221,7 @@
                     </div>
                 </div>
 
-                <div class="row-center info-card" id="individual-container" style="display:none">
+                <div class="row-center info-card" id="individual-container" <%= input.foodsessionDecisionType == 5 ? "" : 'style="display:none"'%>>
                     Users will be able to individually set when theill go to get their food and when to eat it.
                     This is perfect for larger groups where its not guaranteed that you all get food from the same place. 
                 </div>
@@ -229,7 +231,6 @@
                 <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFlockId}))%>/foodsession-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
                     <img title="show foodsession" alt="show foodsession" src="/public/assets/icon-back-white.png">
                 </a>
-                <div></div>
                 <button type="submit" class="button">save</button>
             </div>
         </form>

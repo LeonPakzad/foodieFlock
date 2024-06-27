@@ -19,6 +19,8 @@ function toggleSessionTimeInput() {
         collectiveSessionTimeContainer.style.display = "block";
     }
 }
+// start it when loading to display correct state
+toggleSessionTimeInput();
 
 function setFoodsessionAppointmentType() {
     var foodsessionAppointmentTypeSelect = document.getElementById("foodsession-appointment-type");
