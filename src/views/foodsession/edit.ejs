@@ -17,13 +17,15 @@
 
             <div class="content-card">
                 <div class="row-center">
-                    <div>
+                    <div class>
                         <div>set if this is a single or weekly appointment:</div>
-                        <select name="foodsession-appointment-type" id="foodsession-appointment-type" class="select" onchange="setFoodsessionAppointmentType()">
-                            <option value="">?</option>
-                            <option value="single-session"> Single Session</option>
-                            <option value="weekly-fooding">  Weekly Fooding</option>
-                        </select>
+                        <div class="row-center">
+                            <select name="foodsession-appointment-type" id="foodsession-appointment-type" class="select row-center" onchange="setFoodsessionAppointmentType()">
+                                <option value="">?</option>
+                                <option <% if(input.foodsessionAppointmentType == "single-session"){%> selected <%} %> value="single-session"> Single Session</option>
+                                <option <% if(input.foodsessionAppointmentType == "weekly-fooding"){%> selected <%} %> value="weekly-fooding"> Weekly Fooding</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
@@ -32,12 +34,12 @@
                         <div class="row-center">
                             <div class="checkbox-container">
                                 Individual Times
-                                <input id="individual-time-switch" class="checkbox" type="checkbox" onchange="toggleSessionTimeInput()"></input>
+                                <input id="individual-time-switch" class="checkbox" type="checkbox" <% if(input.isIndividualTimeSwitchChecked){%> checked <%} %> onchange="toggleSessionTimeInput()"></input>
                             </div>
                             <div id="collective-session-time-container" class="checkbox-container">
                                 <div class="row-center">
                                     Collective Session Time: 
-                                    <input name="collective-session-time" id="collective-session-time" type="time"></input>
+                                    <input name="collective-session-time" id="collective-session-time" type="time" value="<%=input.collectiveSessionTime%>"></input>
                                 </div>
                             </div>
                         </div>
@@ -47,38 +49,38 @@
                         </div>
                             <div class="checkbox-container">
                                 Monday   
-                                <input id="is-monday-switch"    class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-monday-switch"    class="checkbox"        type="checkbox" <% if(input.isMondaySwitchChecked == 1)     {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeMonday %>"></input>
                             </div>
                             <div class="checkbox-container">
                                 Tuesday
-                                <input id="is-tuesday-switch"   class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-tuesday-switch"   class="checkbox"        type="checkbox" <% if(input.isTuesdaySwitchChecked == 1)    {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeTuesday %>"></input>
                             </div>
                             <div class="checkbox-container">
                                 Wednesday
-                                <input id="is-wednesday-switch" class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-wednesday-switch" class="checkbox"        type="checkbox" <% if(input.isWednesdaySwitchChecked == 1)  {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeWednesday %>"></input>
                             </div>
                             <div class="checkbox-container">
                                 Thursday 
-                                <input id="is-thursday-switch"  class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-thursday-switch"  class="checkbox"        type="checkbox" <% if(input.isThursdaySwitchChecked == 1)   {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeThursday %>"></input>
                             </div>
                             <div class="checkbox-container">
                                 Friday   
-                                <input id="is-friday-switch"    class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-friday-switch"    class="checkbox"        type="checkbox" <% if(input.isFridaySwitchChecked == 1)     {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeFriday %>"></input>
                             </div>
                             <div class="checkbox-container">
                                 Saturday 
-                                <input id="is-saturday-switch"  class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-saturday-switch"  class="checkbox"        type="checkbox" <% if(input.isSaturdaySwitchChecked == 1)   {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeSaturday %>"></input>
                             </div>
                             <div class="checkbox-container">
                                 Sunday   
-                                <input id="is-sunday-switch"    class="checkbox"        type="checkbox"></input>
-                                <input name="individual-time"   class="individual-time" type="time"></input>
+                                <input id="is-sunday-switch"    class="checkbox"        type="checkbox" <% if(input.isSundaySwitchChecked == 1)     {%> checked <%} %>></input>
+                                <input name="individual-time"   class="individual-time" type="time" value="<%= input.foodtimeSunday %>"></input>
                             </div>
                     </div>
                 </div>
@@ -86,25 +88,28 @@
                 <div id="single-session-container" class="row-center" style="display:none">
                     <div>
                         <div class="row-center">set time:</div>
-                        <input name="single-session-time" type="time"></input>
+                        <input name="single-session-time" type="time" value="<%=input.singleSessionTime%>"></input>
                     </div>
                 </div>
             </div>
             <div class="content-card">
 
                 <div id="decision-container" class="row-center">
-                    <h3>
-                        How do you decide what to eat?
-                    </h3>
-                    <select name="foodsession-decision-type" class="select" id="foodsession-decision-type" onchange="setFoodsessionDecisionType()">
-                        <option default value="">?</option>
-                        <option value="roulette">       Roulette</option>
-                        <option value="poll">           Poll</option>
-                        <option value="swyping">        Swyping</option>
-                        <option value="individual">     Individual</option>
-                    </select>
+                    <div>
+                        <h3>
+                            How do you decide what to eat?
+                        </h3>
+                        <div class="row-center">
+                            <select name="foodsession-decision-type" class="select" id="foodsession-decision-type" onchange="setFoodsessionDecisionType()">
+                                <option default value="unset">?</option>
+                                <option <% if(input.foodsessionDecisionType == 1){%> selected <%} %> value="roulette">       Roulette</option>
+                                <option <% if(input.foodsessionDecisionType == 2){%> selected <%} %> value="poll">           Poll</option>
+                                <option <% if(input.foodsessionDecisionType == 3){%> selected <%} %> value="swyping">        Swyping</option>
+                                <option <% if(input.foodsessionDecisionType == 4){%> selected <%} %> value="individual">     Individual</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-
             </div> 
             <div class="content-card">
 
@@ -120,14 +125,14 @@
 
                         <div class="row-center">
                             <select class="select" name="roulette-radius" id="distanceSelect" onchange="updateDistanceSelect()">
-                                <option value="1"       <% if (input.radius == 1)       { %> selected <% } %>>1 km</option>
-                                <option value="2"       <% if (input.radius == 2)       { %> selected <% } %>>2 km</option>
-                                <option value="3"       <% if (input.radius == 3)       { %> selected <% } %>>3 km</option>
-                                <option value="5"       <% if (input.radius == 5)       { %> selected <% } %>>5 km</option>
-                                <option value="10"      <% if (input.radius == 10)      { %> selected <% } %>>10 km</option>
-                                <option value="15"      <% if (input.radius == 15)      { %> selected <% } %>>15 km</option>
-                                <option value="20"      <% if (input.radius == 20)      { %> selected <% } %>>20 km</option>
-                                <option value="custom"  <% if (input.radius == 'custom'){ %> selected <% } %>>custom (km)</option>
+                                <option value="1"       <% if(input.rouletteRadius == 1)        {%> selected <%} %>>1 km</option>
+                                <option value="2"       <% if(input.rouletteRadius == 2)        {%> selected <%} %>>2 km</option>
+                                <option value="3"       <% if(input.rouletteRadius == 3)        {%> selected <%} %>>3 km</option>
+                                <option value="5"       <% if(input.rouletteRadius == 5)        {%> selected <%} %>>5 km</option>
+                                <option value="10"      <% if(input.rouletteRadius == 10)       {%> selected <%} %>>10 km</option>
+                                <option value="15"      <% if(input.rouletteRadius == 15)       {%> selected <%} %>>15 km</option>
+                                <option value="20"      <% if(input.rouletteRadius == 20)       {%> selected <%} %>>20 km</option>
+                                <option value="custom"  <% if(input.rouletteRadius == 'custom') {%> selected <%} %>>custom (km)</option>
                             </select>
 
                             <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">
@@ -148,10 +153,10 @@
                         </div>
                         <div class="row-center">
                             <div class="checkbox-container">
-                                <input id="is-poll-multiple-answers" class="checkbox" type="checkbox">allow Multiple answers</input>
+                                <input id="is-poll-multiple-answers" class="checkbox" type="checkbox" <% if(input.isPollMultipleAnswersChecked == true){%> checked <%} %>>allow Multiple answers</input>
                             </div>
                             <div class="checkbox-container">
-                                <input id="is-poll-answers-anonymous" class="checkbox" type="checkbox">anonymous answers?</input>
+                                <input id="is-poll-answers-anonymous" class="checkbox" type="checkbox" <% if(input.isPollAnswersAnonymousChecked == true){%> checked <%} %>>anonymous answers?</input>
                             </div>
                         </div>
                         <div class="row-center">
@@ -166,7 +171,20 @@
                             </div>
                         </div>
                         <div class="row-center">
-                            <div id="poll-options-container"></div>
+                            <div id="poll-options-container">
+                                <% for(var i = 0; i < input.pollAnswers.length; i++) { %>
+                                    <div id="poll-option-container-<%= i %>" class="body-row" data-number="<%= i %>">
+                                        <div class="col-size-2">
+                                            <div class="poll-item-text"><%= input.pollAnswers[i].name %></div>
+                                        </div>
+                                        <div class="col-size-2">
+                                            <div class="link-button">
+                                                <img title="delete poll option" alt="delete poll option" src="/public/assets/icon-delete-white.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -186,14 +204,14 @@
 
                         <div class="row-center">
                             <select class="select" name="swype-radius" id="distanceSelect" onchange="updateDistanceSelect()">
-                                <option value="1"       <% if (input.radius == 1)       { %> selected <% } %>>1 km</option>
-                                <option value="2"       <% if (input.radius == 2)       { %> selected <% } %>>2 km</option>
-                                <option value="3"       <% if (input.radius == 3)       { %> selected <% } %>>3 km</option>
-                                <option value="5"       <% if (input.radius == 5)       { %> selected <% } %>>5 km</option>
-                                <option value="10"      <% if (input.radius == 10)      { %> selected <% } %>>10 km</option>
-                                <option value="15"      <% if (input.radius == 15)      { %> selected <% } %>>15 km</option>
-                                <option value="20"      <% if (input.radius == 20)      { %> selected <% } %>>20 km</option>
-                                <option value="custom"  <% if (input.radius == 'custom'){ %> selected <% } %>>custom (km)</option>
+                                <option value="1"        <% if(input.swypeRadius == 1)          {%> selected <%}%> >1 km</option>
+                                <option value="2"        <% if(input.swypeRadius == 2)          {%> selected <%}%> >2 km</option>
+                                <option value="3"        <% if(input.swypeRadius == 3)          {%> selected <%}%> >3 km</option>
+                                <option value="5"        <% if(input.swypeRadius == 5)          {%> selected <%}%> >5 km</option>
+                                <option value="10"       <% if(input.swypeRadius == 10)         {%> selected <%}%> >10 km</option>
+                                <option value="15"       <% if(input.swypeRadius == 15)         {%> selected <%}%> >15 km</option>
+                                <option value="20"       <% if(input.swypeRadius == 20)         {%> selected <%}%> >20 km</option>
+                                <option value="custom"   <% if(input.swypeRadius == 'custom')   {%> selected <%}%> >custom (km)</option>
                             </select>
 
                             <input class="input" type="number" min="1" max="100" id="distanceInput" style="display: none;">

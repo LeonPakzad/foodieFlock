@@ -124,35 +124,88 @@ export module foodsession {
         }
     }
 
+    export const getFoodsessionTimes = async(foodsessionId: number) =>
+    {
+        return await prisma.foodtime.findMany({
+            where: {
+                fkFoodsessionId: Number(foodsessionId),
+            },
+        })
+    }
+
     export const editFoodSessions = async(_req: any, res: {render: (arg0: string, arg1: any) => void}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id))
         var foodsession = await getFoodSessionById(foodsessionId);
 
-        var foodsessionpoll = await getFoodSessionPollById(foodsessionId.id);
+        var foodsessionpoll = await getFoodSessionPollByFoodsessionId(foodsessionId.id);
 
         var foodsessionpollAnswers: any[] = [];
         if(foodsessionpoll != null)
         {
             foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
         }
+
         if(foodsession != null)
         {
-            res.render("foodsession/edit", {
-                title: "foodsessions",
-                flockId: foodsession.fkFlockId,
-                foodsession: foodsession,
-                input: {
-                    foodsessionAppointmentType: foodsession.fkFoodsessionAppointmentType,
-                    isIndividualTimeSwitchChecked: foodsession.isIndividualTimeSwitchChecked,
-                    foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
-                    rouletteRadius: foodsession.rouletteRadius,
-                    swypeRadius: foodsession.swypeRadius,
-                    isPollAnswersAnonymousChecked: foodsessionpoll?.isPollAnswersAnonymousChecked,
-                    isPollMultipleAnswersChecked: foodsessionpoll?.isPollMultipleAnswersChecked,
-                    pollAnswers: foodsessionpollAnswers,
-                },
-            })
+            var foodsessiontimes = await getFoodsessionTimes(foodsessionId.id)
+            if(foodsessiontimes.length < 1)
+            {
+                res.render("foodsession/edit", {
+                    title: "foodsessions",
+                    flockId: foodsession.fkFlockId,
+                    foodsession: foodsession,
+                    input: {
+                        foodsessionAppointmentType: foodsession.foodsessionAppointmentType,
+                        isIndividualTimeSwitchChecked: foodsession.isIndividualTimeSwitchChecked,
+                        foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
+                        rouletteRadius: foodsession.rouletteRadius,
+                        swypeRadius: foodsession.swypeRadius,
+                        isPollAnswersAnonymousChecked: foodsessionpoll?.isPollAnswersAnonymousChecked,
+                        isPollMultipleAnswersChecked: foodsessionpoll?.isPollMultipleAnswersChecked,
+    
+                        pollAnswers: foodsessionpollAnswers,
+                    }
+                });
+            }
+            else
+            {
+                res.render("foodsession/edit", {
+                    title: "foodsessions",
+                    flockId: foodsession.fkFlockId,
+                    foodsession: foodsession,
+                    input: {
+                        foodsessionAppointmentType: foodsession.foodsessionAppointmentType,
+                        isIndividualTimeSwitchChecked: foodsession.isIndividualTimeSwitchChecked,
+                        foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
+                        rouletteRadius: foodsession.rouletteRadius,
+                        swypeRadius: foodsession.swypeRadius,
+                        isPollAnswersAnonymousChecked: foodsessionpoll?.isPollAnswersAnonymousChecked,
+                        isPollMultipleAnswersChecked: foodsessionpoll?.isPollMultipleAnswersChecked,
+    
+                        pollAnswers: foodsessionpollAnswers,
+    
+                        singleSessionTime:      foodsessiontimes[0].foodtime,
+                        collectiveSessionTime:  foodsessiontimes[8].foodtime,
+    
+                        isMondaySwitchChecked:      foodsessiontimes[1].isChecked,
+                        isTuesdaySwitchChecked:     foodsessiontimes[2].isChecked,
+                        isWednesdaySwitchChecked:   foodsessiontimes[3].isChecked,
+                        isThursdaySwitchChecked:    foodsessiontimes[4].isChecked,
+                        isFridaySwitchChecked:      foodsessiontimes[5].isChecked,
+                        isSaturdaySwitchChecked:    foodsessiontimes[6].isChecked,
+                        isSundaySwitchChecked:      foodsessiontimes[7].isChecked,
+    
+                        foodtimeMonday:    foodsessiontimes[1].foodtime,
+                        foodtimeTuesday:   foodsessiontimes[2].foodtime,
+                        foodtimeWednesday: foodsessiontimes[3].foodtime,
+                        foodtimeThursday:  foodsessiontimes[4].foodtime,
+                        foodtimeFriday:    foodsessiontimes[5].foodtime,
+                        foodtimeSaturday:  foodsessiontimes[6].foodtime,
+                        foodtimeSunday:    foodsessiontimes[7].foodtime,
+                    },      
+                })
+            }
         }
     }
 
@@ -173,7 +226,7 @@ export module foodsession {
             }
             var isUserInFoodSession = foodsessionentrys.some(({ fkUserId }) => fkUserId === _req.user.userId);
 
-            var foodsessionpoll = await getFoodSessionPollById(foodsessionId.id);
+            var foodsessionpoll = await getFoodSessionPollByFoodsessionId(foodsessionId.id);
 
             var foodsessionpollAnswers: any[] = [];
             if(foodsessionpoll != null)
@@ -191,18 +244,6 @@ export module foodsession {
 
                 // todo: load different foodsession show views depending on type?
                 foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
-
-
-                // input: {
-                //     foodsessionAppointmentType: foodsession.fkFoodsessionAppointmentType,
-                //     isIndividualTimeSwitchChecked: foodsession.isIndividualTimeSwitchChecked,
-                //     foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
-                //     rouletteRadius: foodsession.rouletteRadius,
-                //     swypeRadius: foodsession.swypeRadius,
-                //     isPollAnswersAnonymousChecked: foodsessionpoll?.isPollAnswersAnonymousChecked,
-                //     isPollMultipleAnswersChecked: foodsessionpoll?.isPollMultipleAnswersChecked,
-                //     pollAnswers: foodsessionpollAnswers,
-                // },
             });
         }
         else
@@ -211,13 +252,29 @@ export module foodsession {
         }
     }   
 
-    export const getFoodSessionPollById = async(foodsessionId: number|undefined) =>
+    export const getFoodSessionPollById = async(foodsessionpollId: number|undefined) =>
+    {
+        if(foodsessionpollId != null)
+        {
+            return prisma.foodsessionpoll.findFirst({
+                where: {
+                    id: foodsessionpollId
+                },
+            })
+        }
+        else
+        {
+            return null
+        }
+    }
+
+    export const getFoodSessionPollByFoodsessionId = async(foodsessionId: number|undefined) =>
     {
         if(foodsessionId != null)
         {
             return prisma.foodsessionpoll.findFirst({
                 where: {
-                    id: foodsessionId
+                    fkFoodSession: foodsessionId
                 },
             })
         }
@@ -392,7 +449,7 @@ export module foodsession {
 
         if(foodsessionDecisionType == null)
         {
-            return 1;
+            return 0;
         }
         else
         {
@@ -410,7 +467,7 @@ export module foodsession {
     ) =>
     {
         const { 
-            foodsessionID, foodsessionAppointmentType, isIndividualTimeSwitchChecked, fooddecisionType,
+            foodsessionID, foodsessionAppointmentType, isIndividualTimeSwitchChecked, foodsessionDecisionType,
             singleSessionTime, collectiveSessionTime, individualTimes,
             isMondaySwitchChecked, isTuesdaySwitchChecked, isWednesdaySwitchChecked, isThursdaySwitchChecked, isFridaySwitchChecked, isSaturdaySwitchChecked, isSundaySwitchChecked,
             rouletteRadius, swypeRadius,
@@ -424,7 +481,7 @@ export module foodsession {
             data: {
                 foodsessionAppointmentType: foodsessionAppointmentType,
                 isIndividualTimeSwitchChecked: isIndividualTimeSwitchChecked,
-                fkFoodsessionDecisionType: await getFoodsessionDecisionTypeByName(fooddecisionType),
+                fkFoodsessionDecisionType: await getFoodsessionDecisionTypeByName(foodsessionDecisionType),
 
                 rouletteRadius: Number(rouletteRadius),
                 swypeRadius: Number(swypeRadius),
