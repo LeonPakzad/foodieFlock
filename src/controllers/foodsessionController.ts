@@ -9,7 +9,7 @@ export module foodsession {
     {
         const foodsession = await prisma.foodsession.findFirst({
             where: {
-                id: _req.id
+                id: Number(_req.id)
             },
             include: {
                 
@@ -274,7 +274,7 @@ export module foodsession {
         {
             return prisma.foodsessionpoll.findFirst({
                 where: {
-                    fkFoodSession: foodsessionId
+                    fkFoodSession: Number(foodsessionId)
                 },
             })
         }

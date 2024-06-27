@@ -8,7 +8,6 @@ function toggleSessionTimeInput() {
         Array.from(individualTimes).forEach((element) => {
             element.style.display= "block"
         });
-
         collectiveSessionTimeContainer.style.display = "none";
     }
     else
@@ -242,7 +241,7 @@ if(updateFoodsessionForm != null)
             }
             else 
             {
-                // window.location.reload();
+                window.location.replace('/flock-show/' + encodeURIComponent(JSON.stringify({id: data.flockId})) + '/foodsession-show/' + encodeURIComponent(JSON.stringify({id: foodsessionID})));
             } 
         }
         catch(error)
