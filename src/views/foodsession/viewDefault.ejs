@@ -1,0 +1,83 @@
+<div class="screen">
+    <%- include('../templates/sidenav'); -%>
+    
+    <div class="content">
+        
+        <div class="content-block">
+            <div class="row-center">
+                <h1>
+                    individual
+                    Foodsession - 
+                    <%= foodsession.name %>
+                </h1>
+            </div>
+        </div>
+        
+        <div class="content-card">
+
+            <div class="row-end">
+                <% if(isFlockLeader) { %>                
+                    <a class="link-button" href="/foodsession-edit/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="edit session" alt="edit session" src="/public/assets/icon-settings-white.png">
+                    </a>
+                    <a class="link-button" href="/foodsession-delete/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="delete session" alt="delete session" src="/public/assets/icon-delete-white.png">
+                    </a>
+                <% } %>
+            </div>
+
+            <div class="row">
+                <h2>Food-Time: </h2>
+                <h2><%= foodsession.foodTime %></h2>
+            </div>
+            
+            <% if(isUserInFoodSession) { %>
+
+                <div class="row">
+                    <input type="date"></input>
+                    <div class="button">propose different date</div>
+
+                    <input type="time"></input>
+                    <div class="button">propose different time</div>
+                </div>
+
+                <div class="row">
+                    <input type="text"></input>
+                    <div class="button">propose different food</div>
+                </div>
+            <% } %>
+
+            <b>
+                members:
+            </b>
+            <div class="row">
+                <% foodsessionentrys.forEach(function(user) { %>
+                    <a class="link-button" href="/profile/<%=encodeURIComponent(JSON.stringify({id: user.id}))%>">
+                        <div class="col-size-2" data-tooltip= "<%=user.user.name%>"><%= user.user.name == undefined || null? '-' : user.user.name %> </div>
+                    </a>
+                <% }); %>
+            </div>
+        
+            <div class="row-end">
+        
+                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flockId}))%>">
+                    <img title="back to flock" alt="back to flock" src="/public/assets/icon-sheep-white.png">
+                </a>
+        
+                <% if(isUserInFoodSession) {%>
+                    <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
+                    </a>
+                <% } else { %>
+                    <a class="link-button" href="/foodsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                        <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
+                    </a>
+                <% } %>
+
+              
+            </div>
+        </div>
+    </div>    
+</div>
+
+<script src="/public/scripts/foodsessionView.js"></script>

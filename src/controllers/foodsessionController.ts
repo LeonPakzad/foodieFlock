@@ -97,10 +97,11 @@ export module foodsession {
     export const createFoodSessionLink = async (_req: any, res: { end(jsonResponse: any): unknown;})=> 
     {
         const{flockId, name} = _req.body
-        await createFoodSession(Number(flockId), name);
+        var foodsession = await createFoodSession(Number(flockId), name);
 
         var responseData = {
             message: "successfully added foodsession",
+            foodsessionID: foodsession.id
         }
 
         res.end(JSON.stringify(responseData))
@@ -228,23 +229,68 @@ export module foodsession {
 
             var foodsessionpoll = await getFoodSessionPollByFoodsessionId(foodsessionId.id);
 
-            var foodsessionpollAnswers: any[] = [];
-            if(foodsessionpoll != null)
+
+            switch(foodsession.fkFoodsessionDecisionType)
             {
-                foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
+                case 1:
+                    res.render("foodsession/viewDefault", {
+                        title: "foodsessions",
+                        flockId: foodsession.fkFlockId,
+                        foodsession: foodsession,
+                        isFlockLeader: isFlockLeader,
+                        foodsessionentrys: foodsessionentrys,
+                        isUserInFoodSession: isUserInFoodSession,
+                    });
+                break;
+                case 2:
+                    res.render("foodsession/viewRoulette", {
+                        title: "foodsessions",
+                        flockId: foodsession.fkFlockId,
+                        foodsession: foodsession,
+                        isFlockLeader: isFlockLeader,
+                        foodsessionentrys: foodsessionentrys,
+                        isUserInFoodSession: isUserInFoodSession,
+                    });
+                break;
+                case 3:
+
+                    var foodsessionpollAnswers: any[] = [];
+                    if(foodsessionpoll != null)
+                    {
+                        foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
+                    }
+                    console.log(foodsessionpollAnswers);
+                    res.render("foodsession/viewPoll", {
+                        title: "foodsessions",
+                        flockId: foodsession.fkFlockId,
+                        foodsession: foodsession,
+                        isFlockLeader: isFlockLeader,
+                        foodsessionentrys: foodsessionentrys,
+                        isUserInFoodSession: isUserInFoodSession,
+                        foodsessionpollAnswers: foodsessionpollAnswers,
+                    });
+                break;
+                case 4:
+                    res.render("foodsession/viewSwyping", {
+                        title: "foodsessions",
+                        flockId: foodsession.fkFlockId,
+                        foodsession: foodsession,
+                        isFlockLeader: isFlockLeader,
+                        foodsessionentrys: foodsessionentrys,
+                        isUserInFoodSession: isUserInFoodSession,
+                    }); 
+                break;
+                case 5:
+                    res.render("foodsession/viewIndividual", {
+                        title: "foodsessions",
+                        flockId: foodsession.fkFlockId,
+                        foodsession: foodsession,
+                        isFlockLeader: isFlockLeader,
+                        foodsessionentrys: foodsessionentrys,
+                        isUserInFoodSession: isUserInFoodSession,
+                    });
+                break;
             }
-
-            res.render("foodsession/view", {
-                title: "foodsessions",
-                flockId: foodsession.fkFlockId,
-                foodsession: foodsession,
-                isFlockLeader: isFlockLeader,
-                foodsessionentrys: foodsessionentrys,
-                isUserInFoodSession: isUserInFoodSession,
-
-                // todo: load different foodsession show views depending on type?
-                foodsessionDecisionType: foodsession.fkFoodsessionDecisionType,
-            });
         }
         else
         {
