@@ -62,6 +62,8 @@ router.post('/foodsession-create', auth.verifyToken, foodsession.createFoodSessi
 router.get('/foodsession-index', auth.verifyToken, foodsession.indexFoodSessions);
 router.post('/foodsession-update', auth.verifyToken, foodsession.updateFoodSession);
 
+router.post('/poll-submit', auth.verifyToken, foodsession.submitPoll);
+
 // get 404 error page for all urls that were not specified
 router.get('*', (_req: any, res: { render: (arg0: string, arg1: {}) => void; }) => {
     res.render("error", {

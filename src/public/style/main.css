@@ -194,6 +194,10 @@ div {
     /* flex-wrap: wrap; */
 }
 
+.text-center {
+    text-align: center;
+}
+
 .row-center {
     margin: 10px;
     display: flex;

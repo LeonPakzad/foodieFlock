@@ -58,25 +58,40 @@
                 <% }); %>
             </div>
 
-            <h2> poll anwers</h2>
+            <h2>poll settings</h2>
             <div class="content-block">
+                <div class="checkbox-container">
+                    <input class="checkbox" type="checkbox" disabled="true" <%if(foodsessionpoll.isPollAnswersAnonymousChecked) {%> checked <%} %>></input>
+                    Anonymous answers
+                </div>
+                <div class="checkbox-container">
+                    <input class="checkbox" type="checkbox" disabled="true" <%if(foodsessionpoll.isPollMultipleAnswersChecked) {%> checked <%} %>></input>
+                    Multiple Answers
+                </div>
+            </div>
+
+            <h2> poll answers</h2>
+            <form id="poll-form" class="content-block">
+                <input type="hidden" name="foodsessionID" value="<%= foodsession.id %>"></input>
                 <% foodsessionpollAnswers.forEach(function(answer) { %>
 
                     <div class="row">
-                        <div class="col-size-2">
+                        <div class="col-size-2 text-center">
                             <%= answer.name %>
                         </div>
-                        <div class="col-size-2">
+                        <div class="col-size-2 text-center">
                             <%= answer.count %>
                         </div>
-                        <div class="col-size-2">
-                            
+                        <div class="col-size-2 text-center">
+                            <div class="checkbox-container text-center">
+                                <input id="poll-answer" data-pollid="<%=answer.id%>" class="checkbox" type="checkbox"></input>
+                            </div>
                         </div>
                     </div>
 
                 <% }); %>
                 <div class="row-end">
-                    <button class="button" onclick="vote()">safe your choice(s)</button>
+                    <button class="button" type="submit">confirm your choice(s)</button>
                 </div>
             </div>
         

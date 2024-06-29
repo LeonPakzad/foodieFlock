@@ -88,12 +88,12 @@ model foodsessionpollanswer  {
 
 model userpollvoting {
   fkUser Int
-  fkFoodsessionPollAnwer Int
+  fkFoodsessionPollAnswer Int
 
   user                  user                  @relation(fields: [fkUser],                 references: [id], map: "userPollVoting_userid_fkey")
-  foodsessionpollanwer  foodsessionpollanswer @relation(fields: [fkFoodsessionPollAnwer], references: [id], map: "userPollVoting_foodsessionpollanwerId_fkey")
+  foodsessionpollanswer  foodsessionpollanswer @relation(fields: [fkFoodsessionPollAnswer], references: [id], map: "userPollVoting_foodsessionpollanswerId_fkey")
 
-  @@id([fkUser, fkFoodsessionPollAnwer])
+  @@id([fkUser, fkFoodsessionPollAnswer])
   @@index([fkUser], map: "locationInFoodsessions_fkLocationId_fkey")
 }
 

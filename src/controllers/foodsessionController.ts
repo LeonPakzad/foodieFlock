@@ -227,12 +227,10 @@ export module foodsession {
             }
             var isUserInFoodSession = foodsessionentrys.some(({ fkUserId }) => fkUserId === _req.user.userId);
 
-            var foodsessionpoll = await getFoodSessionPollByFoodsessionId(foodsessionId.id);
-
-
             switch(foodsession.fkFoodsessionDecisionType)
             {
                 case 1:
+
                     res.render("foodsession/viewDefault", {
                         title: "foodsessions",
                         flockId: foodsession.fkFlockId,
@@ -241,8 +239,10 @@ export module foodsession {
                         foodsessionentrys: foodsessionentrys,
                         isUserInFoodSession: isUserInFoodSession,
                     });
+
                 break;
                 case 2:
+
                     res.render("foodsession/viewRoulette", {
                         title: "foodsessions",
                         flockId: foodsession.fkFlockId,
@@ -251,15 +251,19 @@ export module foodsession {
                         foodsessionentrys: foodsessionentrys,
                         isUserInFoodSession: isUserInFoodSession,
                     });
+
                 break;
                 case 3:
 
+                    var foodsessionpoll = await getFoodSessionPollByFoodsessionId(foodsessionId.id);
                     var foodsessionpollAnswers: any[] = [];
+                    var foodsessionpollAnsweredByUser: any[] = [];
                     if(foodsessionpoll != null)
                     {
                         foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
+                        foodsessionpollAnsweredByUser = await getUserPollVotes(foodsessionpoll?.id, _req.user.userId);
                     }
-                    console.log(foodsessionpollAnswers);
+
                     res.render("foodsession/viewPoll", {
                         title: "foodsessions",
                         flockId: foodsession.fkFlockId,
@@ -267,10 +271,14 @@ export module foodsession {
                         isFlockLeader: isFlockLeader,
                         foodsessionentrys: foodsessionentrys,
                         isUserInFoodSession: isUserInFoodSession,
+                        foodsessionpoll: foodsessionpoll,
                         foodsessionpollAnswers: foodsessionpollAnswers,
+                        foodsessionpollAnsweredByUser: foodsessionpollAnsweredByUser,
                     });
+
                 break;
                 case 4:
+
                     res.render("foodsession/viewSwyping", {
                         title: "foodsessions",
                         flockId: foodsession.fkFlockId,
@@ -279,8 +287,10 @@ export module foodsession {
                         foodsessionentrys: foodsessionentrys,
                         isUserInFoodSession: isUserInFoodSession,
                     }); 
+
                 break;
                 case 5:
+
                     res.render("foodsession/viewIndividual", {
                         title: "foodsessions",
                         flockId: foodsession.fkFlockId,
@@ -289,6 +299,7 @@ export module foodsession {
                         foodsessionentrys: foodsessionentrys,
                         isUserInFoodSession: isUserInFoodSession,
                     });
+
                 break;
             }
         }
@@ -339,10 +350,22 @@ export module foodsession {
         })
     }
 
+    export const getUserPollVotes = async(foodsessionPollId: number, userId: number ) =>
+    {
+        return prisma.userpollvoting.findMany({
+            where: {
+                AND: [
+                    {fkFoodsessionPollAnswer: foodsessionPollId},
+                    {fkUser: userId}
+                ]
+            },
+        })
+    }
+
     export const joinFoodSession = async(_req: any, res: {redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
-        var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
+        var flockId: number|null = await getFlockIdByFoodSessionId(foodsessionId.id);
 
         try
         {
@@ -366,7 +389,7 @@ export module foodsession {
     export const leaveFoodSessionLink = async (_req: any, res: {redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
-        var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
+        var flockId: number|null = await getFlockIdByFoodSessionId(foodsessionId.id);
         var userId = _req.user.userId;
         
         await leaveFoodSession(foodsessionId.id, userId);
@@ -428,8 +451,6 @@ export module foodsession {
                     }
                 }) 
 
-                
-
                 await prisma.foodsessionpollanswer.deleteMany({
                     where: {
                         fkFoodsessionPoll: foodsessionpoll.id
@@ -439,7 +460,7 @@ export module foodsession {
                 // todo: delete user votings
                 // prisma.userpollvoting.deleteMany({
                 //     where: {
-                //         fkFoodsessionPollAnwer: foodsessionpollanswers
+                //         fkFoodsessionPollAnswer: foodsessionpollanswers
                 //     }
                 // })
             });
@@ -675,5 +696,102 @@ export module foodsession {
                 },
             });
         }
+    }
+
+    export const submitPoll = async(
+        req: any, 
+        res: {end: (responseData: any) => void;},
+
+    ) => 
+    {
+        var userId:number = Number(req.user.userId); 
+        const foodsessionID = req.body.foodsessionID;
+        const pollAnswersToSend = req.body.pollAnswersToSend;
+    
+        var userpollvotings = await prisma.userpollvoting.findMany({
+            where: {
+                fkFoodsessionPollAnswer: Number(foodsessionID),
+                fkUser: Number(userId)
+            }
+        })
+
+        // first delete existant poll votes, then add the new ones
+        if(userpollvotings.length > 0)
+        {
+            for(var i = 0; i < userpollvotings.length; i++)
+            {
+                removePollVoteCount(userpollvotings[i].fkFoodsessionPollAnswer)
+            }
+
+            await prisma.userpollvoting.deleteMany({
+                where: {
+                    fkFoodsessionPollAnswer: Number(foodsessionID),
+                    fkUser: Number(userId)
+                }
+            });
+        }
+
+        for(var i = 0; i < pollAnswersToSend.length; i++)
+        {
+            try
+            {
+                const foodsessionPollAnswer = await prisma.foodsessionpollanswer.findFirst({
+                    where: {
+                        id: Number(pollAnswersToSend[i]),
+                    }
+                });
+                
+                if (!foodsessionPollAnswer) {
+                    throw new Error(`foodsessionPollAnswer with id ${pollAnswersToSend[i]} not found`);
+                }
+                
+
+                await prisma.userpollvoting.create({
+                    data: {
+                        fkFoodsessionPollAnswer: Number(pollAnswersToSend[i]),
+                        fkUser: Number(userId),
+                    }
+                });
+                addPollVoteCount(pollAnswersToSend[i]);
+            }
+            catch(error)
+            {
+                console.error('foodsession error:', error);
+            }
+        }
+        
+        var responseData = {
+            message: "successfully updated foodsession",
+        }
+
+        res.end(JSON.stringify(responseData))
+
+    };
+    
+    export const addPollVoteCount = async(id:number) => {
+    
+        await prisma.foodsessionpollanswer.updateMany({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                count: {
+                    increment: 1
+                }
+            }
+        });
+    }
+    
+    export const removePollVoteCount = async(id: number) => {
+        await prisma.foodsessionpollanswer.updateMany({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                count: {
+                    decrement: 1
+                }
+            }
+        });
     }
 } 
