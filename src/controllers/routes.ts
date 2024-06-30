@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 import { auth } from '../controllers/auth';
 import { user } from '../controllers/userController'
 import { flock } from '../controllers/flockController'
-import { foodsession } from '../controllers/foodsessionController'
+import { foodsession } from './foodsession/foodsessionController'
 
 dotenv.config();
 

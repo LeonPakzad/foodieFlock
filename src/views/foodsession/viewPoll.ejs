@@ -30,22 +30,6 @@
                 <h2>Food-Time: </h2>
                 <h2><%= foodsession.foodTime %></h2>
             </div>
-            
-            <% if(isUserInFoodSession) { %>
-
-                <div class="row">
-                    <input type="date"></input>
-                    <div class="button">propose different date</div>
-
-                    <input type="time"></input>
-                    <div class="button">propose different time</div>
-                </div>
-
-                <div class="row">
-                    <input type="text"></input>
-                    <div class="button">propose different food</div>
-                </div>
-            <% } %>
 
             <b>
                 members:
@@ -58,60 +42,63 @@
                 <% }); %>
             </div>
 
-            <h2>poll settings</h2>
-            <div class="content-block">
-                <div class="checkbox-container">
-                    <input class="checkbox" type="checkbox" disabled="true" <%if(foodsessionpoll.isPollAnswersAnonymousChecked) {%> checked <%} %>></input>
-                    Anonymous answers
-                </div>
-                <div class="checkbox-container">
-                    <input class="checkbox" type="checkbox" disabled="true" <%if(foodsessionpoll.isPollMultipleAnswersChecked) {%> checked <%} %>></input>
-                    Multiple Answers
-                </div>
-            </div>
+            <% if(isUserInFoodSession) { %>
 
-            <h2> poll answers</h2>
-            <form id="poll-form" class="content-block">
-                <input type="hidden" name="foodsessionID" value="<%= foodsession.id %>"></input>
-                <% foodsessionpollAnswers.forEach(function(answer) { %>
 
-                    <div class="row">
-                        <div class="col-size-2 text-center">
-                            <%= answer.name %>
-                        </div>
-                        <div class="col-size-2 text-center">
-                            <%= answer.count %>
-                        </div>
-                        <div class="col-size-2 text-center">
-                            <div class="checkbox-container text-center">
-                                <input id="poll-answer" name="poll-answer" data-pollid="<%=answer.id%>" class="checkbox" type="checkbox" <% if(!foodsessionpoll.isPollMultipleAnswersChecked) {%>onclick="onlyAllowOneCheckbox(this)"<% } %>></input>
+                <h2>poll settings</h2>
+                <div class="content-block">
+                    <div class="checkbox-container">
+                        <input class="checkbox" type="checkbox" disabled="true" <%if(foodsessionpoll.isPollAnswersAnonymousChecked) {%> checked <%} %>></input>
+                        Anonymous answers
+                    </div>
+                    <div class="checkbox-container">
+                        <input class="checkbox" type="checkbox" disabled="true" <%if(foodsessionpoll.isPollMultipleAnswersChecked) {%> checked <%} %>></input>
+                        Multiple Answers
+                    </div>
+                </div>
+
+                <h2> poll answers</h2>
+                <form id="poll-form" class="content-block">
+                    <input type="hidden" name="foodsessionID" value="<%= foodsession.id %>"></input>
+                    <% foodsessionpollAnswers.forEach(function(answer) { %>
+
+                        <div class="row">
+                            <div class="col-size-2 text-center">
+                                <%= answer.name %>
+                            </div>
+                            <div class="col-size-2 text-center">
+                                <%= answer.count %>
+                            </div>
+                            <div class="col-size-2 text-center">
+                                <div class="checkbox-container text-center">
+                                    <input id="poll-answer" name="poll-answer" data-pollid="<%=answer.id%>" class="checkbox" type="checkbox" <% if(!foodsessionpoll.isPollMultipleAnswersChecked) {%>onclick="onlyAllowOneCheckbox(this)"<% } %>></input>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                <% }); %>
-                <div class="row-end">
-                    <button class="button" type="submit">confirm your choice(s)</button>
-                </div>
-            </div>
-        
-            <div class="row-end">
-        
-                <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: flockId}))%>">
-                    <img title="back to flock" alt="back to flock" src="/public/assets/icon-sheep-white.png">
-                </a>
-        
-                <% if(isUserInFoodSession) {%>
-                    <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                        <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
-                    </a>
-                <% } else { %>
-                    <a class="link-button" href="/foodsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
-                        <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
-                    </a>
+                    <% }); %>
+
+                    <div class="row-end">
+                        <button class="button" type="submit">confirm your choice(s)</button>
+                    </div>
                 <% } %>
 
-              
+                <div class="row-center">
+            
+                    <a class="link-button" href="/flock-show/<%=encodeURIComponent(JSON.stringify({id: foodsession.fkFlockId}))%>">
+                        <img title="back to flock" alt="back to flock" src="/public/assets/icon-back-white.png">
+                    </a>
+            
+                    <% if(isUserInFoodSession) {%>
+                        <a class="link-button" href="/foodsession-leave/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                            <img title="leave session" alt="leave session" src="/public/assets/icon-leave-white.png">
+                        </a>
+                    <% } else { %>
+                        <a class="link-button" href="/foodsession-join/<%=encodeURIComponent(JSON.stringify({id: foodsession.id}))%>">
+                            <img title="join session" alt="join session" src="/public/assets/icon-add-white.png">
+                        </a>
+                    <% } %>
+                </div>
             </div>
         </div>
     </div>    

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { flock } from './flockController';
+import { flock } from '../flockController';
 
 const prisma = new PrismaClient()
 
@@ -134,6 +134,7 @@ export module foodsession {
         })
     }
 
+    // MARK: edit Foodsession
     export const editFoodSessions = async(_req: any, res: {render: (arg0: string, arg1: any) => void}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id))
@@ -210,6 +211,7 @@ export module foodsession {
         }
     }
 
+    // MARK: show Foodsession
     export const showFoodSession = async(_req: any, res: {render: (arg0: string, arg1: any) => void; redirect: (arg0: string) => void;}) =>
     {
         var foodsessionId = JSON.parse(decodeURIComponent(_req.params.id));
@@ -233,7 +235,6 @@ export module foodsession {
 
                     res.render("foodsession/viewDefault", {
                         title: "foodsessions",
-                        flockId: foodsession.fkFlockId,
                         foodsession: foodsession,
                         isFlockLeader: isFlockLeader,
                         foodsessionentrys: foodsessionentrys,
@@ -245,7 +246,6 @@ export module foodsession {
 
                     res.render("foodsession/viewRoulette", {
                         title: "foodsessions",
-                        flockId: foodsession.fkFlockId,
                         foodsession: foodsession,
                         isFlockLeader: isFlockLeader,
                         foodsessionentrys: foodsessionentrys,
@@ -262,11 +262,15 @@ export module foodsession {
                     {
                         foodsessionpollAnswers = await getFoodSessionPollAnswersByPollId(foodsessionpoll.id);
                         foodsessionpollAnsweredByUser = await getUserPollVotes(foodsessionpoll?.id, _req.user.userId);
+
+                        if(foodsessionpoll?.isPollAnswersAnonymousChecked)
+                        {
+
+                        }
                     }
 
                     res.render("foodsession/viewPoll", {
                         title: "foodsessions",
-                        flockId: foodsession.fkFlockId,
                         foodsession: foodsession,
                         isFlockLeader: isFlockLeader,
                         foodsessionentrys: foodsessionentrys,
@@ -281,7 +285,6 @@ export module foodsession {
 
                     res.render("foodsession/viewSwyping", {
                         title: "foodsessions",
-                        flockId: foodsession.fkFlockId,
                         foodsession: foodsession,
                         isFlockLeader: isFlockLeader,
                         foodsessionentrys: foodsessionentrys,
@@ -293,7 +296,6 @@ export module foodsession {
 
                     res.render("foodsession/viewIndividual", {
                         title: "foodsessions",
-                        flockId: foodsession.fkFlockId,
                         foodsession: foodsession,
                         isFlockLeader: isFlockLeader,
                         foodsessionentrys: foodsessionentrys,
@@ -309,6 +311,8 @@ export module foodsession {
         }
     }   
 
+
+    // MARK: get Foodsession Poll By Id
     export const getFoodSessionPollById = async(foodsessionpollId: number|undefined) =>
     {
         if(foodsessionpollId != null)
@@ -438,7 +442,9 @@ export module foodsession {
         var flockId = await getFlockIdByFoodSessionId(foodsessionId.id);
 
         var foodsessionpolls = await prisma.foodsessionpoll.findMany({
-
+            where: {
+                fkFoodSession: foodsessionId.id
+            }
         })
 
         if(foodsessionpolls != null)
@@ -524,6 +530,13 @@ export module foodsession {
         }
     }
 
+    /** MARK: update F-Session
+     * Updates a food session with the provided data.
+     *
+     * @param {any} _req - the request object
+     * @param {{ end: (responseData: any) => void; render: (arg0: string, arg1: any) => void; json: any; redirect: (arg0: string) => void; }} res - the response object with end, render, json, and redirect functions
+     * @return {Promise<void>} Promise that resolves once the food session is updated
+     */
     export const updateFoodSession = async(
         _req: any, 
         res: {
@@ -654,6 +667,14 @@ export module foodsession {
         }
     }
 
+    /** MARK: C or U f-Times
+     * Create or update food session time based on the provided parameters.
+     *
+     * @param {number}  foodsessionId   - The ID of the food session.
+     * @param {number}  weekday         - The day of the week.
+     * @param {string}  foodtime        - The time of the food session in HH:MM format.
+     * @param {boolean} isChecked       - Indicates if the food time is checked.
+     */
     export const createOrUpdateFoodsessionTime = async(foodsessionId: number, weekday: number, foodtime: string, isChecked: boolean ) => {
         
         if(!(foodtime === ""))
@@ -716,6 +737,7 @@ export module foodsession {
         }
     }
 
+    // MARK: Submit Poll
     export const submitPoll = async(
         req: any, 
         res: {end: (responseData: any) => void;},

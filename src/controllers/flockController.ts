@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { user } from './userController';
-import { foodsession } from './foodsessionController';
+import { foodsession } from './foodsession/foodsessionController';
 
 const bcrypt = require('bcrypt');
 

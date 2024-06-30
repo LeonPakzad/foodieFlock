@@ -1,6 +1,6 @@
 
 import { flock } from './flockController';
-import {foodsession} from './foodsessionController'
+import {foodsession} from './foodsession/foodsessionController'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
