@@ -1,13 +1,23 @@
 
+function onlyAllowOneCheckbox(checkbox) {
+    var checkboxes = document.getElementsByName(checkbox.name);
+
+    checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false;
+    });
+}
+
 var pollForm = document.getElementById('poll-form');
 if(pollForm != null)
 {
     pollForm.addEventListener('submit', async function(event) 
     {
         event.preventDefault();
+
         const pollAnswers = Array.from(document.querySelectorAll("[id^='poll-answer']"));
         const foodsessionID = pollForm.elements.foodsessionID.value; 
         var pollAnswersToSend = [];	
+
         for(var i = 0; i < pollAnswers.length; i++)
         {
             if(pollAnswers[i].checked)

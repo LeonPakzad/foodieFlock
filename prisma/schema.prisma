@@ -94,7 +94,6 @@ model userpollvoting {
   foodsessionpollanswer  foodsessionpollanswer @relation(fields: [fkFoodsessionPollAnswer], references: [id], map: "userPollVoting_foodsessionpollanswerId_fkey")
 
   @@id([fkUser, fkFoodsessionPollAnswer])
-  @@index([fkUser], map: "locationInFoodsessions_fkLocationId_fkey")
 }
 
 model foodtime {

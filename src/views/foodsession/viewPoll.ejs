@@ -84,7 +84,7 @@
                         </div>
                         <div class="col-size-2 text-center">
                             <div class="checkbox-container text-center">
-                                <input id="poll-answer" data-pollid="<%=answer.id%>" class="checkbox" type="checkbox"></input>
+                                <input id="poll-answer" name="poll-answer" data-pollid="<%=answer.id%>" class="checkbox" type="checkbox" <% if(!foodsessionpoll.isPollMultipleAnswersChecked) {%>onclick="onlyAllowOneCheckbox(this)"<% } %>></input>
                             </div>
                         </div>
                     </div>

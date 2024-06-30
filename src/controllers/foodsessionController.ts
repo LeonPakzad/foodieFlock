@@ -617,12 +617,30 @@ export module foodsession {
                 }
             })
 
-            // delete all poll answers and create the new ones
+            // get all poll answers
+            var foodsessionPollAnswers = await prisma.foodsessionpollanswer.findMany({
+                where: {
+                    fkFoodsessionPoll: foodsessionpoll.id
+                }
+            })
+
+            // first delete user votings
+            await prisma.userpollvoting.deleteMany({
+                where: {
+                    fkFoodsessionPollAnswer:{
+                        in: foodsessionPollAnswers.map((answer) => answer.id),
+                    }
+                }
+            })
+
+            // delete all poll answers
             await prisma.foodsessionpollanswer.deleteMany({
                 where: {
                     fkFoodsessionPoll: foodsessionpoll.id
                 }
             })
+
+            // create new poll answers            
             for(var i = 0; i < pollAnswers.length; i++)
             {
                 await prisma.foodsessionpollanswer.create({
@@ -706,16 +724,49 @@ export module foodsession {
     {
         var userId:number = Number(req.user.userId); 
         const foodsessionID = req.body.foodsessionID;
-        const pollAnswersToSend = req.body.pollAnswersToSend;
-    
+        const pollAnswersToSend = req.body.pollAnswersToSend.map((answer: string) => parseInt(answer));
+
+        var foodsessionpoll = await prisma.foodsessionpoll.findFirst({
+            where: {
+                fkFoodSession: Number(foodsessionID)
+            }
+        });
+
+        // delete all poll answers
+        if(foodsessionpoll != null)
+        {
+            await removeUsersPollAnswers(userId, foodsessionpoll);
+        }
+
+        // create new poll answers
+        await addPollAnwers(pollAnswersToSend, userId);
+        
+        var responseData = {
+            message: "successfully updated foodsession",
+        }
+
+        res.end(JSON.stringify(responseData))
+    };
+
+    export const removeUsersPollAnswers = async(userId: number, foodsessionpoll: any) => {
+        // get all poll answers
+        var foodsessionPollAnswers = await prisma.foodsessionpollanswer.findMany({
+            where: {
+                fkFoodsessionPoll: foodsessionpoll.id
+            }
+        })
+
+        // first delete user votings
         var userpollvotings = await prisma.userpollvoting.findMany({
             where: {
-                fkFoodsessionPollAnswer: Number(foodsessionID),
+                fkFoodsessionPollAnswer:{
+                    in: foodsessionPollAnswers.map((answer) => answer.id),
+                },
                 fkUser: Number(userId)
             }
         })
 
-        // first delete existant poll votes, then add the new ones
+        // first delete existant poll votes
         if(userpollvotings.length > 0)
         {
             for(var i = 0; i < userpollvotings.length; i++)
@@ -725,12 +776,16 @@ export module foodsession {
 
             await prisma.userpollvoting.deleteMany({
                 where: {
-                    fkFoodsessionPollAnswer: Number(foodsessionID),
+                    fkFoodsessionPollAnswer:{
+                        in: foodsessionPollAnswers.map((answer) => answer.id),
+                    },
                     fkUser: Number(userId)
                 }
             });
         }
+    }
 
+    export const addPollAnwers = async(pollAnswersToSend: number[], userId: number) => {
         for(var i = 0; i < pollAnswersToSend.length; i++)
         {
             try
@@ -759,14 +814,7 @@ export module foodsession {
                 console.error('foodsession error:', error);
             }
         }
-        
-        var responseData = {
-            message: "successfully updated foodsession",
-        }
-
-        res.end(JSON.stringify(responseData))
-
-    };
+    }
     
     export const addPollVoteCount = async(id:number) => {
     
